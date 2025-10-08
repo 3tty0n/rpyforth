@@ -1,4 +1,4 @@
-from rpyforth.objects import Word, CodeThread
+from rpyforth.objects import Word, CodeThread, ZERO
 
 class Stack(object):
     def __init__(self):
@@ -44,7 +44,7 @@ class InnerInterpreter(object):
 
     def execute_word_now(self, w):
         code = [w]
-        lits = [0]
+        lits = [ZERO]
         self.execute_thread(CodeThread(code, lits))
 
     def prim_LIT(self):

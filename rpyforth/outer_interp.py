@@ -1,4 +1,4 @@
-from rpyforth.objects import Word, CodeThread, W_IntObject
+from rpyforth.objects import Word, CodeThread, W_IntObject, ZERO
 
 INTERPRET = 0
 COMPILE   = 1
@@ -44,7 +44,7 @@ class OuterInterpreter(object):
         self.state = INTERPRET
         self.current_name = ''
         self.current_code = []  # list[Word]
-        self.current_lits = []  # list[int]
+        self.current_lits = []  # list[W_Object]
 
         # install minimal core words into dictionary
         install_primitives(self)
@@ -53,6 +53,7 @@ class OuterInterpreter(object):
         w = Word(name, prim=func, immediate=False, thread=None)
         self.dict[to_upper(name)] = w
         return w
+
     def define_colon(self, name, thread):
         w = Word(name, prim=None, immediate=False, thread=thread)
         self.dict[to_upper(name)] = w
@@ -60,11 +61,11 @@ class OuterInterpreter(object):
 
     def _emit_word(self, w):
         self.current_code.append(w)
-        self.current_lits.append(0)
+        self.current_lits.append(ZERO)
 
-    def _emit_lit(self, n):
+    def _emit_lit(self, w_n):
         self.current_code.append(self.dict["LIT"])  # Word for LIT
-        self.current_lits.append(n)
+        self.current_lits.append(w_n)
 
     def _is_number(self, s):
         if len(s) == 0:

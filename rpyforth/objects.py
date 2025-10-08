@@ -52,3 +52,6 @@ class W_IntObject(W_Object):
 
     def div(self, other):
         return W_IntObject(self.intval // other.intval)
+
+
+ZERO = W_IntObject(0)
