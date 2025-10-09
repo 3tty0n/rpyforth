@@ -3,6 +3,11 @@ setup-pypy:
 	git clone https://github.com/pypy/pypy.git --dept=1
 
 
+.PHONY: build
+build:
+	PYTHONPATH=. ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
+
+
 _pypy_binary/bin/python:  ## Download a PyPy binary
 	mkdir -p _pypy_binary
 	python3 get_pypy_to_download.py
