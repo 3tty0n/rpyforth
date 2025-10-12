@@ -8,6 +8,11 @@ build:
 	PYTHONPATH=. ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
 
 
+.PHONY: test-inerp
+test-interp:
+	PYTHONPATH=. ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv
+
+
 _pypy_binary/bin/python:  ## Download a PyPy binary
 	mkdir -p _pypy_binary
 	python3 get_pypy_to_download.py
