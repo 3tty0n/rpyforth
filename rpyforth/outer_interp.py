@@ -134,7 +134,7 @@ class OuterInterpreter(object):
                 if w is not None:
                     self.inner.execute_word_now(w)
                 elif self._is_number(t):
-                    self.inner.ds.push(self._to_number(t))
+                    self.inner.push_ds(self._to_number(t))
                 else:
                     self.inner.print_str("UNKNOWN: " + t)
             elif self.state == COMPILE:
@@ -148,43 +148,43 @@ class OuterInterpreter(object):
                 assert 0, "unreachable state"
 
 def prim_DUP(inner):
-    a = inner.ds.pop()
-    inner.ds.push(a)
-    inner.ds.push(a)
+    a = inner.pop_ds()
+    inner.push_ds(a)
+    inner.push_ds(a)
 
 def prim_DROP(inner):
-    inner.ds.pop()
+    inner.pop_ds()
 
 def prim_SWAP(inner):
-    a,b = inner.ds.top2()
-    inner.ds.push(b)
-    inner.ds.push(a)
+    a,b = inner.top2_ds()
+    inner.push_ds(b)
+    inner.push_ds(a)
 
 def prim_OVER(inner):
-    b = inner.ds.pop()
-    a = inner.ds.pop()
-    inner.ds.push(a)
-    inner.ds.push(b)
-    inner.ds.push(a)
+    b = inner.pop_ds()
+    a = inner.pop_ds()
+    inner.push_ds(a)
+    inner.push_ds(b)
+    inner.push_ds(a)
 
 # Arithmetic
 
 def prim_ADD(inner):
-    a,b = inner.ds.top2()
-    inner.ds.push(a.add(b))
+    a,b = inner.top2_ds()
+    inner.push_ds(a.add(b))
 
 def prim_SUB(inner):
-    a,b = inner.ds.top2()
-    inner.ds.push(a.sub(b))
+    a,b = inner.top2_ds()
+    inner.push_ds(a.sub(b))
 
 def prim_MUL(inner):
-    a,b = inner.ds.top2()
-    inner.ds.push(a.mul(b))
+    a,b = inner.top2_ds()
+    inner.push_ds(a.mul(b))
 
 # I/O
 
 def prim_DOT(inner):
-    x = inner.ds.pop()
+    x = inner.pop_ds()
     inner.print_int(x)
 
 # CodeThread-aware primitives

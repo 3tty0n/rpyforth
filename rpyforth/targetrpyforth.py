@@ -8,7 +8,8 @@ def entry_point(argv):
         line = ' '.join(argv[1:])
         outer.interpret_line(line)
     else:
-        outer.interpret_line(": SQUARE DUP * ; 3 SQUARE .")
+        outer.interpret_line(": SQUARE DUP * ; 3 SQUARE")
+        print inner.pop_ds().intval
     return 0
 
 def target(*args):

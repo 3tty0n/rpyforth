@@ -7,6 +7,10 @@ def run(line):
     outer.interpret_line(line)
     return inner
 
+def run_and_pop(line):
+    return run(line).pop_ds()
+
+
 def test_interp_line():
-    assert run(": SQUARE DUP * ; 3 SQUARE").ds.pop().intval == 9
-    assert run(": INC 1 + ;  5 INC").ds.pop().intval == 6
+    assert run_and_pop(": SQUARE DUP * ; 3 SQUARE").intval == 9
+    assert run_and_pop(": INC 1 + ;  5 INC").intval == 6

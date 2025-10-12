@@ -1,27 +1,40 @@
 from rpyforth.objects import Word, CodeThread, ZERO
 
-class Stack(object):
-    def __init__(self):
-        self._a = [] # list[int]
-
-    def push(self, x):
-        self._a.append(x)
-
-    def pop(self):
-        return self._a.pop()
-
-    def top2(self):
-        b = self._a.pop(); a = self._a.pop(); return a, b
-
-    def __len__(self):
-        return len(self._a)
-
 class InnerInterpreter(object):
     def __init__(self):
-        self.ds = Stack()     # data stack
-        self.rs = Stack()     # return stack (reserved for future control words)
+        self._ds = [None] * 16 # data stack
+        self.ds_ptr = 0
+
+        self._rs = [None]* 16  # return stack
+        self.rs_ptr = 0
+
         self.ip = 0
         self.cur = None       # type: CodeThread
+
+    def push_ds(self, w_x):
+        self._ds[self.ds_ptr] = w_x
+        self.ds_ptr += 1
+
+    def pop_ds(self):
+        self.ds_ptr -= 1
+        assert self.ds_ptr >= 0
+        w_x = self._ds[self.ds_ptr]
+        return w_x
+
+    def top2_ds(self):
+        w_y = self.pop_ds()
+        w_x = self.pop_ds()
+        return w_x, w_y
+
+    def push_rs(self, w_x):
+        self._rs[self.rs_ptr] = w_x
+        self.rs_ptr += 1
+
+    def pop_rs(self):
+        self.rs_ptr -= 1
+        assert self.rs_ptr >= 0
+        w_x = self._rs[self.rs_ptr]
+        return w_x
 
     def print_int(self, x):
         print(x)
@@ -49,7 +62,7 @@ class InnerInterpreter(object):
 
     def prim_LIT(self):
         lit = self.cur.lits[self.ip]
-        self.ds.push(lit)
+        self.push_ds(lit)
 
     def prim_EXIT(self):
         self.ip = len(self.cur.code)
