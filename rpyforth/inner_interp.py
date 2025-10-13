@@ -1,4 +1,4 @@
-from rpyforth.objects import Word, CodeThread, ZERO
+from rpyforth.objects import DECIMAL, Word, CodeThread, ZERO
 
 HEAP_CELLS = 65536
 
@@ -12,6 +12,10 @@ class InnerInterpreter(object):
 
         self.mem = [ZERO] * HEAP_CELLS
         self.here = 0
+
+        self.base = DECIMAL
+        self._pno_active = False      # inside <# ... #> or not
+        self._pno_buf = []            # buffoer for pno (pictured numeric output)
 
         self.ip = 0
         self.cur = None       # type: CodeThread

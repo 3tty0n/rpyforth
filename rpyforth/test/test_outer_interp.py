@@ -1,3 +1,4 @@
+from rpyforth.objects import W_StringObject
 from rpyforth.outer_interp import OuterInterpreter
 from rpyforth.inner_interp import InnerInterpreter
 
@@ -20,3 +21,9 @@ def test_STORE_FETCH():
     assert run_and_pop("VARIABLE A    10 A !    A @ 5 + A !    A @").intval == 15
     assert run_and_pop(""": SQUARE DUP * ;    VARIABLE N
 7 N !    N @ SQUARE""").intval == 49
+
+
+def test_PNO():
+    assert run_and_pop("DECIMAL  12345 <# #S #>").strval == '12345'
+    assert run_and_pop("HEX      255   <# #S #>").strval == 'FF'
+    assert run_and_pop("BINARY   5     <# #S #>").strval == '101'

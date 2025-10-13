@@ -53,5 +53,17 @@ class W_IntObject(W_Object):
     def div(self, other):
         return W_IntObject(self.intval // other.intval)
 
+class W_StringObject(W_Object):
+    def __init__(self, strval):
+        self.strval = strval
+
+    def __repr__(self):
+        return str(self.strval)
 
 ZERO = W_IntObject(0)
+
+# BASE
+HEX     = W_IntObject(16)
+DECIMAL = W_IntObject(10)
+OCTAL   = W_IntObject(8)
+BINARY  = W_IntObject(2)
