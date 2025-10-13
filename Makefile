@@ -1,6 +1,6 @@
 .PHONY: setup-pypy
 setup-pypy:
-	git clone https://github.com/pypy/pypy.git --dept=1
+	git clone https://github.com/pypy/pypy.git --depth=1
 
 
 .PHONY: build
