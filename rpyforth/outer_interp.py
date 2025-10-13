@@ -1,4 +1,4 @@
-from rpyforth.objects import Word, CodeThread, W_IntObject, ZERO
+from rpyforth.objects import W_StringObject, Word, CodeThread, W_IntObject, ZERO
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
 
@@ -72,7 +72,7 @@ class OuterInterpreter(object):
             # handle ':' and ';' lexically (not as immediate words)
             if t == ':':
                 if i >= len(toks):
-                    self.inner.print_str(": requires a name")
+                    self.inner.print_str(W_StringObject(": requires a name"))
                     return
                 self.state = COMPILE
                 self.current_name = toks[i]
@@ -83,7 +83,7 @@ class OuterInterpreter(object):
 
             if t == ';':
                 if self.state != COMPILE:
-                    self.inner.print_str("; outside definition")
+                    self.inner.print_str(W_StringObject("; outside definition"))
                     continue
 
                 # append EXIT and install
@@ -102,7 +102,7 @@ class OuterInterpreter(object):
 
             if self.state == INTERPRET and tkey == "VARIABLE":
                if i >= len(toks):
-                   self.inner.print_str("VARIABLE requires a name")
+                   self.inner.print_str(W_StringObject("VARIABLE requires a name"))
                    return
                name = toks[i]
                i += 1
@@ -110,21 +110,28 @@ class OuterInterpreter(object):
                addr = W_IntObject(self.inner.here)
                self.inner.here += 1
 
-               def prim_PUSH_ADDR(inner):
-                   inner.push_ds(addr)
-               self.define_prim(name, prim_PUSH_ADDR)
+               wLIT  = self.dict["LIT"]
+               wEXIT = self.dict["EXIT"]
+               code = [wLIT, wEXIT]
+               lits = [addr, ZERO]
+               thread = CodeThread(code, lits)
+               self.define_colon(name, thread)
                continue
 
             if self.state == INTERPRET and tkey == "CONSTANT":
                 if i >= len(toks):
-                    self.inner.print_str("CONSTANT requires a name")
+                    self.inner.print_str(W_StringObject("CONSTANT requires a name"))
                     return
                 name = toks[i]
                 i += 1
                 val = self.inner.pop_ds()
-                def prim_PUSH_VAL(inner):
-                    inner.push_ds(val)
-                self.define_prim(name, prim_PUSH_VAL)
+
+                wLIT  = self.dict["LIT"]
+                wEXIT = self.dict["EXIT"]
+                code = [wLIT, wEXIT]
+                lits = [val, ZERO]
+                thread = CodeThread(code, lits)
+                self.define_colon(name, thread)
                 continue
 
             w = self.dict.get(tkey, None)
@@ -134,13 +141,13 @@ class OuterInterpreter(object):
                 elif self._is_number(t):
                     self.inner.push_ds(self._to_number(t))
                 else:
-                    self.inner.print_str("UNKNOWN: " + t)
+                    self.inner.print_str(W_StringObject("UNKNOWN: " + t))
             elif self.state == COMPILE:
                 if w is not None:
                     self._emit_word(w)
                 elif self._is_number(t):
                     self._emit_lit(self._to_number(t))
                 else:
-                    self.inner.print_str("UNKNOWN: " + t)
+                    self.inner.print_str(W_StringObject("UNKNOWN: " + t))
             else:
                 assert 0, "unreachable state"

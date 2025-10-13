@@ -51,7 +51,7 @@ def prim_FETCH(inner):
 # BASE
 
 def prim_BASE_FETCH(inner): #  BASE@ ( -- u )
-    inner.push_(inner.base)
+    inner.push_ds(inner.base)
 
 
 def prim_BASE_STORE(inner):  # BASE! ( u -- )
@@ -85,7 +85,7 @@ def prim_NUMSIGN(inner):         # #    ( x -- q )
     BASE) and places this digit into the PNO buffer for display later.
     """
     if not inner._pno_active:
-        inner.print_str("# outside <# #>")
+        inner.print_str(W_StringObject("# outside <# #>"))
         return
     x = inner.pop_ds()
     base = inner.base.intval
@@ -100,7 +100,7 @@ def prim_NUMSIGN_S(inner):       # #S   ( x -- 0 )
     0 (i.e. there are no more digits to convert).
     """
     if not inner._pno_active:
-        inner.print_str("#S outside <# #>")
+        inner.print_str(W_StringObject("#S outside <# #>"))
         return
     while True:
         x = inner.pop_ds()
@@ -119,7 +119,7 @@ def prim_HOLD(inner):
     obtain the ASCII value of the character immediately following it.
     """
     if not inner._pno_active:
-        inner.print_str("HOLD outside <# #>")
+        inner.print_str(W_StringObject("HOLD outside <# #>"))
         return
     ch = inner.pop_ds()
     inner._pno_buf.insert(0, chr(ch.intval))
@@ -133,7 +133,7 @@ def prim_NUMGREATER(inner):      # #>   ( x -- string )
     string in the PNO buffer.
     """
     if not inner._pno_active:
-        inner.print_str("#> outside <# #>")
+        inner.print_str(W_StringObject("#> outside <# #>"))
         return
     _ = inner.pop_ds()
     s = ''.join(inner._pno_buf)
@@ -141,8 +141,8 @@ def prim_NUMGREATER(inner):      # #>   ( x -- string )
     inner.push_ds(W_StringObject(s))
 
 def prim_TYPE(inner):            # TYPE ( string -- )
-    s = inner.pop_ds()
-    inner.print_str(s)
+    w_s = inner.pop_ds()
+    inner.print_str(w_s)
 
 # I/O
 
