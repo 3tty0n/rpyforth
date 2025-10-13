@@ -129,6 +129,34 @@ class OuterInterpreter(object):
                 continue
 
             tkey = to_upper(t)
+
+            if self.state == INTERPRET and tkey == "VARIABLE":
+               if i >= len(toks):
+                   self.inner.print_str("VARIABLE requires a name")
+                   return
+               name = toks[i]
+               i += 1
+
+               addr = W_IntObject(self.inner.here)
+               self.inner.here += 1
+
+               def prim_PUSH_ADDR(inner):
+                   inner.push_ds(addr)
+               self.define_prim(name, prim_PUSH_ADDR)
+               continue
+
+            if self.state == INTERPRET and tkey == "CONSTANT":
+                if i >= len(toks):
+                    self.inner.print_str("CONSTANT requires a name")
+                    return
+                name = toks[i]
+                i += 1
+                val = self.inner.pop_ds()
+                def prim_PUSH_VAL(inner):
+                    inner.push_ds(val)
+                self.define_prim(name, prim_PUSH_VAL)
+                continue
+
             w = self.dict.get(tkey, None)
             if self.state == INTERPRET:
                 if w is not None:
@@ -181,6 +209,19 @@ def prim_MUL(inner):
     a,b = inner.top2_ds()
     inner.push_ds(a.mul(b))
 
+# memory management
+
+def prim_STORE(inner):
+    addr_obj = inner.pop_ds()
+    val_obj  = inner.pop_ds()
+    idx = addr_obj.intval
+    inner.mem[idx] = val_obj
+
+def prim_FETCH(inner):
+    addr_obj = inner.pop_ds()
+    idx = addr_obj.intval
+    inner.push_ds(inner.mem[idx])
+
 # I/O
 
 def prim_DOT(inner):
@@ -207,6 +248,9 @@ def install_primitives(outer):
     outer.define_prim("*",    prim_MUL)
     # I/O
     outer.define_prim(".",    prim_DOT)
+    # memory management
+    outer.define_prim("!",    prim_STORE)
+    outer.define_prim("@",    prim_FETCH)
     # thread ops
     outer.define_prim("LIT",  prim_LIT)
     outer.define_prim("EXIT", prim_EXIT)

@@ -1,5 +1,7 @@
 from rpyforth.objects import Word, CodeThread, ZERO
 
+HEAP_CELLS = 65536
+
 class InnerInterpreter(object):
     def __init__(self):
         self._ds = [None] * 16 # data stack
@@ -7,6 +9,9 @@ class InnerInterpreter(object):
 
         self._rs = [None]* 16  # return stack
         self.rs_ptr = 0
+
+        self.mem = [ZERO] * HEAP_CELLS
+        self.here = 0
 
         self.ip = 0
         self.cur = None       # type: CodeThread
