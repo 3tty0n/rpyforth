@@ -1,4 +1,4 @@
-from rpyforth.objects import BINARY, OCTAL, DECIMAL, HEX
+from rpyforth.objects import BINARY, OCTAL, DECIMAL, HEX, ZERO
 from rpyforth.util import digit_to_char
 
 def prim_DUP(inner):
@@ -21,6 +21,28 @@ def prim_OVER(inner):
     inner.push_ds(b)
     inner.push_ds(a)
 
+def prim_ROT(inner):
+    c = inner.pop_ds()
+    b = inner.pop_ds()
+    a = inner.pop_ds()
+    inner.push_ds(b)
+    inner.push_ds(c)
+    inner.push_ds(a)
+
+def prim_MAX(inner):
+    a, b = inner.top2_ds()
+    if a.lt(b):
+        inner.push_ds(b)
+    else:
+        inner.push_ds(a)
+
+def prim_MIN(inner):
+    a,b = inner.top2_ds()
+    if a.lt(b):
+        inner.push_ds(a)
+    else:
+        inner.push_ds(b)
+
 # Arithmetic
 
 def prim_ADD(inner):
@@ -34,6 +56,14 @@ def prim_SUB(inner):
 def prim_MUL(inner):
     a,b = inner.top2_ds()
     inner.push_ds(a.mul(b))
+
+def prim_ABS(inner):
+    a = inner.pop_ds()
+    inner.push_ds(a.abs())
+
+def prim_NEGATE(inner):
+    a = inner.pop_ds()
+    inner.push_ds(a.neg())
 
 # memory management
 
@@ -164,10 +194,18 @@ def install_primitives(outer):
     outer.define_prim("DROP", prim_DROP)
     outer.define_prim("SWAP", prim_SWAP)
     outer.define_prim("OVER", prim_OVER)
+        #add
+    outer.define_prim("ROT",  prim_ROT)
+    outer.define_prim("MAX",  prim_MAX)
+    outer.define_prim("MIN",  prim_MIN)
+
     # arithmetic
     outer.define_prim("+",    prim_ADD)
     outer.define_prim("-",    prim_SUB)
     outer.define_prim("*",    prim_MUL)
+        #add
+    outer.define_prim("ABS",  prim_ABS)
+    outer.define_prim("NEGATE", prim_NEGATE)
     # I/O
     outer.define_prim(".",    prim_DOT)
     # memory management
