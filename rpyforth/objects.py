@@ -53,6 +53,18 @@ class W_IntObject(W_Object):
     def div(self, other):
         return W_IntObject(self.intval // other.intval)
 
+    def neg(self):
+        return W_IntObject(-self.intval)
+
+    def abs(self):
+        return W_IntObject(abs(self.intval))
+
+    def lt(self, other):
+        if isinstance(other, W_IntObject):
+            return self.intval < other.intval
+        else:
+            assert 0
+
 class W_StringObject(W_Object):
     def __init__(self, strval):
         self.strval = strval
