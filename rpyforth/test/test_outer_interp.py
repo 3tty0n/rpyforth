@@ -30,8 +30,13 @@ def test_STORE_FETCH():
     assert run_and_pop(""": SQUARE DUP * ;    VARIABLE N
 7 N !    N @ SQUARE""").intval == 49
 
-
 def test_PNO():
     assert run_and_pop("DECIMAL  12345 <# #S #>").strval == '12345'
     assert run_and_pop("HEX      255   <# #S #>").strval == 'FF'
     assert run_and_pop("BINARY   5     <# #S #>").strval == '101'
+
+def test_BRANCH():
+    assert run_and_pop(": Z? 0= IF 1 ELSE 2 THEN ; 0 Z?").intval == 1
+    assert run_and_pop(": Z? 0= IF 1 ELSE 2 THEN ; 7 Z?").intval == 2
+    assert run_and_pop(": T1  1 0= IF 111 ELSE  0 0= IF 222 ELSE 333 THEN THEN ; T1").intval == 222
+

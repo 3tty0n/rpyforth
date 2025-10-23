@@ -76,6 +76,20 @@ def prim_FETCH(inner):
     idx = addr_obj.intval
     inner.push_ds(inner.mem[idx])
 
+
+# IF THEN ELSE
+
+def prim_0BRANCH(inner):
+    w_x = inner.pop_ds()
+    if w_x.intval == 0:
+        target = inner.cur.lits[inner.ip]
+        inner.ip = target.intval - 1
+
+def prim_BRANCH(inner):
+    target = inner.cur.lits[inner.ip]
+    inner.ip = target.intval - 1
+
+
 # BASE
 
 def prim_BASE_FETCH(inner): #  BASE@ ( -- u )
@@ -220,6 +234,10 @@ def install_primitives(outer):
     outer.define_prim("HOLD",prim_HOLD)
 
     outer.define_prim("TYPE", prim_TYPE)   # for testing output
+
+    # loop
+    outer.define_prim("0BRANCH", prim_0BRANCH)
+    outer.define_prim("BRANCH",  prim_BRANCH)
 
     # thread ops
     outer.define_prim("LIT",  prim_LIT)
