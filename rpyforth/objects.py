@@ -11,6 +11,9 @@ class Word(object):
     def is_primitive(self):
         return self.prim is not None
 
+    def __repr__(self):
+        return "<Word %s>" % (self.name)
+
 
 class CodeThread(object):
     def __init__(self, code, lits):
