@@ -155,7 +155,7 @@ class OuterInterpreter(object):
                 if tkey == "ELSE":
                     kind, orig1 = self.ctrl.pop()
                     if kind != "IF":
-                        self.inner.print_str("ELSE without IF")
+                        self.inner.print_str(W_StringObject("ELSE without IF"))
                         return
                     self._patch_here(orig1)
                     orig2 = len(self.current_code)
@@ -169,7 +169,8 @@ class OuterInterpreter(object):
                 if tkey == "THEN":
                     kind, at = self.ctrl.pop()
                     if kind not in ("IF", "ELSE"):
-                        self.inner.print_str("THEN without IF/ELSE"); return
+                        self.inner.print_str(W_StringObject("THEN without IF/ELSE"))
+                        return
                     self._patch_here(at)
                     continue
 
