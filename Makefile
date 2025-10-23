@@ -4,12 +4,12 @@ setup-pypy:
 
 
 .PHONY: build
-build:
+build: _pypy_binary/bin/python
 	PYTHONPATH=. ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
 
 
 .PHONY: test-inerp
-test-interp:
+test-interp: _pypy_binary/bin/python
 	PYTHONPATH=. ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv
 
 

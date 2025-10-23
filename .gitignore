@@ -1,3 +1,4 @@
 *.pyc
 
 pypy/
+_pypy_binary/
