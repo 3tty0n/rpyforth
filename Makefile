@@ -10,7 +10,7 @@ build: _pypy_binary/bin/python
 
 .PHONY: test-inerp
 test-interp: _pypy_binary/bin/python
-	PYTHONPATH=. ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv
+	PYTHONPATH=. ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv -s
 
 
 _pypy_binary/bin/python:  ## Download a PyPy binary
