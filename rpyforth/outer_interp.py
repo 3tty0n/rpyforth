@@ -21,6 +21,8 @@ class OuterInterpreter(object):
 
         self.wBR = self.dict["BRANCH"]
         self.w0BR = self.dict["0BRANCH"]
+        self.wLIT = self.dict["LIT"]
+        self.wEXIT = self.dict["EXIT"]
 
     def define_prim(self, name, func):
         w = Word(name, prim=func, immediate=False, thread=None)
@@ -37,7 +39,7 @@ class OuterInterpreter(object):
         self.current_lits.append(ZERO)
 
     def _emit_lit(self, w_n):
-        self.current_code.append(self.dict["LIT"])  # Word for LIT
+        self.current_code.append(self.wLIT)  # Word for LIT
         self.current_lits.append(w_n)
 
     def _is_number(self, s):
@@ -97,7 +99,7 @@ class OuterInterpreter(object):
                     continue
 
                 # append EXIT and install
-                self._emit_word(self.dict["EXIT"])
+                self._emit_word(self.wEXIT)
                 thread = CodeThread(self.current_code, self.current_lits)
                 self.define_colon(self.current_name, thread)
 
@@ -121,9 +123,7 @@ class OuterInterpreter(object):
                    addr = W_IntObject(self.inner.here)
                    self.inner.here += 1
 
-                   wLIT  = self.dict["LIT"]
-                   wEXIT = self.dict["EXIT"]
-                   code = [wLIT, wEXIT]
+                   code = [self.wLIT, self.wEXIT]
                    lits = [addr, ZERO]
                    thread = CodeThread(code, lits)
                    self.define_colon(name, thread)
@@ -137,9 +137,7 @@ class OuterInterpreter(object):
                     i += 1
                     val = self.inner.pop_ds()
 
-                    wLIT  = self.dict["LIT"]
-                    wEXIT = self.dict["EXIT"]
-                    code = [wLIT, wEXIT]
+                    code = [self.wLIT, self.wEXIT]
                     lits = [val, ZERO]
                     thread = CodeThread(code, lits)
                     self.define_colon(name, thread)
