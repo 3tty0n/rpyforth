@@ -15,6 +15,14 @@ def test_basic_primitives():
     assert run_and_pop(": SQUARE DUP * ; 3 SQUARE").intval == 9
     assert run_and_pop(": INC 1 + ;  5 INC").intval == 6
 
+def test_ZEROs():
+    assert run_and_pop("0 0=").intval == -1 # True
+    assert run_and_pop("5 0=").intval == 0  # False
+    assert run_and_pop("0 0<").intval == 0  # False
+    assert run_and_pop("-128 0<").intval == -1
+    assert run_and_pop("-128 0>").intval == -0
+    assert run_and_pop("47 0>").intval == -1
+
 def test_STORE_FETCH():
     assert run_and_pop("5 0 !    0 @").intval == 5
     assert run_and_pop("VARIABLE X    123 X !    X @").intval == 123

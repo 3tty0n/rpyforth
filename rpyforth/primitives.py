@@ -1,5 +1,33 @@
-from rpyforth.objects import BINARY, OCTAL, DECIMAL, HEX
+from rpyforth.objects import BINARY, OCTAL, DECIMAL, HEX, TRUE, ZERO
 from rpyforth.util import digit_to_char
+
+def prim_ZEROEQUAL(inner):     # 0=  ( x -- flag )
+    w_x = inner.pop_ds()
+    if w_x.zero_equal():
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
+
+def prim_ZEROLESS(inner):      # 0< ( n -- flag )
+    w_x = inner.pop_ds()
+    if w_x.zero_less():
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
+
+def prim_ZEROGREATER(inner):   # 0> ( n -- flag )
+    w_x = inner.pop_ds()
+    if w_x.zero_greater():
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
+
+def prim_ZERONOTEQUAL(inner):  # 0<> ( n -- flag )
+    w_x = inner.pop_ds()
+    if not w_x.zero_equal():
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
 
 def prim_DUP(inner):
     a = inner.pop_ds()
@@ -159,6 +187,10 @@ def prim_EXIT(inner):
     inner.prim_EXIT()
 
 def install_primitives(outer):
+    outer.define_prim("0=",   prim_ZEROEQUAL)
+    outer.define_prim("0<",   prim_ZEROLESS)
+    outer.define_prim("0>",   prim_ZEROGREATER)
+    outer.define_prim("0<>",  prim_ZERONOTEQUAL)
     # stack manipulation
     outer.define_prim("DUP",  prim_DUP)
     outer.define_prim("DROP", prim_DROP)

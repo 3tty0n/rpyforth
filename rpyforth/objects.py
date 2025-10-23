@@ -41,6 +41,18 @@ class W_IntObject(W_Object):
     def __repr__(self):
         return str(self.intval)
 
+    def is_true(self):
+        return self.intval == -1
+
+    def zero_less(self):
+        return self.intval < 0
+
+    def zero_greater(self):
+        return self.intval > 0
+
+    def zero_equal(self):
+        return self.intval == 0
+
     def add(self, other):
         return W_IntObject(self.intval + other.intval)
 
@@ -61,6 +73,7 @@ class W_StringObject(W_Object):
         return str(self.strval)
 
 ZERO = W_IntObject(0)
+TRUE = W_IntObject(-1)
 
 # BASE
 HEX     = W_IntObject(16)
