@@ -3,7 +3,7 @@ default: build
 
 .PHONY: setup-pypy
 setup-pypy:
-	git clone https://github.com/pypy/pypy.git --depth=1
+	if [ ! -d pypy ]; then git clone https://github.com/pypy/pypy.git --depth=1; fi
 
 
 .PHONY: build
