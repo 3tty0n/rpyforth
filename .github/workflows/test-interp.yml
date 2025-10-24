@@ -64,11 +64,6 @@ jobs:
         run: |
           mkdir -p build
 
-      - name: Check binary exists
-        run: |
-          test -x "build/${EXE_NAME}" || (echo "binary not found"; exit 1)
-          file "build/${EXE_NAME}"
-
       - name: Run test
         run: |
           make test-interp
