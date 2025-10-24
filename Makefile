@@ -3,17 +3,17 @@ default: build
 
 .PHONY: setup-pypy
 setup-pypy:
-	git clone https://github.com/pypy/pypy.git --depth=1
+	if [ ! -d pypy ]; then git clone https://github.com/pypy/pypy.git --depth=1; fi
 
 
 .PHONY: build
-build: _pypy_binary/bin/python
-	PYTHONPATH=. ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
+build: _pypy_binary/bin/python setup-pypy
+	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
 
 
 .PHONY: test-inerp
-test-interp: _pypy_binary/bin/python
-	PYTHONPATH=. ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv -s
+test-interp: _pypy_binary/bin/python setup-pypy
+	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv -s
 
 
 _pypy_binary/bin/python:  ## Download a PyPy binary
