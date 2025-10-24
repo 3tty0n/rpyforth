@@ -1,0 +1,74 @@
+name: Test Interpreter
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: Translate & Smoke Test
+    runs-on: ubuntu-latest
+
+    env:
+      RPY_TARGET: src/targetrpyforth.py
+
+      EXE_NAME: targetrpyforth-c
+
+
+      # ======================================================
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python (host for rpython toolchain)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential libffi-dev zlib1g-dev libbz2-dev libsqlite3-dev \
+            libncurses5-dev libexpat1-dev libgdbm-dev libssl-dev tk-dev \
+            liblzma-dev
+
+      - name: Cache PyPy source (for rpython)
+        id: cache-pypy
+        uses: actions/cache@v4
+        with:
+          path: pypy
+          key: pypy-rpython-src-v1
+
+      - name: Fetch PyPy (contains rpython) if cache missed
+        if: steps.cache-pypy.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 https://github.com/pypy/pypy.git pypy
+
+      - name: Show rpython version
+        run: |
+          python -V
+          ls -al pypy/rpython/bin
+          python pypy/rpython/bin/rpython --help || true
+
+      - name: Cache translation artifacts
+        id: cache-build
+        uses: actions/cache@v4
+        with:
+          path: build
+          key: rpython-build-${{ hashFiles('**/*.py') }}
+
+      - name: Translate (compile) the RPython Forth interpreter
+        run: |
+          mkdir -p build
+
+      - name: Check binary exists
+        run: |
+          test -x "build/${EXE_NAME}" || (echo "binary not found"; exit 1)
+          file "build/${EXE_NAME}"
+
+      - name: Run test
+        run: |
+          make test-interp
