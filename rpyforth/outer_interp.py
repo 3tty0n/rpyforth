@@ -23,6 +23,8 @@ class OuterInterpreter(object):
         self.w0BR = self.dict["0BRANCH"]
         self.wLIT = self.dict["LIT"]
         self.wEXIT = self.dict["EXIT"]
+        self.wDO = self.dict["DO"]
+        self.wLOOP = self.dict["LOOP"]
 
     def define_prim(self, name, func):
         w = Word(name, prim=func, immediate=False, thread=None)
@@ -170,6 +172,61 @@ class OuterInterpreter(object):
                         self.inner.print_str(W_StringObject("THEN without IF/ELSE"))
                         return
                     self._patch_here(at)
+                    continue
+
+                if tkey == "BEGIN":
+                    self.ctrl.append(("BEGIN", len(self.current_code)))
+                    continue
+
+                if tkey == "WHILE":
+                    kind, begin_at = self.ctrl.pop()
+                    if kind != "BEGIN":
+                        self.inner.print_str(W_StringObject("WHILE without BEGIN"))
+                        return
+                    orig = len(self.current_code)
+                    self._emit_with_target(self.w0BR, 0)
+                    self.ctrl.append(("WHILE", begin_at, orig))
+                    continue
+
+                if tkey == "REPEAT":
+                    kind, begin_at, orig = self.ctrl.pop()
+                    if kind != "WHILE":
+                        self.inner.print_str(W_StringObject("REPEAT without WHILE"))
+                        return
+                    self._emit_with_target(self.wBR, begin_at)
+                    self._patch_here(orig)
+                    continue
+
+                if tkey == "UNTIL":
+                    kind, begin_at = self.ctrl.pop()
+                    if kind != "BEGIN":
+                        self.inner.print_str(W_StringObject("UNTIL without BEGIN"))
+                        return
+                    self._emit_with_target(self.w0BR, begin_at)
+                    continue
+
+                if tkey == "AGAIN":
+                    kind, begin_at = self.ctrl.pop()
+                    if kind != "BEGIN":
+                        self.inner.print_str(W_StringObject("AGAIN without BEGIN"))
+                        return
+                    self._emit_with_target(self.wBR, begin_at)
+                    continue
+
+                if tkey == "DO":
+                    self._emit_with_target(self.wDO, 0)
+                    do_patch = len(self.current_lits) - 1
+                    loop_start = len(self.current_code)
+                    self.ctrl.append(("DO", loop_start, do_patch))
+                    continue
+
+                if tkey == "LOOP":
+                    kind, loop_start, do_patch = self.ctrl.pop()
+                    if kind != "DO":
+                        self.inner.print_str(W_StringObject("LOOP without DO"))
+                        return
+                    self._emit_with_target(self.wLOOP, loop_start)
+                    self._patch_here(do_patch)
                     continue
 
             w = self.dict.get(tkey, None)

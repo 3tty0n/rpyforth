@@ -40,3 +40,12 @@ def test_BRANCH():
     assert run_and_pop(": Z? 0= IF 1 ELSE 2 THEN ; 7 Z?").intval == 2
     assert run_and_pop(": T1  1 0= IF 111 ELSE  0 0= IF 222 ELSE 333 THEN THEN ; T1").intval == 222
 
+def test_BEGIN_WHILE_REPEAT():
+    assert run_and_pop(": TEST BEGIN DUP 3 - 0< WHILE 1 + REPEAT ; 0 TEST").intval == 3
+
+def test_BEGIN_UNTIL():
+    assert run_and_pop(": TEST BEGIN 1 + DUP 5 - 0< 0= UNTIL ; 0 TEST").intval == 5
+
+def test_DO_LOOP():
+    assert run_and_pop(": SUM 0 SWAP 0 DO I + LOOP ; 5 SUM").intval == 10
+    assert run_and_pop(": SUM 0 SWAP 0 DO I + LOOP ; 0 SUM").intval == 0

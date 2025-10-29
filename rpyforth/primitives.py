@@ -120,6 +120,45 @@ def prim_BRANCH(inner):
     inner.ip = target.intval - 1
 
 
+# Loops
+
+# DO ( limit start -- ) ( R: -- limit start )
+def prim_DO(inner):
+    """GForth core 2012: set up a counted loop, skipping when start >= limit."""
+    w_start = inner.pop_ds()
+    w_limit = inner.pop_ds()
+    target = inner.cur.lits[inner.ip]
+    if w_start.intval >= w_limit.intval:
+        inner.ip = target.intval - 1
+        return
+    inner.push_rs(w_limit)
+    inner.push_rs(w_start)
+
+# LOOP ( -- ) ( R: limit index -- | limit index' )
+def prim_LOOP(inner):
+    """GForth core 2012: advance a counted loop and branch while index < limit."""
+    target = inner.cur.lits[inner.ip]
+    w_index = inner.pop_rs()
+    w_limit = inner.pop_rs()
+    new_index = w_index.intval + 1
+    if new_index < w_limit.intval:
+        inner.push_rs(w_limit)
+        inner.push_rs(W_IntObject(new_index))
+        inner.ip = target.intval - 1
+    else:
+        # loop finished; do not push back limit/index
+        return
+
+# I ( -- n ) ( R: limit index -- limit index )
+def prim_I(inner):
+    """GForth core 2012: copy the current loop index to the data stack."""
+    w_index = inner.pop_rs()
+    w_limit = inner.pop_rs()
+    inner.push_rs(w_limit)
+    inner.push_rs(w_index)
+    inner.push_ds(W_IntObject(w_index.intval))
+
+
 # BASE
 
 # BASE@ ( -- u )
@@ -276,6 +315,9 @@ def install_primitives(outer):
     # loop
     outer.define_prim("0BRANCH", prim_0BRANCH)
     outer.define_prim("BRANCH",  prim_BRANCH)
+    outer.define_prim("DO",      prim_DO)
+    outer.define_prim("LOOP",    prim_LOOP)
+    outer.define_prim("I",       prim_I)
 
     # thread ops
     outer.define_prim("LIT",  prim_LIT)
