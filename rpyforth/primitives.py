@@ -1,48 +1,64 @@
 from rpyforth.objects import BINARY, OCTAL, DECIMAL, HEX, TRUE, ZERO
 from rpyforth.util import digit_to_char
 
-def prim_ZEROEQUAL(inner):     # 0=  ( x -- flag )
+# 0= ( x -- flag )
+def prim_ZEROEQUAL(inner):
+    """GForth core 2012: flag is true when x equals zero."""
     w_x = inner.pop_ds()
     if w_x.zero_equal():
         inner.push_ds(TRUE)
     else:
         inner.push_ds(ZERO)
 
-def prim_ZEROLESS(inner):      # 0< ( n -- flag )
+# 0< ( n -- flag )
+def prim_ZEROLESS(inner):
+    """GForth core 2012: flag is true when n is strictly negative."""
     w_x = inner.pop_ds()
     if w_x.zero_less():
         inner.push_ds(TRUE)
     else:
         inner.push_ds(ZERO)
 
-def prim_ZEROGREATER(inner):   # 0> ( n -- flag )
+# 0> ( n -- flag )
+def prim_ZEROGREATER(inner):
+    """GForth core 2012: flag is true when n is strictly positive."""
     w_x = inner.pop_ds()
     if w_x.zero_greater():
         inner.push_ds(TRUE)
     else:
         inner.push_ds(ZERO)
 
-def prim_ZERONOTEQUAL(inner):  # 0<> ( n -- flag )
+# 0<> ( n -- flag )
+def prim_ZERONOTEQUAL(inner):
+    """GForth core 2012: flag is true when n is non-zero."""
     w_x = inner.pop_ds()
     if not w_x.zero_equal():
         inner.push_ds(TRUE)
     else:
         inner.push_ds(ZERO)
 
+# DUP ( x -- x x )
 def prim_DUP(inner):
+    """GForth core 2012: duplicate x, leaving two copies on the stack."""
     a = inner.pop_ds()
     inner.push_ds(a)
     inner.push_ds(a)
 
+# DROP ( x -- )
 def prim_DROP(inner):
+    """GForth core 2012: discard the top stack item."""
     inner.pop_ds()
 
+# SWAP ( x1 x2 -- x2 x1 )
 def prim_SWAP(inner):
+    """GForth core 2012: exchange the top two stack items."""
     a,b = inner.top2_ds()
     inner.push_ds(b)
     inner.push_ds(a)
 
+# OVER ( x1 x2 -- x1 x2 x1 )
 def prim_OVER(inner):
+    """GForth core 2012: copy the second stack item to the top."""
     b = inner.pop_ds()
     a = inner.pop_ds()
     inner.push_ds(a)
@@ -51,27 +67,37 @@ def prim_OVER(inner):
 
 # Arithmetic
 
+# + ( n1 n2 -- n3 )
 def prim_ADD(inner):
+    """GForth core 2012: add n1 and n2, leaving their sum."""
     a,b = inner.top2_ds()
     inner.push_ds(a.add(b))
 
+# - ( n1 n2 -- n3 )
 def prim_SUB(inner):
+    """GForth core 2012: subtract n2 from n1, leaving the difference."""
     a,b = inner.top2_ds()
     inner.push_ds(a.sub(b))
 
+# * ( n1 n2 -- n3 )
 def prim_MUL(inner):
+    """GForth core 2012: multiply n1 by n2, leaving the product."""
     a,b = inner.top2_ds()
     inner.push_ds(a.mul(b))
 
 # memory management
 
+# ! ( x addr -- )
 def prim_STORE(inner):
+    """GForth core 2012: store x at cell address addr."""
     addr_obj = inner.pop_ds()
     val_obj  = inner.pop_ds()
     idx = addr_obj.intval
     inner.mem[idx] = val_obj
 
+# @ ( addr -- x )
 def prim_FETCH(inner):
+    """GForth core 2012: fetch the cell contents at addr."""
     addr_obj = inner.pop_ds()
     idx = addr_obj.intval
     inner.push_ds(inner.mem[idx])
@@ -79,53 +105,67 @@ def prim_FETCH(inner):
 
 # IF THEN ELSE
 
+# 0BRANCH ( flag -- )
 def prim_0BRANCH(inner):
+    """GForth core 2012: branch to target when flag is zero."""
     w_x = inner.pop_ds()
     if w_x.intval == 0:
         target = inner.cur.lits[inner.ip]
         inner.ip = target.intval - 1
 
+# BRANCH ( -- )
 def prim_BRANCH(inner):
+    """GForth core 2012: branch unconditionally to the target."""
     target = inner.cur.lits[inner.ip]
     inner.ip = target.intval - 1
 
 
 # BASE
 
-def prim_BASE_FETCH(inner): #  BASE@ ( -- u )
+# BASE@ ( -- u )
+def prim_BASE_FETCH(inner):
+    """GForth core 2012: return the current conversion base."""
     inner.push_ds(inner.base)
 
 
-def prim_BASE_STORE(inner):  # BASE! ( u -- )
+# BASE! ( u -- )
+def prim_BASE_STORE(inner):
+    """GForth core 2012: set the conversion base to u."""
     u = inner.pop_ds()
     inner.base = u
 
-def prim_DECIMAL(inner): inner.base = DECIMAL
-def prim_HEX(inner):     inner.base = HEX
-def prim_OCTAL(inner):   inner.base = OCTAL
-def prim_BINARY(inner):  inner.base = BINARY
+# DECIMAL ( -- )
+def prim_DECIMAL(inner):
+    """GForth core 2012: set BASE to decimal (radix 10)."""
+    inner.base = DECIMAL
+
+# HEX ( -- )
+def prim_HEX(inner):
+    """GForth core 2012: set BASE to hexadecimal (radix 16)."""
+    inner.base = HEX
+
+# OCTAL ( -- )
+def prim_OCTAL(inner):
+    """GForth core 2012: set BASE to octal (radix 8)."""
+    inner.base = OCTAL
+
+# BINARY ( -- )
+def prim_BINARY(inner):
+    """GForth core 2012: set BASE to binary (radix 2)."""
+    inner.base = BINARY
 
 from rpyforth.objects import W_IntObject, W_StringObject
 
-def prim_LESSNUM(inner):         # <#   ( -- )
-    """
-    Begins Pictured Numeric Output (PNO) conversion. PNO is a method of
-    formatting numbers for display on the screen, using # symbols to represent
-    digits. PNO actually converts the number to be displayed to a string,
-    allowing the opportunity to insert characters into the character stream as
-    conversion progresses (for example, commas, to separate hundreds and
-    thousands, etc.). See # and #> for more information.
-    """
+# <# ( -- )
+def prim_LESSNUM(inner):
+    """GForth core 2012: begin pictured numeric output conversion."""
     inner._pno_active = True
     inner._pno_buf = []
 
 
-def prim_NUMSIGN(inner):         # #    ( x -- q )
-    """
-    The word # takes a single digit from the unsigned-double number on the
-    stack (it divides the number by the current number base, as determined by
-    BASE) and places this digit into the PNO buffer for display later.
-    """
+# # ( ud1 -- ud2 )
+def prim_NUMSIGN(inner):
+    """GForth core 2012: extract one digit during pictured numeric output."""
     if not inner._pno_active:
         inner.print_str(W_StringObject("# outside <# #>"))
         return
@@ -136,11 +176,9 @@ def prim_NUMSIGN(inner):         # #    ( x -- q )
     inner._pno_buf.insert(0, digit_to_char(r))
     inner.push_ds(W_IntObject(q))
 
-def prim_NUMSIGN_S(inner):       # #S   ( x -- 0 )
-    """
-    The word #S converts all remaining digits until the value on the stack is
-    0 (i.e. there are no more digits to convert).
-    """
+# #S ( ud -- 0 )
+def prim_NUMSIGN_S(inner):
+    """GForth core 2012: convert remaining digits during pictured numeric output."""
     if not inner._pno_active:
         inner.print_str(W_StringObject("#S outside <# #>"))
         return
@@ -154,26 +192,18 @@ def prim_NUMSIGN_S(inner):       # #S   ( x -- 0 )
         if q == 0:
             break
 
+# HOLD ( char -- )
 def prim_HOLD(inner):
-    """
-    HOLD inserts the ASCII value on the stack directly into the PNO buffer at
-    the current PNO buffer position. Normally the word ASCII or CHAR is used to
-    obtain the ASCII value of the character immediately following it.
-    """
+    """GForth core 2012: insert character into pictured numeric output buffer."""
     if not inner._pno_active:
         inner.print_str(W_StringObject("HOLD outside <# #>"))
         return
     ch = inner.pop_ds()
     inner._pno_buf.insert(0, chr(ch.intval))
 
-def prim_NUMGREATER(inner):      # #>   ( x -- string )
-    """
-    #> ends pictured numeric output. The double value that has/was been
-    converted is removed from the stack and is replaced with the address and
-    length of the string that has been built in the PNO buffer. This
-    address/length pair is suitable for use with TYPE for displaying the
-    string in the PNO buffer.
-    """
+# #> ( xd -- c-addr u )
+def prim_NUMGREATER(inner):
+    """GForth core 2012: finish pictured numeric output and deliver the string."""
     if not inner._pno_active:
         inner.print_str(W_StringObject("#> outside <# #>"))
         return
@@ -182,22 +212,30 @@ def prim_NUMGREATER(inner):      # #>   ( x -- string )
     inner._pno_active = False
     inner.push_ds(W_StringObject(s))
 
-def prim_TYPE(inner):            # TYPE ( string -- )
+# TYPE ( c-addr u -- )
+def prim_TYPE(inner):
+    """GForth core 2012: display the character string."""
     w_s = inner.pop_ds()
     inner.print_str(w_s)
 
 # I/O
 
+# . ( n -- )
 def prim_DOT(inner):
+    """GForth core 2012: display n according to current BASE."""
     x = inner.pop_ds()
     inner.print_int(x)
 
 # CodeThread-aware primitives
 
+# LIT ( -- x )
 def prim_LIT(inner):
+    """GForth core 2012: push the next compilation literal."""
     inner.prim_LIT()
 
+# EXIT ( -- )
 def prim_EXIT(inner):
+    """GForth core 2012: terminate the current definition."""
     inner.prim_EXIT()
 
 def install_primitives(outer):
