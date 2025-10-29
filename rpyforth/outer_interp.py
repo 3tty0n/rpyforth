@@ -5,6 +5,39 @@ from rpyforth.util import to_upper, split_whitespace
 INTERPRET = 0
 COMPILE   = 1
 
+class AbstractContext(object):
+    pass
+
+class IfContext(AbstractContext):
+    _immutable_fields_ = ["patch_index", "has_else"]
+
+    def __init__(self, patch_index, has_else):
+        self.patch_index = patch_index
+        self.has_else = has_else
+
+
+class BeginContext(AbstractContext):
+    _immutable_fields_ = ["loop_start"]
+
+    def __init__(self, loop_start):
+        self.loop_start = loop_start
+
+
+class WhileContext(AbstractContext):
+    _immutable_fields_ = ["loop_start", "exit_patch"]
+
+    def __init__(self, loop_start, exit_patch):
+        self.loop_start = loop_start
+        self.exit_patch = exit_patch
+
+
+class DoLoopContext(AbstractContext):
+    _immutable_fields_ = ["loop_start", "exit_patch"]
+
+    def __init__(self, loop_start, exit_patch):
+        self.loop_start = loop_start
+        self.exit_patch = exit_patch
+
 class OuterInterpreter(object):
     def __init__(self, inner):
         self.inner = inner
@@ -72,6 +105,12 @@ class OuterInterpreter(object):
     def _emit_with_target(self, w, target_index):
         self.current_code.append(w)
         self.current_lits.append(W_IntObject(target_index))
+        return len(self.current_lits) - 1
+
+    def _emit_with_placeholder(self, w):
+        self.current_code.append(w)
+        self.current_lits.append(ZERO)
+        return len(self.current_lits) - 1
 
     def _patch_here(self, at_index):
         self.current_lits[at_index] = W_IntObject(len(self.current_code))
@@ -93,11 +132,20 @@ class OuterInterpreter(object):
                 i += 1
                 self.current_code = []
                 self.current_lits = []
+                self.ctrl = []
                 continue
 
             if t == ';':
                 if self.state != COMPILE:
                     self.inner.print_str(W_StringObject("; outside definition"))
+                    continue
+                if self.ctrl:
+                    self.inner.print_str(W_StringObject("Unmatched control structure before ;"))
+                    self.state = INTERPRET
+                    self.current_name = ''
+                    self.current_code = []
+                    self.current_lits = []
+                    self.ctrl = []
                     continue
 
                 # append EXIT and install
@@ -110,26 +158,33 @@ class OuterInterpreter(object):
                 self.current_name = ''
                 self.current_code = []
                 self.current_lits = []
+                self.ctrl = []
                 continue
 
-            tkey = to_upper(t)
+            is_number = self._is_number(t)
+            if is_number:
+                tkey = None
+                number_obj = self._to_number(t)
+            else:
+                tkey = to_upper(t)
+                number_obj = ZERO  # placeholder, unused when not number
 
             if self.state == INTERPRET:
                 if tkey == "VARIABLE":
-                   if i >= len(toks):
-                       self.inner.print_str(W_StringObject("VARIABLE requires a name"))
-                       return
-                   name = toks[i]
-                   i += 1
+                    if i >= len(toks):
+                        self.inner.print_str(W_StringObject("VARIABLE requires a name"))
+                        return
+                    name = toks[i]
+                    i += 1
 
-                   addr = W_IntObject(self.inner.here)
-                   self.inner.here += 1
+                    addr = W_IntObject(self.inner.here)
+                    self.inner.here += 1
 
-                   code = [self.wLIT, self.wEXIT]
-                   lits = [addr, ZERO]
-                   thread = CodeThread(code, lits)
-                   self.define_colon(name, thread)
-                   continue
+                    code = [self.wLIT, self.wEXIT]
+                    lits = [addr, ZERO]
+                    thread = CodeThread(code, lits)
+                    self.define_colon(name, thread)
+                    continue
 
                 if tkey == "CONSTANT":
                     if i >= len(toks):
@@ -147,101 +202,98 @@ class OuterInterpreter(object):
 
             if self.state == COMPILE:
                 if tkey == "IF":
-                    orig = len(self.current_code)
-                    self._emit_with_target(self.w0BR, 0)
-                    self.ctrl.append(("IF", orig))
+                    patch_index = self._emit_with_target(self.w0BR, 0)
+                    self.ctrl.append(IfContext(patch_index, False))
                     continue
 
                 if tkey == "ELSE":
-                    kind, orig1 = self.ctrl.pop()
-                    if kind != "IF":
+                    ctx_if = self.ctrl.pop()
+                    if not isinstance(ctx_if, IfContext) or ctx_if.has_else:
                         self.inner.print_str(W_StringObject("ELSE without IF"))
                         return
-                    self._patch_here(orig1)
-                    orig2 = len(self.current_code)
-                    self._emit_with_target(self.wBR, 0)
-
-                    self.ctrl.append(("ELSE", orig2))
-
-                    self._patch_here(orig1)
+                    else_patch = self._emit_with_target(self.wBR, 0)
+                    self._patch_here(ctx_if.patch_index)
+                    self.ctrl.append(IfContext(else_patch, True))
                     continue
 
                 if tkey == "THEN":
-                    kind, at = self.ctrl.pop()
-                    if kind not in ("IF", "ELSE"):
+                    ctx_if = self.ctrl.pop()
+                    if not isinstance(ctx_if, IfContext):
                         self.inner.print_str(W_StringObject("THEN without IF/ELSE"))
                         return
-                    self._patch_here(at)
+                    self._patch_here(ctx_if.patch_index)
                     continue
 
                 if tkey == "BEGIN":
-                    self.ctrl.append(("BEGIN", len(self.current_code)))
+                    self.ctrl.append(BeginContext(len(self.current_code)))
                     continue
 
                 if tkey == "WHILE":
-                    kind, begin_at = self.ctrl.pop()
-                    if kind != "BEGIN":
+                    begin_ctx = self.ctrl.pop()
+                    if not isinstance(begin_ctx, BeginContext):
                         self.inner.print_str(W_StringObject("WHILE without BEGIN"))
                         return
                     orig = len(self.current_code)
-                    self._emit_with_target(self.w0BR, 0)
-                    self.ctrl.append(("WHILE", begin_at, orig))
+                    exit_patch = self._emit_with_target(self.w0BR, 0)
+                    self.ctrl.append(WhileContext(begin_ctx.loop_start, exit_patch))
                     continue
 
                 if tkey == "REPEAT":
-                    kind, begin_at, orig = self.ctrl.pop()
-                    if kind != "WHILE":
+                    while_ctx = self.ctrl.pop()
+                    if not isinstance(while_ctx, WhileContext):
                         self.inner.print_str(W_StringObject("REPEAT without WHILE"))
                         return
-                    self._emit_with_target(self.wBR, begin_at)
-                    self._patch_here(orig)
+                    self._emit_with_target(self.wBR, while_ctx.loop_start)
+                    self._patch_here(while_ctx.exit_patch)
                     continue
 
                 if tkey == "UNTIL":
-                    kind, begin_at = self.ctrl.pop()
-                    if kind != "BEGIN":
+                    begin_ctx = self.ctrl.pop()
+                    if not isinstance(begin_ctx, BeginContext):
                         self.inner.print_str(W_StringObject("UNTIL without BEGIN"))
                         return
-                    self._emit_with_target(self.w0BR, begin_at)
+                    self._emit_with_target(self.w0BR, begin_ctx.loop_start)
                     continue
 
                 if tkey == "AGAIN":
-                    kind, begin_at = self.ctrl.pop()
-                    if kind != "BEGIN":
+                    begin_ctx = self.ctrl.pop()
+                    if not isinstance(begin_ctx, BeginContext):
                         self.inner.print_str(W_StringObject("AGAIN without BEGIN"))
                         return
-                    self._emit_with_target(self.wBR, begin_at)
+                    self._emit_with_target(self.wBR, begin_ctx.loop_start)
                     continue
 
                 if tkey == "DO":
-                    self._emit_with_target(self.wDO, 0)
-                    do_patch = len(self.current_lits) - 1
+                    do_patch = self._emit_with_placeholder(self.wDO)
                     loop_start = len(self.current_code)
-                    self.ctrl.append(("DO", loop_start, do_patch))
+                    self.ctrl.append(DoLoopContext(loop_start, do_patch))
                     continue
 
                 if tkey == "LOOP":
-                    kind, loop_start, do_patch = self.ctrl.pop()
-                    if kind != "DO":
+                    ctrl_entry = self.ctrl.pop()
+                    if not isinstance(ctrl_entry, DoLoopContext):
                         self.inner.print_str(W_StringObject("LOOP without DO"))
                         return
-                    self._emit_with_target(self.wLOOP, loop_start)
-                    self._patch_here(do_patch)
+                    self._emit_with_target(self.wLOOP, ctrl_entry.loop_start)
+                    self._patch_here(ctrl_entry.exit_patch)
                     continue
 
-            w = self.dict.get(tkey, None)
+            if is_number:
+                w = None
+            else:
+                w = self.dict.get(tkey, None)
             if self.state == INTERPRET:
                 if w is not None:
                     self.inner.execute_word_now(w)
-                elif self._is_number(t):
-                    self.inner.push_ds(self._to_number(t))
+                elif is_number:
+                    self.inner.push_ds(number_obj)
                 else:
                     self.inner.print_str(W_StringObject("UNKNOWN: " + t))
             elif self.state == COMPILE:
                 if w is not None:
                     self._emit_word(w)
-                elif self._is_number(t):
-                    self._emit_lit(self._to_number(t))
+                elif is_number:
+                    self._emit_lit(number_obj)
                 else:
                     self.inner.print_str(W_StringObject("UNKNOWN: " + t))
             else:
