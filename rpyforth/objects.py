@@ -109,3 +109,7 @@ HEX     = W_IntObject(16)
 DECIMAL = W_IntObject(10)
 OCTAL   = W_IntObject(8)
 BINARY  = W_IntObject(2)
+
+# data space characteristics
+CELL_SIZE_BYTES = 8
+CELL_SIZE = W_IntObject(CELL_SIZE_BYTES)
