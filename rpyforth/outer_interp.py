@@ -121,7 +121,7 @@ class OuterInterpreter(object):
                    i += 1
 
                    addr = W_IntObject(self.inner.here)
-                   self.inner.here += 1
+                   self.inner.here += self.inner.cell_size_bytes
 
                    code = [self.wLIT, self.wEXIT]
                    lits = [addr, ZERO]
