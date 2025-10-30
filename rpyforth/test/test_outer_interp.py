@@ -1,4 +1,4 @@
-from rpyforth.objects import W_StringObject
+from rpyforth.objects import W_StringObject, CELL_SIZE_BYTES
 from rpyforth.outer_interp import OuterInterpreter
 from rpyforth.inner_interp import InnerInterpreter
 
@@ -35,9 +35,10 @@ def test_STORE_FETCH():
     assert run_and_pop("VARIABLE N   -42 N !   N @").intval == -42
 
 def test_cell_primitives():
-    assert run_and_pop("CELL").intval == 8
-    assert run_and_pop("3 CELLS").intval == 24
-    assert run_and_pop("VARIABLE X VARIABLE Y Y X -").intval == 8
+    cell_bytes = CELL_SIZE_BYTES
+    assert run_and_pop("CELL").intval == cell_bytes
+    assert run_and_pop("3 CELLS").intval == 3 * cell_bytes
+    assert run_and_pop("VARIABLE X VARIABLE Y Y X -").intval == cell_bytes
     assert run_and_pop("VARIABLE X VARIABLE Y X CELL+ Y -").intval == 0
 
 def test_PNO():
