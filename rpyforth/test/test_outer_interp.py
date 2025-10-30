@@ -72,5 +72,15 @@ def test_over2():
     assert inner.pop_ds().intval == 2
     assert inner.pop_ds().intval == 1
 
+def test_mod():
+    assert run_and_pop("10 3 MOD").intval == 1
+    assert run_and_pop("-20 6 MOD").intval == 4
 
-    
+def test_inc():
+    assert run_and_pop("5 1+").intval == 6
+    assert run_and_pop("-1 1+").intval == 0
+
+def test_dec():
+    assert run_and_pop("5 1-").intval == 4
+    assert run_and_pop("0 1-").intval == -1
+        

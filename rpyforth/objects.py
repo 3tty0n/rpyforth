@@ -65,6 +65,15 @@ class W_IntObject(W_Object):
         else:
             assert 0
 
+    def mod(self, other):
+        return W_IntObject(self.intval % other.intval)
+    
+    def inc(self):
+        return W_IntObject(self.intval + 1)
+    
+    def dec(self):
+        return W_IntObject(self.intval - 1)
+
 class W_StringObject(W_Object):
     def __init__(self, strval):
         self.strval = strval
