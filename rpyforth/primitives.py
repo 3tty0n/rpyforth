@@ -367,10 +367,10 @@ def install_primitives(outer):
     outer.define_prim("SWAP", prim_SWAP)
     outer.define_prim("OVER", prim_OVER)
 
-    outer.define_prim("DUP2", prim_DUP2)
-    outer.define_prim("DROP2", prim_DROP2)
-    outer.define_prim("SWAP2", prim_SWAP2)
-    outer.define_prim("OVER2", prim_OVER2)
+    outer.define_prim("2DUP", prim_DUP2)
+    outer.define_prim("2DROP", prim_DROP2)
+    outer.define_prim("2SWAP", prim_SWAP2)
+    outer.define_prim("2OVER", prim_OVER2)
 
     outer.define_prim("ROT", prim_ROT)
     outer.define_prim("MAX", prim_MAX)

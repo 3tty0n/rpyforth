@@ -59,24 +59,24 @@ def test_rot():
     assert run_and_pop("1 2 3 ROT").intval == 1
 
 def test_dup2():
-    inner = run("1 2 DUP2")
+    inner = run("1 2 2DUP")
     assert inner.pop_ds().intval == 2
     assert inner.pop_ds().intval == 1
     assert inner.pop_ds().intval == 2
     assert inner.pop_ds().intval == 1
 
 def test_drop2():
-    inner = run_and_pop("1 2 3 DROP2").intval == 1
+    inner = run_and_pop("1 2 3 2DROP").intval == 1
 
 def test_swap2():
-    inner = run("1 2 3 4 SWAP2")
+    inner = run("1 2 3 4 2SWAP")
     assert inner.pop_ds().intval == 2
     assert inner.pop_ds().intval == 1
     assert inner.pop_ds().intval == 4
     assert inner.pop_ds().intval == 3
 
 def test_over2():
-    inner = run("1 2 3 4 OVER2")
+    inner = run("1 2 3 4 2OVER")
     assert inner.pop_ds().intval == 2
     assert inner.pop_ds().intval == 1
     assert inner.pop_ds().intval == 4
