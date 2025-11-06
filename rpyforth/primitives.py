@@ -44,6 +44,27 @@ def prim_ZEROGREATER(inner):
         inner.push_ds(ZERO)
 
 
+# > ( n1 n2 -- flag )
+def prim_GREATER(inner):
+    """GForth core 2012: flag is true when n1 is greater than n2."""
+    w_n2 = inner.pop_ds()
+    w_n1 = inner.pop_ds()
+    if w_n1.gt(w_n2):
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
+
+# < ( n1 n2 -- flag )
+def prim_LESS(inner):
+    """GForth core 2012: flag is true when n1 is less than n2."""
+    w_n2 = inner.pop_ds()
+    w_n1 = inner.pop_ds()
+    if w_n1.lt(w_n2):
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
+
+
 # 0<> ( n -- flag )
 def prim_ZERONOTEQUAL(inner):
     """GForth core 2012: flag is true when n is non-zero."""
@@ -384,10 +405,105 @@ def prim_EXIT(inner):
     inner.prim_EXIT()
 
 
+# Floating point operations
+
+# F* ( f1 f2 -- f3 )
+def prim_FMUL(inner):
+    """Multiply two floating point numbers."""
+    f2 = inner.pop_ds()
+    f1 = inner.pop_ds()
+    assert isinstance(f1, W_FloatObject)
+    assert isinstance(f2, W_FloatObject)
+    inner.push_ds(f1.mul(f2))
+
+
+# F+ ( f1 f2 -- f3 )
+def prim_FADD(inner):
+    """Add two floating point numbers."""
+    f2 = inner.pop_ds()
+    f1 = inner.pop_ds()
+    assert isinstance(f1, W_FloatObject)
+    assert isinstance(f2, W_FloatObject)
+    inner.push_ds(f1.add(f2))
+
+
+# F- ( f1 f2 -- f3 )
+def prim_FSUB(inner):
+    """Subtract f2 from f1."""
+    f2 = inner.pop_ds()
+    f1 = inner.pop_ds()
+    assert isinstance(f1, W_FloatObject)
+    assert isinstance(f2, W_FloatObject)
+    inner.push_ds(f1.sub(f2))
+
+
+# F/ ( f1 f2 -- f3 )
+def prim_FDIV(inner):
+    """Divide f1 by f2."""
+    f2 = inner.pop_ds()
+    f1 = inner.pop_ds()
+    assert isinstance(f1, W_FloatObject)
+    assert isinstance(f2, W_FloatObject)
+    inner.push_ds(f1.div(f2))
+
+
+# F> ( f1 f2 -- flag )
+def prim_FGREATER(inner):
+    """Compare if f1 > f2."""
+    f2 = inner.pop_ds()
+    f1 = inner.pop_ds()
+    assert isinstance(f1, W_FloatObject)
+    assert isinstance(f2, W_FloatObject)
+    if f1.gt(f2):
+        inner.push_ds(TRUE)
+    else:
+        inner.push_ds(ZERO)
+
+
+# FSWAP ( f1 f2 -- f2 f1 )
+def prim_FSWAP(inner):
+    """Exchange the top two floating point stack items."""
+    f2 = inner.pop_ds()
+    f1 = inner.pop_ds()
+    inner.push_ds(f2)
+    inner.push_ds(f1)
+
+
+# Stack manipulation
+
+# PICK ( xu ... x1 x0 u -- xu ... x1 x0 xu )
+def prim_PICK(inner):
+    """Copy the u-th stack item to the top (0 PICK is equivalent to DUP)."""
+    u = inner.pop_ds()
+    assert isinstance(u, W_IntObject)
+    idx = inner.ds_ptr - 1 - u.intval
+    assert idx >= 0
+    item = inner._ds[idx]
+    inner.push_ds(item)
+
+
+# Comparison
+
+# = ( x1 x2 -- flag )
+def prim_EQUAL(inner):
+    """Test if x1 equals x2."""
+    x2 = inner.pop_ds()
+    x1 = inner.pop_ds()
+    if isinstance(x1, W_IntObject) and isinstance(x2, W_IntObject):
+        if x1.intval == x2.intval:
+            inner.push_ds(TRUE)
+        else:
+            inner.push_ds(ZERO)
+    else:
+        inner.push_ds(ZERO)
+
+
 def install_primitives(outer):
     outer.define_prim("0=", prim_ZEROEQUAL)
     outer.define_prim("0<", prim_ZEROLESS)
     outer.define_prim("0>", prim_ZEROGREATER)
+    outer.define_prim(">",  prim_GREATER)
+    outer.define_prim("<",  prim_LESS)
     outer.define_prim("0<>", prim_ZERONOTEQUAL)
     # stack manipulation
     outer.define_prim("DUP", prim_DUP)

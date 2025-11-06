@@ -90,6 +90,12 @@ class W_IntObject(W_Object):
         else:
             assert 0
 
+    def gt(self, other):
+        if isinstance(other, W_IntObject):
+            return self.intval > other.intval
+        else:
+            assert 0
+
     def mod(self, other):
         return W_IntObject(self.intval % other.intval)
 
