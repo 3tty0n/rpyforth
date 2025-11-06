@@ -1,4 +1,5 @@
-from rpyforth.objects import W_StringObject, Word, CodeThread, W_IntObject, ZERO
+from rpyforth.objects import (
+    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, ZERO)
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
 
@@ -81,6 +82,25 @@ class OuterInterpreter(object):
         while i < len(toks):
             t = toks[i]
             i += 1
+
+            if t == 'S"':
+                sdouble_quote_str = []
+                while i < len(toks):
+                    t = toks[i]
+                    i += 1
+                    if t[-1] == '"':
+                        t = t[:-1]
+                        sdouble_quote_str.append(t)
+                        break
+                    sdouble_quote_str.append(t)
+                parsed_str = ' '.join(sdouble_quote_str)
+                size = len(parsed_str)
+                c_addr = self.inner.alloc_buf(parsed_str, size)
+                assert c_addr is not None
+                self.inner.push_ds(c_addr)
+                self.inner.push_ds(W_IntObject(size))
+                continue
+
             # handle ':' and ';' lexically (not as immediate words)
             if t == ':':
                 if i >= len(toks):
@@ -171,6 +191,11 @@ class OuterInterpreter(object):
                         return
                     self._patch_here(at)
                     continue
+
+                if tkey == 'S"':
+                    while i < len(toks):
+                        print toks[i]
+                        i += 1
 
             w = self.dict.get(tkey, None)
             if self.state == INTERPRET:

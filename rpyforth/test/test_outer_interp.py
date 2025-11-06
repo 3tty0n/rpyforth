@@ -108,3 +108,9 @@ def test_BRANCH():
     assert run_and_pop(": Z? 0= IF 1 ELSE 2 THEN ; 0 Z?").intval == 1
     assert run_and_pop(": Z? 0= IF 1 ELSE 2 THEN ; 7 Z?").intval == 2
     assert run_and_pop(": T1  1 0= IF 111 ELSE  0 0= IF 222 ELSE 333 THEN THEN ; T1").intval == 222
+
+def test_SDOUBLE_QUOTE():
+    str = "Hello, World!"
+    inner = run("S\" Hello, World!\"")
+    assert inner.pop_ds().intval == len(str)
+    assert inner.pop_ds().ptrval == len(str) # Cheating!

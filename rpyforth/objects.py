@@ -101,6 +101,16 @@ class W_IntObject(W_Object):
             return self.intval == other.intval
         return False
 
+class W_PtrObject(W_Object):
+    def __init__(self, ptrval):
+        self.ptrval = ptrval
+
+    def __repr__(self):
+        return self.to_string()
+
+    def to_string(self):
+        return "<Ptr %d>" % (self.ptrval)
+
 class W_StringObject(W_Object):
     def __init__(self, strval):
         self.strval = strval

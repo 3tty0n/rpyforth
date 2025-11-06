@@ -4,6 +4,8 @@ from rpyforth.objects import (
     CodeThread,
     ZERO,
     W_IntObject,
+    W_StringObject,
+    W_PtrObject,
     CELL_SIZE_BYTES,
     CELL_SIZE,
 )
@@ -24,6 +26,9 @@ class InnerInterpreter(object):
         self.here = 0
         self.cell_size = CELL_SIZE
         self.cell_size_bytes = CELL_SIZE_BYTES
+
+        self.buf = [None] * 1024
+        self.buf_ptr = 0
 
         self.base = DECIMAL
         self._pno_active = False      # inside <# ... #> or not
@@ -58,10 +63,19 @@ class InnerInterpreter(object):
         return w_x
 
     def print_int(self, x):
+        assert isinstance(x, W_IntObject)
         print(x)
 
     def print_str(self, s):
+        assert isinstance(s, W_StringObject)
         print(s)
+
+    def alloc_buf(self, content, size):
+        assert isinstance(content, str)
+        for i in range(self.buf_ptr, self.buf_ptr + size):
+            self.buf[i] = content[i]
+        self.buf_ptr += size
+        return W_PtrObject(self.buf_ptr)
 
     def _ensure_addr(self, addr, span):
         assert 0 <= addr < len(self.mem)
