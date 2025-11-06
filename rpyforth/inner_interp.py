@@ -17,11 +17,11 @@ BUF_SIZE = 1024
 HEAP_CELL_COUNT = 65536
 HEAP_SIZE_BYTES = HEAP_CELL_COUNT * CELL_SIZE_BYTES
 
-def get_printable_location(ip, code, lits):
-    return "ip=%d %s %s" % (ip, code[ip], lits[ip])
+def get_printable_location(ip, thread):
+    return "ip=%d %s %s" % (ip, thread.code[ip], thread.lits[ip])
 
 jitdriver = JitDriver(
-    greens=['ip', 'code', 'lits'],
+    greens=['ip', 'thread'],
     reds=['self'],
     virtualizables=['self'],
     get_printable_location=get_printable_location
@@ -29,7 +29,7 @@ jitdriver = JitDriver(
 
 class InnerInterpreter(object):
     _immutable_fields_ = ["cell_size", "cell_size_bytes"]
-    _virtualizable_ = ["ip", "ds_ptr", "rs_ptr", "_ds[*]", "_rs[*]", "cur"]
+    _virtualizable_ = ["ip", "ds_ptr", "rs_ptr", "_ds[*]", "_rs[*]"]
 
 
     def __init__(self):
@@ -53,7 +53,6 @@ class InnerInterpreter(object):
         self._pno_buf = []            # buffer for pno (pictured numeric output)
 
         self.ip = 0
-        self.cur = None       # type: CodeThread
 
     def push_ds(self, w_x):
         ds_ptr = self.ds_ptr
@@ -129,35 +128,37 @@ class InnerInterpreter(object):
         return W_IntObject(accum)
 
     def execute_thread(self, thread):
-        self.cur = thread
         self.ip = 0
-        code = thread.code
-        lits = thread.lits
-        while self.ip < len(code):
+        while True:
             jitdriver.jit_merge_point(
                 ip=self.ip,
-                code=code,
-                lits=lits,
+                thread=thread,
                 self=self
             )
+            if self.ip >= len(thread.code):
+                break
 
-            w = promote(code[self.ip])
+            w = promote(thread.code[self.ip])
+            if w is None:
+                break
+
+            next_ip = self.ip + 1
+            self.ip = next_ip
 
             if w.prim is not None:
-                w.prim(self)
+                w.prim(self, thread)
             else:
                 self.execute_thread(w.thread)
-            self.ip += 1
-        self.cur = None
+                self.ip = next_ip
 
     def execute_word_now(self, w):
         code = [w]
         lits = [ZERO]
         self.execute_thread(CodeThread(code, lits))
 
-    def prim_LIT(self):
-        lit = self.cur.lits[self.ip]
+    def prim_LIT(self, thread):
+        lit = thread.lits[self.ip - 1]
         self.push_ds(lit)
 
-    def prim_EXIT(self):
-        self.ip = len(self.cur.code)
+    def prim_EXIT(self, thread):
+        self.ip = len(thread.code)

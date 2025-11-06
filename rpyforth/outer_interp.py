@@ -2,6 +2,7 @@ from rpyforth.objects import (
     W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, W_FloatObject, ZERO)
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
+
 from rpython.rlib.jit import elidable, unroll_safe
 
 INTERPRET = 0
@@ -106,7 +107,7 @@ class OuterInterpreter(object):
                 return False
         return True
 
-    @elidable
+    @unroll_safe
     def _to_number(self, s):
         """Convert string to integer. Optimized for JIT."""
         sign = 1
