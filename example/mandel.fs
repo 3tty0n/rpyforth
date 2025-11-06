@@ -1,77 +1,119 @@
-\ Mandelbrot ASCII in gforth (2012 core + FLOATING)
+\ Mandelbrot Set in Forth
+\ Displays the Mandelbrot set as ASCII art
 
-\ --- Tunables ---------------------------------------------------------------
-VARIABLE width    80 width !
-VARIABLE height   40 height !
-VARIABLE maxiter  64 maxiter !
+\ Configuration constants
+80 CONSTANT WIDTH       \ Screen width in characters
+40 CONSTANT HEIGHT      \ Screen height in characters
+256 CONSTANT MAX-ITER   \ Maximum iterations
 
--2e0 FCONSTANT x-min
- 1e0 FCONSTANT x-max
--1e0 FCONSTANT y-min
- 1e0 FCONSTANT y-max
+\ Mandelbrot viewing window
+-2.5E0 FCONSTANT XMIN
+ 1.0E0 FCONSTANT XMAX
+-1.25E0 FCONSTANT YMIN
+ 1.25E0 FCONSTANT YMAX
 
-FVARIABLE dx
-FVARIABLE dy
+\ Compute scaling factors
+XMAX XMIN F- WIDTH S>F F/ FCONSTANT XSCALE
+YMAX YMIN F- HEIGHT S>F F/ FCONSTANT YSCALE
 
-\ 10 shades (lighter -> darker)
-CREATE lut
-  BL      C,  CHAR . C,  CHAR : C,  CHAR - C,  CHAR = C,
-  CHAR + C,   CHAR * C,  CHAR # C,  CHAR % C,  CHAR @ C,
+\ Variables for computation
+FVARIABLE CX
+FVARIABLE CY
+FVARIABLE ZX
+FVARIABLE ZY
+FVARIABLE ZX2
+FVARIABLE ZY2
+FVARIABLE TEMP
 
-\ --- Setup ------------------------------------------------------------------
-: setup ( -- )
-  x-max x-min F-  width  @ 1- S>F F/  dx F!
-  y-max y-min F-  height @ 1- S>F F/  dy F! ;
+\ Convert pixel coordinates to complex number coordinates
+: pixel>complex ( col row -- ) ( F: -- cx cy )
+  S>F YSCALE F* YMIN F+  CY F!
+  S>F XSCALE F* XMIN F+  CX F! ;
 
-\ --- Iteration (z <- z^2 + c) ----------------------------------------------
-FVARIABLE cx   FVARIABLE cy
-FVARIABLE zx   FVARIABLE zy
-FVARIABLE tmp
-VARIABLE  cnt
-
-: mandel ( f: cx cy -- u )
-  cy F!  cx F!
-  F0. zx F!   F0. zy F!
-  0 cnt !
+\ Mandelbrot iteration: iterate z = z^2 + c
+\ Returns number of iterations before escape (or MAX-ITER)
+: mandelbrot ( -- iter )
+  0.0E0 ZX F!
+  0.0E0 ZY F!
+  0                      ( iteration counter )
   BEGIN
-    \ |z|^2 < 4 ?
-    zx F@ zx F@ F*   zy F@ zy F@ F*  F+  4e0 F<
-    cnt @ maxiter @ <
-    AND
+    DUP MAX-ITER <       ( iter < MAX-ITER? )
   WHILE
-    \ tmp = zx*zx - zy*zy + cx
-    zx F@ zx F@ F*   zy F@ zy F@ F*  F-   cx F@ F+  tmp F!
-    \ zy  = 2*zx*zy + cy
-    2e0 zx F@ F*  zy F@ F*  cy F@ F+  zy F!
-    \ zx  = tmp
-    tmp F@ zx F!
-    1 cnt +!
+    \ Calculate zx^2 and zy^2
+    ZX F@ FDUP F*  ZX2 F!
+    ZY F@ FDUP F*  ZY2 F!
+
+    \ Check if escaped: zx^2 + zy^2 > 4.0
+    ZX2 F@ ZY2 F@ F+ 4.0E0 F>
+    IF
+      \ Escaped - return iteration count
+      EXIT
+    THEN
+
+    \ Compute new zy = 2*zx*zy + cy
+    ZX F@ ZY F@ F* 2.0E0 F* CY F@ F+  ZY F!
+
+    \ Compute new zx = zx^2 - zy^2 + cx
+    ZX2 F@ ZY2 F@ F- CX F@ F+  ZX F!
+
+    1+                   ( increment counter )
   REPEAT
-  cnt @ ;
+;
 
-\ --- Mapping & shading ------------------------------------------------------
-: shade ( u -- c )
-  10 *  maxiter @ /          \ -> index 0..(about)10
-  DUP 9 > IF DROP 9 THEN     \ clamp to 0..9
-  lut + C@ ;                 \ fetch char
+\ Convert iteration count to ASCII character
+: iter>char ( iter -- char )
+  DUP MAX-ITER = IF
+    DROP 32              \ Space for points in the set
+  ELSE
+    \ Map iterations to gradient:  .:-=+*#%@
+    DUP 4 < IF
+      DROP 32            \ ' '
+    ELSE DUP 8 < IF
+      DROP 46            \ '.'
+    ELSE DUP 12 < IF
+      DROP 58            \ ':'
+    ELSE DUP 16 < IF
+      DROP 45            \ '-'
+    ELSE DUP 24 < IF
+      DROP 61            \ '='
+    ELSE DUP 32 < IF
+      DROP 43            \ '+'
+    ELSE DUP 48 < IF
+      DROP 42            \ '*'
+    ELSE DUP 64 < IF
+      DROP 35            \ '#'
+    ELSE DUP 96 < IF
+      DROP 37            \ '%'
+    ELSE
+      64                 \ '@'
+    THEN THEN THEN THEN THEN THEN THEN THEN THEN
+  THEN
+;
 
-: pixel ( ix iy -- c )
-  >R                         \ save iy
-  S>F dx F@ F* x-min F+      \ f: cx
-  R> S>F dy F@ F* y-min F+   \ f: cx cy
-  mandel shade ;
+\ Draw one row of the Mandelbrot set
+: draw-row ( row -- )
+  WIDTH 0 DO
+    I OVER pixel>complex
+    mandelbrot
+    iter>char
+    EMIT
+  LOOP
+  DROP
+  CR
+;
 
-\ --- Render -----------------------------------------------------------------
-: render ( -- )
-  setup
-  height @ 0 DO              \ outer: y
-    width @ 0 DO             \ inner: x
-      I J pixel EMIT
-    LOOP
-    CR
-  LOOP ;
+\ Draw the complete Mandelbrot set
+: mandelbrot-set
+  CR
+  ." Computing Mandelbrot set..." CR CR
+  HEIGHT 0 DO
+    I draw-row
+  LOOP
+  CR
+  ." Done!" CR
+;
 
-\ You can tweak:
-\   width  120 width !   height  60 height !   maxiter 100 maxiter !
-\ then run:  render
-
+\ Run it
+." Mandelbrot Set Viewer" CR
+." ===================" CR CR
+mandelbrot-set
