@@ -3,7 +3,8 @@ from rpyforth.objects import (
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
 
-from rpython.rlib.jit import elidable, unroll_safe
+from rpython.rlib.rfile import create_stdio
+from rpython.rlib.jit import elidable, unroll_safe, promote
 
 INTERPRET = 0
 COMPILE   = 1
@@ -181,6 +182,11 @@ class OuterInterpreter(object):
         t = toks[i]
         return t, i+1
 
+    def w_CR(self):
+        stdin, stdout, stderr = create_stdio()
+        stdout.write('\n')
+
+
     # main outer interpreter
     def interpret_line(self, line):
         toks = split_whitespace(line)
@@ -208,9 +214,33 @@ class OuterInterpreter(object):
                 self.inner.push_ds(W_IntObject(size))
                 continue
 
+            if t == '."':
+                parts = []
+                while i < toks_len:
+                    token, i = self._read_tok(toks, i)
+                    token_len = len(token)
+                    if token_len > 0 and token[token_len - 1] == '"':
+                        stop = token_len - 1
+                        assert 0 <= stop <= len(token)
+                        parts.append(token[:stop])
+                        break
+                    parts.append(token)
+                parsed_str = ' '.join(parts)
+                w_str = W_StringObject(parsed_str)
+                if self.state == INTERPRET:
+                    self.inner.print_str(w_str)
+                else:
+                    self._emit_lit(w_str)
+                    self._emit_word(self.wTYPE)
+                continue
+
             if t == "CHAR":
                 s, i = self._read_tok(toks, i)
                 self.inner.push_ds(W_IntObject(ord(s[0])))
+                continue
+
+            if t == "CR":
+                self.w_CR()
                 continue
 
             # handle ':' and ';' lexically (not as immediate words)
