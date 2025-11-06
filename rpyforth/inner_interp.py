@@ -3,22 +3,27 @@ from rpyforth.objects import (
     Word,
     CodeThread,
     ZERO,
+    W_Object,
     W_IntObject,
     W_StringObject,
     W_PtrObject,
+    W_FloatObject,
     CELL_SIZE_BYTES,
     CELL_SIZE,
 )
 
+
+from rpython.rlib.rstruct.ieee import float_pack, float_unpack
+from rpython.rlib.rarithmetic import r_ulonglong, intmask
 from rpython.rlib.jit import JitDriver, promote, elidable, unroll_safe
 
-STACK_SIZE = 256
+STACK_SIZE = 64  # Increased for deeper nesting
 BUF_SIZE = 1024
 HEAP_CELL_COUNT = 65536
 HEAP_SIZE_BYTES = HEAP_CELL_COUNT * CELL_SIZE_BYTES
 
 def get_printable_location(ip, thread):
-    return "ip=%d %s %s" % (ip, thread.code[ip], thread.lits[ip])
+    return "ip=%d %s %s" % (ip, thread.code[ip].to_string(), thread.lits[ip].to_string())
 
 jitdriver = JitDriver(
     greens=['ip', 'thread'],

@@ -18,7 +18,8 @@ def entry_point(argv):
     f.close()
     return 0
 
-def target(*args):
+def target(driver, args):
+    driver.exe_name = "rpyforth-%(backend)s"
     return entry_point, None
 
 if __name__ == '__main__':
