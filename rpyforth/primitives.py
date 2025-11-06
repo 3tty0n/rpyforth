@@ -1,4 +1,5 @@
 from rpython.rlib.rfile import create_stdio
+from rpython.rlib.jit import promote
 
 from rpyforth.objects import (
     BINARY,
@@ -61,9 +62,13 @@ def prim_ZEROGREATER(inner, cur):
 # > ( n1 n2 -- flag )
 def prim_GREATER(inner, cur):
     """GForth core 2012: flag is true when n1 is greater than n2."""
+    # Pop in correct order: n2 is top, n1 is second
     w_n2 = inner.pop_ds()
     w_n1 = inner.pop_ds()
-    if w_n1.gt(w_n2):
+    assert isinstance(w_n1, W_IntObject)
+    assert isinstance(w_n2, W_IntObject)
+    # Direct field access for better JIT optimization
+    if w_n1.intval > w_n2.intval:
         inner.push_ds(TRUE)
     else:
         inner.push_ds(ZERO)
@@ -71,9 +76,13 @@ def prim_GREATER(inner, cur):
 # < ( n1 n2 -- flag )
 def prim_LESS(inner, cur):
     """GForth core 2012: flag is true when n1 is less than n2."""
+    # Pop in correct order: n2 is top, n1 is second
     w_n2 = inner.pop_ds()
     w_n1 = inner.pop_ds()
-    if w_n1.lt(w_n2):
+    assert isinstance(w_n1, W_IntObject)
+    assert isinstance(w_n2, W_IntObject)
+    # Direct field access for better JIT optimization
+    if w_n1.intval < w_n2.intval:
         inner.push_ds(TRUE)
     else:
         inner.push_ds(ZERO)
@@ -188,22 +197,34 @@ def prim_MIN(inner, cur):
 # + ( n1 n2 -- n3 )
 def prim_ADD(inner, cur):
     """GForth core 2012: add n1 and n2, leaving their sum."""
+    # top2_ds pops in correct order: second-to-top (a), then top (b)
     a, b = inner.top2_ds()
-    inner.push_ds(a.add(b))
+    assert isinstance(a, W_IntObject)
+    assert isinstance(b, W_IntObject)
+    # Direct field access for better JIT optimization
+    inner.push_ds(W_IntObject(a.intval + b.intval))
 
 
 # - ( n1 n2 -- n3 )
 def prim_SUB(inner, cur):
     """GForth core 2012: subtract n2 from n1, leaving the difference."""
+    # top2_ds pops in correct order: second-to-top (a), then top (b)
     a, b = inner.top2_ds()
-    inner.push_ds(a.sub(b))
+    assert isinstance(a, W_IntObject)
+    assert isinstance(b, W_IntObject)
+    # Direct field access for better JIT optimization
+    inner.push_ds(W_IntObject(a.intval - b.intval))
 
 
 # * ( n1 n2 -- n3 )
 def prim_MUL(inner, cur):
     """GForth core 2012: multiply n1 by n2, leaving the product."""
+    # top2_ds pops in correct order: second-to-top (a), then top (b)
     a, b = inner.top2_ds()
-    inner.push_ds(a.mul(b))
+    assert isinstance(a, W_IntObject)
+    assert isinstance(b, W_IntObject)
+    # Direct field access for better JIT optimization
+    inner.push_ds(W_IntObject(a.intval * b.intval))
 
 
 def prim_ABS(inner, cur):
@@ -278,9 +299,12 @@ def prim_0BRANCH(inner, cur):
     """GForth core 2012: branch to target when flag is zero."""
     origin_ip = inner.ip - 1
     w_x = inner.pop_ds()
+    assert isinstance(w_x, W_IntObject)
+    # Direct field access for better optimization
     if w_x.intval == 0:
-        target = cur.lits[origin_ip]
-        target_ip = target.intval
+        w_target = promote(cur.lits[origin_ip])
+        assert isinstance(w_target, W_IntObject)
+        target_ip = w_target.intval
         inner.ip = target_ip
         _maybe_enter_jit(inner, target_ip, origin_ip, cur)
 
@@ -289,7 +313,8 @@ def prim_0BRANCH(inner, cur):
 def prim_BRANCH(inner, cur):
     """GForth core 2012: branch unconditionally to the target."""
     origin_ip = inner.ip - 1
-    target = cur.lits[origin_ip]
+    target = promote(cur.lits[origin_ip])
+    assert isinstance(target, W_IntObject)
     target_ip = target.intval
     inner.ip = target_ip
     _maybe_enter_jit(inner, target_ip, origin_ip, cur)
@@ -313,14 +338,20 @@ def prim_LOOP_RUNTIME(inner, cur):
     assert isinstance(counter, W_IntObject)
     assert isinstance(limit, W_IntObject)
 
-    new_counter = counter.inc()
+    # Directly access intval for better optimization
+    # The JIT can constant-fold these if they're promoted
+    counter_val = counter.intval
+    limit_val = limit.intval
+    new_counter_val = counter_val + 1
 
-    if new_counter.intval < limit.intval:
+    if new_counter_val < limit_val:
         # Continue loop: push back to return stack and branch
+        new_counter = W_IntObject(new_counter_val)
         inner.push_rs(limit)
         inner.push_rs(new_counter)
         origin_ip = inner.ip - 1
-        target = cur.lits[origin_ip]
+        target = promote(cur.lits[origin_ip])
+        assert isinstance(target, W_IntObject)
         target_ip = target.intval
         inner.ip = target_ip
         _maybe_enter_jit(inner, target_ip, origin_ip, cur)
@@ -331,7 +362,8 @@ def prim_LEAVE(inner, cur):
     inner.pop_rs()  # counter
     inner.pop_rs()  # limit
     target = cur.lits[inner.ip - 2]
-    inner.ip = target.intval + 1
+    assert isinstance(target, W_IntObject)
+    inner.ip = target.getvalue() + 1
 
 # I ( -- n ) ( R: limit counter -- limit counter )
 def prim_I(inner, cur):
@@ -411,9 +443,10 @@ def prim_NUMSIGN(inner, cur):
         inner.print_str(W_StringObject("# outside <# #>"))
         return
     x = inner.pop_ds()
+    assert isinstance(x, W_IntObject)
     base = inner.base.intval
-    q = x.intval // base
-    r = x.intval % base
+    q = x.getvalue() // base
+    r = x.getvalue() % base
     inner._pno_buf.insert(0, digit_to_char(r))
     inner.push_ds(W_IntObject(q))
 
@@ -426,9 +459,10 @@ def prim_NUMSIGN_S(inner, cur):
         return
     while True:
         x = inner.pop_ds()
+        assert isinstance(x, W_IntObject)
         base = inner.base.intval
-        q = x.intval // base
-        r = x.intval % base
+        q = x.getvalue() // base
+        r = x.getvalue() % base
         inner._pno_buf.insert(0, digit_to_char(r))
         inner.push_ds(W_IntObject(q))
         if q == 0:
@@ -442,7 +476,8 @@ def prim_HOLD(inner, cur):
         inner.print_str(W_StringObject("HOLD outside <# #>"))
         return
     ch = inner.pop_ds()
-    inner._pno_buf.insert(0, chr(ch.intval))
+    assert isinstance(ch, W_IntObject)
+    inner._pno_buf.insert(0, chr(ch.getvalue()))
 
 
 # #> ( xd -- c-addr u )
@@ -471,7 +506,11 @@ def prim_TYPE(inner, cur):
 def prim_DOT(inner, cur):
     """GForth core 2012: display n according to current BASE."""
     x = inner.pop_ds()
-    inner.print_int(x)
+    assert isinstance(x, W_IntObject)
+    stdin, stdout, stderr = create_stdio()
+    stdout.write(str(x.getvalue()))
+    stdout.write(' ')
+    #stdout.flush()
 
 
 # EMIT ( char -- )
@@ -480,7 +519,8 @@ def prim_EMIT(inner, cur):
     x = inner.pop_ds()
     assert isinstance(x, W_IntObject)
     stdin, stdout, stderr = create_stdio()
-    stdout.write(chr(x.intval))
+    stdout.write(chr(x.getvalue()))
+    stdout.flush()
 
 
 # CodeThread-aware primitives
@@ -569,21 +609,71 @@ def prim_PICK(inner, cur):
     """Copy the u-th stack item to the top (0 PICK is equivalent to DUP)."""
     u = inner.pop_ds()
     assert isinstance(u, W_IntObject)
-    idx = inner.ds_ptr - 1 - u.intval
-    assert idx >= 0
-    item = inner._ds[idx]
-    inner.push_ds(item)
+    u_val = u.getvalue()
+
+    # We need to access virtualizable stack without direct indexing
+    # Pop items off, find the one we want, and push them all back
+    if u_val == 0:
+        # 0 PICK is just DUP
+        item = inner.pop_ds()
+        inner.push_ds(item)
+        inner.push_ds(item)
+    else:
+        # Pop u_val+1 items to get to the target
+        temp = []
+        for i in range(u_val + 1):
+            temp.append(inner.pop_ds())
+        # The item we want is at the end
+        item = temp[u_val]
+        # Push everything back
+        for i in range(u_val, -1, -1):
+            inner.push_ds(temp[i])
+        # Push the picked item
+        inner.push_ds(item)
+
+
+# Floating point conversion and storage
+
+# S>F ( n -- ) ( F: -- f )
+def prim_S2F(inner, cur):
+    """Convert signed integer to float."""
+    n = inner.pop_ds()
+    assert isinstance(n, W_IntObject)
+    inner.push_ds(W_FloatObject(float(n.getvalue())))
+
+
+# F! ( f-addr -- ) ( F: f -- )
+def prim_FSTORE(inner, cur):
+    """Store float at address."""
+    addr_obj = inner.pop_ds()
+    val_obj = inner.pop_ds()
+    inner.float_store(addr_obj, val_obj)
+
+
+# F@ ( f-addr -- ) ( F: -- f )
+def prim_FFETCH(inner, cur):
+    """Fetch float from address."""
+    addr_obj = inner.pop_ds()
+    inner.push_ds(inner.float_fetch(addr_obj))
+
+
+# FDUP ( F: f -- f f )
+def prim_FDUP(inner, cur):
+    """Duplicate float on stack."""
+    f = inner.pop_ds()
+    assert isinstance(f, W_FloatObject)
+    inner.push_ds(f)
+    inner.push_ds(f)
 
 
 # Comparison
 
 # = ( x1 x2 -- flag )
 def prim_EQUAL(inner, cur):
-    """Test if x1 equals x2."""
     x2 = inner.pop_ds()
     x1 = inner.pop_ds()
     if isinstance(x1, W_IntObject) and isinstance(x2, W_IntObject):
-        if x1.intval == x2.intval:
+        if x1.getvalue() == x2.getvalue():
             inner.push_ds(TRUE)
         else:
             inner.push_ds(ZERO)

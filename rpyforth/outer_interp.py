@@ -24,6 +24,8 @@ class CtrlEntry(object):
         self.leave_addrs = []  # list of LEAVE positions to patch (for DO loops)
 
 class OuterInterpreter(object):
+    _immutable_fields_ = ['wBR', 'w0BR', 'wLIT', 'wEXIT', 'wDO', 'wLOOP', 'wLEAVE', 'wTYPE']
+
     def __init__(self, inner):
         self.inner = inner
         self.dict = {}         # dictionary is owned here (case-insensitive by uppercase keys)
@@ -45,10 +47,11 @@ class OuterInterpreter(object):
         self.wDO = self.dict["(DO)"]
         self.wLOOP = self.dict["(LOOP)"]
         self.wLEAVE = self.dict["LEAVE"]
+        self.wTYPE = self.dict["TYPE"]
 
     def reset_code(self):
-        self.current_code = [None] * 64
-        self.current_lits = [None] * 64
+        self.current_code = [None] * 128
+        self.current_lits = [None] * 128
         self.cc_ptr = 0
         self.lit_ptr = 0
 
@@ -382,6 +385,7 @@ class OuterInterpreter(object):
                     continue
 
             w = self.dict.get(tkey, None)
+            w = promote(w)
             if self.state == INTERPRET:
                 if w is not None:
                     self.inner.execute_word_now(w)

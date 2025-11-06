@@ -29,7 +29,7 @@ jitdriver = JitDriver(
 
 class InnerInterpreter(object):
     _immutable_fields_ = ["cell_size", "cell_size_bytes", "base"]
-    _virtualizable_ = ["ip", "ds_ptr", "rs_ptr", "_ds[*]", "_rs[*]"]
+    _virtualizable_ = ["ip", "ds_ptr", "_ds[*]", "rs_ptr", "_rs[*]"]
 
 
     def __init__(self):
@@ -104,19 +104,21 @@ class InnerInterpreter(object):
         assert 0 <= addr < len(self.mem)
         assert addr + span <= len(self.mem)
 
+    @unroll_safe
     def cell_store(self, addr_obj, value_obj):
         assert isinstance(addr_obj, W_IntObject)
         assert isinstance(value_obj, W_IntObject)
-        addr = addr_obj.intval
+        addr = intmask(addr_obj.getvalue())
         self._ensure_addr(addr, self.cell_size_bytes)
-        masked = value_obj.intval
+        masked = intmask(value_obj.getvalue())
         for offset in range(self.cell_size_bytes):
             self.mem[addr + offset] = masked & 0xFF
             masked >>= 8
 
+    @unroll_safe
     def cell_fetch(self, addr_obj):
         assert isinstance(addr_obj, W_IntObject)
-        addr = addr_obj.intval
+        addr = addr_obj.getvalue()
         self._ensure_addr(addr, self.cell_size_bytes)
         accum = 0
         for offset in range(self.cell_size_bytes):
@@ -138,17 +140,23 @@ class InnerInterpreter(object):
             if self.ip >= len(thread.code):
                 break
 
-            w = promote(thread.code[self.ip])
+            current_ip = self.ip
+            # Promote the word to allow JIT to specialize on it
+            w = promote(thread.code[current_ip])
             if w is None:
                 break
 
-            next_ip = self.ip + 1
+            next_ip = current_ip + 1
             self.ip = next_ip
 
-            if w.prim is not None:
-                w.prim(self, thread)
+            # Promote the primitive function pointer for better inlining
+            prim = promote(w.prim)
+            if prim is not None:
+                prim(self, thread)
             else:
-                self.execute_thread(w.thread)
+                # Promote the nested thread for better inlining of colon definitions
+                nested_thread = promote(w.thread)
+                self.execute_thread(nested_thread)
                 self.ip = next_ip
 
     def execute_word_now(self, w):
@@ -157,7 +165,8 @@ class InnerInterpreter(object):
         self.execute_thread(CodeThread(code, lits))
 
     def prim_LIT(self, thread):
-        lit = thread.lits[self.ip - 1]
+        # Promote the literal value so JIT can constant-fold it
+        lit = promote(thread.lits[self.ip - 1])
         self.push_ds(lit)
 
     def prim_EXIT(self, thread):
