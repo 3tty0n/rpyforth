@@ -6,11 +6,25 @@ from rpyforth.util import to_upper, split_whitespace
 INTERPRET = 0
 COMPILE   = 1
 
+# Control stack entry kinds
+CTRL_IF   = 0
+CTRL_ELSE = 1
+
+class CtrlEntry(object):
+    """Control stack entry for compilation-time control structures.
+
+    RPython-friendly class to avoid tuple unpacking and string comparisons.
+    """
+    def __init__(self, kind, index):
+        self.kind = kind    # int: CTRL_IF or CTRL_ELSE
+        self.index = index  # int: position in current_code for patching
+
 class OuterInterpreter(object):
     def __init__(self, inner):
         self.inner = inner
         self.dict = {}         # dictionary is owned here (case-insensitive by uppercase keys)
         self.state = INTERPRET # state for compilation
+        self.comment = False
         self.current_name = ''
         self.current_code = []
         self.current_lits = []
@@ -132,6 +146,52 @@ class OuterInterpreter(object):
 
             tkey = to_upper(t)
 
+            # Handle control flow words
+            if self.state == INTERPRET:
+                if tkey == "IF":
+                    # Pop condition from stack
+                    cond = self.inner.pop_ds()
+                    if cond.intval == 0:
+                        # Condition is false, skip to ELSE or THEN
+                        depth = 1
+                        while i < len(toks) and depth > 0:
+                            tok = to_upper(toks[i])
+                            if tok == "IF":
+                                depth += 1
+                            elif tok == "ELSE" and depth == 1:
+                                # Found matching ELSE, skip past it and continue
+                                i += 1
+                                break
+                            elif tok == "THEN":
+                                depth -= 1
+                                if depth == 0:
+                                    # Found matching THEN, skip past it
+                                    i += 1
+                                    break
+                            i += 1
+                    # If condition is true, just continue normally
+                    continue
+
+                if tkey == "ELSE":
+                    # When we hit ELSE in interpret mode after IF was true,
+                    # skip to matching THEN
+                    depth = 1
+                    while i < len(toks) and depth > 0:
+                        tok = to_upper(toks[i])
+                        if tok == "IF":
+                            depth += 1
+                        elif tok == "THEN":
+                            depth -= 1
+                            if depth == 0:
+                                i += 1
+                                break
+                        i += 1
+                    continue
+
+                if tkey == "THEN":
+                    # THEN in interpret mode is just a no-op marker
+                    continue
+
             if self.state == INTERPRET:
                 if tkey == "VARIABLE":
                    if i >= len(toks):
@@ -167,35 +227,30 @@ class OuterInterpreter(object):
                 if tkey == "IF":
                     orig = len(self.current_code)
                     self._emit_with_target(self.w0BR, 0)
-                    self.ctrl.append(("IF", orig))
+                    self.ctrl.append(CtrlEntry(CTRL_IF, orig))
                     continue
 
                 if tkey == "ELSE":
-                    kind, orig1 = self.ctrl.pop()
-                    if kind != "IF":
-                        self.inner.print_str(W_StringObject("ELSE without IF"))
+                    entry = self.ctrl.pop()
+                    if entry.kind != CTRL_IF:
+                        print "ELSE without IF"
                         return
-                    self._patch_here(orig1)
+                    self._patch_here(entry.index)
                     orig2 = len(self.current_code)
                     self._emit_with_target(self.wBR, 0)
 
-                    self.ctrl.append(("ELSE", orig2))
+                    self.ctrl.append(CtrlEntry(CTRL_ELSE, orig2))
 
-                    self._patch_here(orig1)
+                    self._patch_here(entry.index)
                     continue
 
                 if tkey == "THEN":
-                    kind, at = self.ctrl.pop()
-                    if kind not in ("IF", "ELSE"):
-                        self.inner.print_str(W_StringObject("THEN without IF/ELSE"))
+                    entry = self.ctrl.pop()
+                    if entry.kind != CTRL_IF and entry.kind != CTRL_ELSE:
+                        print "THEN without IF/ELSE"
                         return
-                    self._patch_here(at)
+                    self._patch_here(entry.index)
                     continue
-
-                if tkey == 'S"':
-                    while i < len(toks):
-                        print toks[i]
-                        i += 1
 
             w = self.dict.get(tkey, None)
             if self.state == INTERPRET:
