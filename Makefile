@@ -11,10 +11,9 @@ build: _pypy_binary/bin/python setup-pypy
 	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
 
 
-.PHONY: test-inerp
-test-interp: _pypy_binary/bin/python setup-pypy
-	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv -s
-
+.PHONY: test
+test: _pypy_binary/bin/python setup-pypy
+	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/pytest.py rpyforth/test -vv -s
 
 _pypy_binary/bin/python:  ## Download a PyPy binary
 	mkdir -p _pypy_binary
