@@ -9,6 +9,7 @@ COMPILE   = 1
 # Control stack entry kinds
 CTRL_IF   = 0
 CTRL_ELSE = 1
+CTRL_DO   = 2
 
 class CtrlEntry(object):
     """Control stack entry for compilation-time control structures.
@@ -16,8 +17,9 @@ class CtrlEntry(object):
     RPython-friendly class to avoid tuple unpacking and string comparisons.
     """
     def __init__(self, kind, index):
-        self.kind = kind    # int: CTRL_IF or CTRL_ELSE
+        self.kind = kind    # int: CTRL_IF, CTRL_ELSE, or CTRL_DO
         self.index = index  # int: position in current_code for patching
+        self.leave_addrs = []  # list of LEAVE positions to patch (for DO loops)
 
 class OuterInterpreter(object):
     def __init__(self, inner):
@@ -38,6 +40,9 @@ class OuterInterpreter(object):
         self.w0BR = self.dict["0BRANCH"]
         self.wLIT = self.dict["LIT"]
         self.wEXIT = self.dict["EXIT"]
+        self.wDO = self.dict["(DO)"]
+        self.wLOOP = self.dict["(LOOP)"]
+        self.wLEAVE = self.dict["LEAVE"]
 
     def define_prim(self, name, func):
         w = Word(name, prim=func, immediate=False, thread=None)
@@ -193,32 +198,25 @@ class OuterInterpreter(object):
             # Handle control flow words
             if self.state == INTERPRET:
                 if tkey == "IF":
-                    # Pop condition from stack
                     cond = self.inner.pop_ds()
                     if cond.intval == 0:
-                        # Condition is false, skip to ELSE or THEN
                         depth = 1
                         while i < len(toks) and depth > 0:
                             tok = to_upper(toks[i])
                             if tok == "IF":
                                 depth += 1
                             elif tok == "ELSE" and depth == 1:
-                                # Found matching ELSE, skip past it and continue
                                 i += 1
                                 break
                             elif tok == "THEN":
                                 depth -= 1
                                 if depth == 0:
-                                    # Found matching THEN, skip past it
                                     i += 1
                                     break
                             i += 1
-                    # If condition is true, just continue normally
                     continue
 
                 if tkey == "ELSE":
-                    # When we hit ELSE in interpret mode after IF was true,
-                    # skip to matching THEN
                     depth = 1
                     while i < len(toks) and depth > 0:
                         tok = to_upper(toks[i])

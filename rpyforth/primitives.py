@@ -274,6 +274,56 @@ def prim_BRANCH(inner):
     inner.ip = target.intval - 1
 
 
+# Loop control primitives
+
+# (DO) ( limit start -- ) ( R: -- limit start )
+def prim_DO_RUNTIME(inner):
+    start = inner.pop_ds()
+    limit = inner.pop_ds()
+    inner.push_rs(limit)
+    inner.push_rs(start)
+
+
+# (LOOP) ( -- ) ( R: limit counter -- limit counter+1 | )
+def prim_LOOP_RUNTIME(inner):
+    counter = inner.pop_rs()
+    limit = inner.pop_rs()
+
+    assert isinstance(counter, W_IntObject)
+    assert isinstance(limit, W_IntObject)
+
+    new_counter = counter.inc()
+
+    if new_counter.intval < limit.intval:
+        # Continue loop: push back to return stack and branch
+        inner.push_rs(limit)
+        inner.push_rs(new_counter)
+        target = inner.cur.lits[inner.ip]
+        inner.ip = target.intval - 1
+
+
+# LEAVE ( -- ) ( R: limit counter -- )
+def prim_LEAVE(inner):
+    """Exit the current loop by cleaning up return stack and jumping to end."""
+    inner.pop_rs()  # counter
+    inner.pop_rs()  # limit
+    target = inner.cur.lits[inner.ip - 1]
+    inner.ip = target.intval
+
+# I ( -- n ) ( R: limit counter -- limit counter )
+def prim_I(inner):
+    """Get the current loop counter (innermost loop)."""
+    counter = inner._rs[inner.rs_ptr - 1]
+    inner.push_ds(counter)
+
+
+# J ( -- n ) ( R: limit1 counter1 limit2 counter2 -- limit1 counter1 limit2 counter2 )
+def prim_J(inner):
+    """Get the outer loop counter (second innermost loop)."""
+    counter1 = inner._rs[inner.rs_ptr - 3]
+    inner.push_ds(counter1)
+
+
 # BASE
 
 
@@ -389,6 +439,15 @@ def prim_DOT(inner):
     """GForth core 2012: display n according to current BASE."""
     x = inner.pop_ds()
     inner.print_int(x)
+
+
+# EMIT ( char -- )
+def prim_EMIT(inner):
+    """GForth core 2012: display character with char code."""
+    x = inner.pop_ds()
+    assert isinstance(x, W_IntObject)
+    stdin, stdout, stderr = create_stdio()
+    stdout.write(chr(x.intval))
 
 
 # CodeThread-aware primitives
@@ -535,6 +594,7 @@ def install_primitives(outer):
 
     # I/O
     outer.define_prim(".", prim_DOT)
+    outer.define_prim("EMIT", prim_EMIT)
 
     # memory management
     outer.define_prim("!", prim_STORE)
@@ -562,6 +622,11 @@ def install_primitives(outer):
     # loop
     outer.define_prim("0BRANCH", prim_0BRANCH)
     outer.define_prim("BRANCH", prim_BRANCH)
+    outer.define_prim("(DO)", prim_DO_RUNTIME)
+    outer.define_prim("(LOOP)", prim_LOOP_RUNTIME)
+    outer.define_prim("LEAVE", prim_LEAVE)
+    outer.define_prim("I", prim_I)
+    outer.define_prim("J", prim_J)
 
     # thread ops
     outer.define_prim("LIT", prim_LIT)
@@ -575,3 +640,8 @@ def install_primitives(outer):
     outer.define_prim("F>", prim_FGREATER)
     outer.define_prim("FSWAP", prim_FSWAP)
 
+    # stack manipulation
+    outer.define_prim("PICK", prim_PICK)
+
+    # comparison
+    outer.define_prim("=", prim_EQUAL)
