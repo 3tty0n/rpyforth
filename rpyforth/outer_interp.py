@@ -138,19 +138,21 @@ class OuterInterpreter(object):
     def _patch_here(self, at_index):
         self.current_lits[at_index] = W_IntObject(len(self.current_code))
 
+    def _read_tok(self, toks, i):
+        t = toks[i]
+        return t, i+1
+
     # main outer interpreter
     def interpret_line(self, line):
         toks = split_whitespace(line)
         i = 0
         while i < len(toks):
-            t = toks[i]
-            i += 1
+            t, i = self._read_tok(toks, i)
 
             if t == 'S"':
                 sdouble_quote_str = []
                 while i < len(toks):
-                    t = toks[i]
-                    i += 1
+                    t, i = self._read_tok(toks, i)
                     if t[-1] == '"':
                         t = t[:-1]
                         sdouble_quote_str.append(t)
@@ -162,6 +164,11 @@ class OuterInterpreter(object):
                 assert c_addr is not None
                 self.inner.push_ds(c_addr)
                 self.inner.push_ds(W_IntObject(size))
+                continue
+
+            if t == "CHAR":
+                s, i = self._read_tok(toks, i)
+                self.inner.push_ds(W_IntObject(ord(s[0])))
                 continue
 
             # handle ':' and ';' lexically (not as immediate words)
@@ -238,8 +245,7 @@ class OuterInterpreter(object):
                    if i >= len(toks):
                        print "VARIABLE/FVARIABLE requires a name"
                        return
-                   name = toks[i]
-                   i += 1
+                   name, i = self._read_tok(toks, i)
 
                    addr = W_IntObject(self.inner.here)
                    self.inner.here += self.inner.cell_size_bytes
@@ -254,8 +260,7 @@ class OuterInterpreter(object):
                     if i >= len(toks):
                         print "CONSTANT requires a name"
                         return
-                    name = toks[i]
-                    i += 1
+                    name, i = self._read_tok(toks, i)
                     val = self.inner.pop_ds()
 
                     code = [self.wLIT, self.wEXIT]
@@ -268,8 +273,7 @@ class OuterInterpreter(object):
                     if i >= len(toks):
                         print "FCONSTANT requires a name"
                         return
-                    name = toks[i]
-                    i += 1
+                    name, i = self._read_tok(toks, i)
                     val = self.inner.pop_ds()
 
                     code = [self.wLIT, self.wEXIT]

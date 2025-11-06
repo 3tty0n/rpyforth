@@ -223,3 +223,7 @@ def test_float():
 
     assert run_and_pop("5.0 3.0 F>").intval == -1
     assert run_and_pop("2.0 8.0 F>").intval == 0
+
+def test_CHAR():
+    assert run_and_pop("CHAR Hello").intval == ord('H')
+    assert run_and_pop("CHAR ello").intval == ord('e')
