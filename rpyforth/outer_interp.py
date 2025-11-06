@@ -106,7 +106,7 @@ class OuterInterpreter(object):
                 return False
         return True
 
-    @unroll_safe
+    @elidable
     def _to_number(self, s):
         """Convert string to integer. Optimized for JIT."""
         sign = 1

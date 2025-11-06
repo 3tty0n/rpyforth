@@ -315,14 +315,24 @@ def prim_LEAVE(inner):
 # I ( -- n ) ( R: limit counter -- limit counter )
 def prim_I(inner):
     """Get the current loop counter (innermost loop)."""
-    counter = inner._rs[inner.rs_ptr - 1]
+    counter = inner.pop_rs()
+    limit = inner.pop_rs()
+    inner.push_rs(limit)
+    inner.push_rs(counter)
     inner.push_ds(counter)
 
 
 # J ( -- n ) ( R: limit1 counter1 limit2 counter2 -- limit1 counter1 limit2 counter2 )
 def prim_J(inner):
     """Get the outer loop counter (second innermost loop)."""
-    counter1 = inner._rs[inner.rs_ptr - 3]
+    counter2 = inner.pop_rs()
+    limit2 = inner.pop_rs()
+    counter1 = inner.pop_rs()
+    limit1 = inner.pop_rs()
+    inner.push_rs(limit1)
+    inner.push_rs(counter1)
+    inner.push_rs(limit2)
+    inner.push_rs(counter2)
     inner.push_ds(counter1)
 
 

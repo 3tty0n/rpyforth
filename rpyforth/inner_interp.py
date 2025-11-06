@@ -23,11 +23,13 @@ def get_printable_location(ip, code, lits):
 jitdriver = JitDriver(
     greens=['ip', 'code', 'lits'],
     reds=['self'],
+    virtualizables=['self'],
     get_printable_location=get_printable_location
 )
 
 class InnerInterpreter(object):
     _immutable_fields_ = ["cell_size", "cell_size_bytes"]
+    _virtualizable_ = ["ip", "ds_ptr", "rs_ptr", "_ds[*]", "_rs[*]", "cur"]
 
 
     def __init__(self):
@@ -54,13 +56,16 @@ class InnerInterpreter(object):
         self.cur = None       # type: CodeThread
 
     def push_ds(self, w_x):
-        self._ds[self.ds_ptr] = w_x
-        self.ds_ptr += 1
+        ds_ptr = self.ds_ptr
+        self._ds[ds_ptr] = w_x
+        self.ds_ptr = ds_ptr + 1
 
     def pop_ds(self):
-        self.ds_ptr -= 1
-        assert self.ds_ptr >= 0
-        w_x = self._ds[self.ds_ptr]
+        ds_ptr = self.ds_ptr - 1
+        assert ds_ptr >= 0
+        w_x = self._ds[ds_ptr]
+        self._ds[ds_ptr] = None
+        self.ds_ptr = ds_ptr
         return w_x
 
     def top2_ds(self):
@@ -69,13 +74,16 @@ class InnerInterpreter(object):
         return w_x, w_y
 
     def push_rs(self, w_x):
-        self._rs[self.rs_ptr] = w_x
-        self.rs_ptr += 1
+        rs_ptr = self.rs_ptr
+        self._rs[rs_ptr] = w_x
+        self.rs_ptr = rs_ptr + 1
 
     def pop_rs(self):
-        self.rs_ptr -= 1
-        assert self.rs_ptr >= 0
-        w_x = self._rs[self.rs_ptr]
+        rs_ptr = self.rs_ptr - 1
+        assert rs_ptr >= 0
+        w_x = self._rs[rs_ptr]
+        self._rs[rs_ptr] = None
+        self.rs_ptr = rs_ptr
         return w_x
 
     def print_int(self, x):
