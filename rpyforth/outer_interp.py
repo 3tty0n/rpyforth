@@ -13,6 +13,8 @@ COMPILE   = 1
 CTRL_IF   = 0
 CTRL_ELSE = 1
 CTRL_DO   = 2
+CTRL_BEGIN = 3
+CTRL_WHILE = 4
 
 class CtrlEntry(object):
     """Control stack entry for compilation-time control structures.
@@ -398,6 +400,35 @@ class OuterInterpreter(object):
                     loop_end = self.cc_ptr
                     for leave_addr in entry.leave_addrs:
                         self.current_lits[leave_addr] = W_IntObject(loop_end)
+                    continue
+
+                if tkey == "BEGIN":
+                    begin_addr = self.cc_ptr
+                    self.ctrl.append(CtrlEntry(CTRL_BEGIN, begin_addr))
+                    continue
+
+                if tkey == "WHILE":
+                    entry = self.ctrl.pop()
+                    if entry.kind != CTRL_BEGIN:
+                        print "WHILE without BEGIN"
+                        return
+                    while_addr = self.cc_ptr
+                    self._emit_with_target(self.w0BR, 0)
+                    self.ctrl.append(CtrlEntry(CTRL_BEGIN, entry.index))
+                    self.ctrl.append(CtrlEntry(CTRL_WHILE, while_addr))
+                    continue
+
+                if tkey == "REPEAT":
+                    if len(self.ctrl) < 2:
+                        print "REPEAT without BEGIN...WHILE"
+                        return
+                    while_entry = self.ctrl.pop()
+                    begin_entry = self.ctrl.pop()
+                    if while_entry.kind != CTRL_WHILE or begin_entry.kind != CTRL_BEGIN:
+                        print "REPEAT without proper BEGIN...WHILE"
+                        return
+                    self._emit_with_target(self.wBR, begin_entry.index)
+                    self._patch_here(while_entry.index)
                     continue
 
                 if tkey == "[CHAR]":
