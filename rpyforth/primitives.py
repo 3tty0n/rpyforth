@@ -12,6 +12,7 @@ from rpyforth.objects import (
     W_FloatObject,
     CELL_SIZE,
 )
+from rpyforth.inner_interp import jitdriver
 from rpyforth.util import digit_to_char
 
 
@@ -245,6 +246,7 @@ def prim_CELL(inner):
 def prim_CELLPLUS(inner):
     """GForth core 2012: add one cell to an address."""
     addr = inner.pop_ds()
+    assert isinstance(addr, W_IntObject)
     inner.push_ds(addr.add(CELL_SIZE))
 
 
@@ -252,6 +254,7 @@ def prim_CELLPLUS(inner):
 def prim_CELLS(inner):
     """GForth core 2012: convert a cell count to address units."""
     count = inner.pop_ds()
+    assert isinstance(count, W_IntObject)
     inner.push_ds(count.mul(CELL_SIZE))
 
 
@@ -300,7 +303,6 @@ def prim_LOOP_RUNTIME(inner):
         inner.push_rs(new_counter)
         target = inner.cur.lits[inner.ip]
         inner.ip = target.intval - 1
-
 
 # LEAVE ( -- ) ( R: limit counter -- )
 def prim_LEAVE(inner):

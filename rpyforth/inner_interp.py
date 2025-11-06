@@ -10,16 +10,32 @@ from rpyforth.objects import (
     CELL_SIZE,
 )
 
+from rpython.rlib.jit import JitDriver, promote, elidable, unroll_safe
+
+STACK_SIZE = 256
+BUF_SIZE = 1024
 HEAP_CELL_COUNT = 65536
 HEAP_SIZE_BYTES = HEAP_CELL_COUNT * CELL_SIZE_BYTES
 
+def get_printable_location(ip, code, lits):
+    return "ip=%d %s %s" % (ip, code[ip], lits[ip])
+
+jitdriver = JitDriver(
+    greens=['ip', 'code', 'lits'],
+    reds=['self'],
+    get_printable_location=get_printable_location
+)
+
 class InnerInterpreter(object):
+    _immutable_fields_ = ["cell_size", "cell_size_bytes"]
+
 
     def __init__(self):
-        self._ds = [None] * 16 # data stack
+        # Pre-allocate larger stacks to reduce growth overhead
+        self._ds = [None] * STACK_SIZE # data stack
         self.ds_ptr = 0
 
-        self._rs = [None] * 16  # return stack
+        self._rs = [None] * STACK_SIZE  # return stack
         self.rs_ptr = 0
 
         self.mem = [0] * HEAP_SIZE_BYTES
@@ -27,12 +43,12 @@ class InnerInterpreter(object):
         self.cell_size = CELL_SIZE
         self.cell_size_bytes = CELL_SIZE_BYTES
 
-        self.buf = [None] * 1024
+        self.buf = [None] * BUF_SIZE
         self.buf_ptr = 0
 
         self.base = DECIMAL
         self._pno_active = False      # inside <# ... #> or not
-        self._pno_buf = []            # buffoer for pno (pictured numeric output)
+        self._pno_buf = []            # buffer for pno (pictured numeric output)
 
         self.ip = 0
         self.cur = None       # type: CodeThread
@@ -108,8 +124,17 @@ class InnerInterpreter(object):
         self.cur = thread
         self.ip = 0
         code = thread.code
+        lits = thread.lits
         while self.ip < len(code):
-            w = code[self.ip]
+            jitdriver.jit_merge_point(
+                ip=self.ip,
+                code=code,
+                lits=lits,
+                self=self
+            )
+
+            w = promote(code[self.ip])
+
             if w.prim is not None:
                 w.prim(self)
             else:
