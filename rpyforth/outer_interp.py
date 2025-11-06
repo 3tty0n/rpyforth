@@ -1,7 +1,9 @@
 from rpyforth.objects import (
-    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, ZERO)
+    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, W_FloatObject, ZERO)
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
+
+from rpython.rlib.jit import elidable, unroll_safe
 
 INTERPRET = 0
 COMPILE   = 1
@@ -9,6 +11,7 @@ COMPILE   = 1
 # Control stack entry kinds
 CTRL_IF   = 0
 CTRL_ELSE = 1
+CTRL_DO   = 2
 
 class CtrlEntry(object):
     """Control stack entry for compilation-time control structures.
@@ -16,8 +19,9 @@ class CtrlEntry(object):
     RPython-friendly class to avoid tuple unpacking and string comparisons.
     """
     def __init__(self, kind, index):
-        self.kind = kind    # int: CTRL_IF or CTRL_ELSE
-        self.index = index  # int: position in current_code for patching
+        self.kind = kind    # int: CTRL_IF, CTRL_ELSE, or CTRL_DO
+        self.index = index  # int: position in scurrent_code for patching
+        self.leave_addrs = []  # list of LEAVE positions to patch (for DO loops)
 
 class OuterInterpreter(object):
     def __init__(self, inner):
@@ -26,8 +30,8 @@ class OuterInterpreter(object):
         self.state = INTERPRET # state for compilation
         self.comment = False
         self.current_name = ''
-        self.current_code = []
-        self.current_lits = []
+
+        self.reset_code()
 
         self.ctrl = []         # control stack at compilation
 
@@ -38,6 +42,35 @@ class OuterInterpreter(object):
         self.w0BR = self.dict["0BRANCH"]
         self.wLIT = self.dict["LIT"]
         self.wEXIT = self.dict["EXIT"]
+        self.wDO = self.dict["(DO)"]
+        self.wLOOP = self.dict["(LOOP)"]
+        self.wLEAVE = self.dict["LEAVE"]
+
+    def reset_code(self):
+        self.current_code = [None] * 64
+        self.current_lits = [None] * 64
+        self.cc_ptr = 0
+        self.lit_ptr = 0
+
+    def push_code(self, w):
+        assert self.cc_ptr < len(self.current_code)
+        self.current_code[self.cc_ptr] = w
+        self.cc_ptr += 1
+
+    def pop_code(self):
+        assert self.cc_ptr > 0
+        self.cc_ptr -= 1
+        return self.current_code[self.cc_ptr]
+
+    def push_lit(self, w):
+        assert self.lit_ptr < len(self.current_lits)
+        self.current_lits[self.lit_ptr] = w
+        self.lit_ptr += 1
+
+    def pop_lit(self):
+        assert self.lit_ptr > 0
+        self.lit_ptr -= 1
+        return self.current_lits[self.lit_ptr]
 
     def define_prim(self, name, func):
         w = Word(name, prim=func, immediate=False, thread=None)
@@ -50,81 +83,141 @@ class OuterInterpreter(object):
         return w
 
     def _emit_word(self, w):
-        self.current_code.append(w)
-        self.current_lits.append(ZERO)
+        self.push_code(w)
+        self.push_lit(ZERO)
 
     def _emit_lit(self, w_n):
-        self.current_code.append(self.wLIT)  # Word for LIT
-        self.current_lits.append(w_n)
+        self.push_code(self.wLIT)
+        self.push_lit(w_n)
 
+    @elidable
     def _is_number(self, s):
-        if len(s) == 0:
+        length = len(s)
+        if length == 0:
             return False
-        neg = s[0] == '-'
-        if neg:
-            s = s[1:]
-            if len(s) == 0:
+        start_idx = 0
+        if s[0] == '-':
+            start_idx = 1
+            if length == 1:
                 return False
-        for i in range(len(s)):
+        # Unroll the check for better performance
+        for i in range(start_idx, length):
             ch = s[i]
             if ch < '0' or ch > '9':
                 return False
         return True
 
+    @elidable
     def _to_number(self, s):
+        """Convert string to integer. Optimized for JIT."""
         sign = 1
-        if s.startswith('-'):
+        start_idx = 0
+        length = len(s)
+        if s[0] == '-':
             sign = -1
-            s = s[1:]
+            start_idx = 1
         n = 0
-        for i in range(len(s)):
+        for i in range(start_idx, length):
             n = n * 10 + (ord(s[i]) - ord('0'))
         result = sign * n
         return W_IntObject(result)
 
+    @elidable
+    def _is_float(self, s):
+        length = len(s)
+        if length == 0:
+            return False
+
+        # Handle negative sign
+        idx = 0
+        if s[idx] == '-':
+            idx += 1
+            if idx >= length:
+                return False
+
+        # Must have at least one digit or decimal point
+        has_digit = False
+        has_dot = False
+        has_e = False
+
+        while idx < length:
+            ch = s[idx]
+            if ch == '.':
+                if has_dot or has_e:
+                    return False
+                has_dot = True
+            elif ch == 'E' or ch == 'e':
+                if has_e or not has_digit:
+                    return False
+                has_e = True
+                # Check for optional sign after E
+                if idx + 1 < length and (s[idx + 1] == '+' or s[idx + 1] == '-'):
+                    idx += 1
+            elif '0' <= ch <= '9':
+                has_digit = True
+            else:
+                return False
+            idx += 1
+
+        # Must have at least a dot or E to be a float
+        return has_digit and (has_dot or has_e)
+
+    def _to_float(self, s):
+        """Convert string to float"""
+        # Python's float() handles the format we need
+        return W_FloatObject(float(s))
+
     def _emit_with_target(self, w, target_index):
-        self.current_code.append(w)
-        self.current_lits.append(W_IntObject(target_index))
+        self.push_code(w)
+        self.push_lit(W_IntObject(target_index))
 
     def _patch_here(self, at_index):
-        self.current_lits[at_index] = W_IntObject(len(self.current_code))
+        self.current_lits[at_index] = W_IntObject(self.cc_ptr)
+
+    def _read_tok(self, toks, i):
+        t = toks[i]
+        return t, i+1
 
     # main outer interpreter
     def interpret_line(self, line):
         toks = split_whitespace(line)
+        toks_len = len(toks)
         i = 0
-        while i < len(toks):
-            t = toks[i]
-            i += 1
+        while i < toks_len:
+            t, i = self._read_tok(toks, i)
 
             if t == 'S"':
                 sdouble_quote_str = []
-                while i < len(toks):
-                    t = toks[i]
-                    i += 1
-                    if t[-1] == '"':
-                        t = t[:-1]
+                while i < toks_len:
+                    t, i = self._read_tok(toks, i)
+                    t_len = len(t)
+                    if t_len > 0 and t[t_len - 1] == '"':
+                        stop = t_len - 1
+                        assert 0 <= stop < len(t)
+                        t = t[:stop]
                         sdouble_quote_str.append(t)
                         break
                     sdouble_quote_str.append(t)
                 parsed_str = ' '.join(sdouble_quote_str)
                 size = len(parsed_str)
                 c_addr = self.inner.alloc_buf(parsed_str, size)
-                assert c_addr is not None
                 self.inner.push_ds(c_addr)
                 self.inner.push_ds(W_IntObject(size))
                 continue
 
+            if t == "CHAR":
+                s, i = self._read_tok(toks, i)
+                self.inner.push_ds(W_IntObject(ord(s[0])))
+                continue
+
             # handle ':' and ';' lexically (not as immediate words)
             if t == ':':
-                if i >= len(toks):
+                if i >= toks_len:
                     print ": requires a name"
                     return
                 self.state = COMPILE
-                self.current_name = toks[i]
-                i += 1
-                self.current_code = []
-                self.current_lits = []
+                self.current_name, i = self._read_tok(toks, i)
+                self.reset_code()
                 continue
 
             if t == ';':
@@ -134,14 +227,16 @@ class OuterInterpreter(object):
 
                 # append EXIT and install
                 self._emit_word(self.wEXIT)
-                thread = CodeThread(self.current_code, self.current_lits)
+                # Create new lists with only the used portion (RPython needs proper list sizes)
+                code = [self.current_code[idx] for idx in range(self.cc_ptr)]
+                lits = [self.current_lits[idx] for idx in range(self.lit_ptr)]
+                thread = CodeThread(code, lits)
                 self.define_colon(self.current_name, thread)
 
                 # reset
                 self.state = INTERPRET
                 self.current_name = ''
-                self.current_code = []
-                self.current_lits = []
+                self.reset_code()
                 continue
 
             tkey = to_upper(t)
@@ -149,34 +244,27 @@ class OuterInterpreter(object):
             # Handle control flow words
             if self.state == INTERPRET:
                 if tkey == "IF":
-                    # Pop condition from stack
                     cond = self.inner.pop_ds()
                     if cond.intval == 0:
-                        # Condition is false, skip to ELSE or THEN
                         depth = 1
-                        while i < len(toks) and depth > 0:
+                        while i < toks_len and depth > 0:
                             tok = to_upper(toks[i])
                             if tok == "IF":
                                 depth += 1
                             elif tok == "ELSE" and depth == 1:
-                                # Found matching ELSE, skip past it and continue
                                 i += 1
                                 break
                             elif tok == "THEN":
                                 depth -= 1
                                 if depth == 0:
-                                    # Found matching THEN, skip past it
                                     i += 1
                                     break
                             i += 1
-                    # If condition is true, just continue normally
                     continue
 
                 if tkey == "ELSE":
-                    # When we hit ELSE in interpret mode after IF was true,
-                    # skip to matching THEN
                     depth = 1
-                    while i < len(toks) and depth > 0:
+                    while i < toks_len and depth > 0:
                         tok = to_upper(toks[i])
                         if tok == "IF":
                             depth += 1
@@ -189,16 +277,14 @@ class OuterInterpreter(object):
                     continue
 
                 if tkey == "THEN":
-                    # THEN in interpret mode is just a no-op marker
                     continue
 
             if self.state == INTERPRET:
-                if tkey == "VARIABLE":
-                   if i >= len(toks):
-                       print "VARIABLE requires a name"
+                if tkey == "VARIABLE" or tkey == "FVARIABLE":
+                   if i >= toks_len:
+                       print "VARIABLE/FVARIABLE requires a name"
                        return
-                   name = toks[i]
-                   i += 1
+                   name, i = self._read_tok(toks, i)
 
                    addr = W_IntObject(self.inner.here)
                    self.inner.here += self.inner.cell_size_bytes
@@ -210,11 +296,23 @@ class OuterInterpreter(object):
                    continue
 
                 if tkey == "CONSTANT":
-                    if i >= len(toks):
+                    if i >= toks_len:
                         print "CONSTANT requires a name"
                         return
-                    name = toks[i]
-                    i += 1
+                    name, i = self._read_tok(toks, i)
+                    val = self.inner.pop_ds()
+
+                    code = [self.wLIT, self.wEXIT]
+                    lits = [val, ZERO]
+                    thread = CodeThread(code, lits)
+                    self.define_colon(name, thread)
+                    continue
+
+                if tkey == "FCONSTANT":
+                    if i >= toks_len:
+                        print "FCONSTANT requires a name"
+                        return
+                    name, i = self._read_tok(toks, i)
                     val = self.inner.pop_ds()
 
                     code = [self.wLIT, self.wEXIT]
@@ -225,7 +323,7 @@ class OuterInterpreter(object):
 
             if self.state == COMPILE:
                 if tkey == "IF":
-                    orig = len(self.current_code)
+                    orig = self.cc_ptr
                     self._emit_with_target(self.w0BR, 0)
                     self.ctrl.append(CtrlEntry(CTRL_IF, orig))
                     continue
@@ -236,7 +334,7 @@ class OuterInterpreter(object):
                         print "ELSE without IF"
                         return
                     self._patch_here(entry.index)
-                    orig2 = len(self.current_code)
+                    orig2 = self.cc_ptr
                     self._emit_with_target(self.wBR, 0)
 
                     self.ctrl.append(CtrlEntry(CTRL_ELSE, orig2))
@@ -252,10 +350,43 @@ class OuterInterpreter(object):
                     self._patch_here(entry.index)
                     continue
 
+                if tkey == "DO":
+                    self._emit_word(self.wDO)
+                    do_body_start = self.cc_ptr
+                    self.ctrl.append(CtrlEntry(CTRL_DO, do_body_start))
+                    continue
+
+                if tkey == "LOOP":
+                    entry = self.ctrl.pop()
+                    if entry.kind != CTRL_DO:
+                        print "LOOP without DO"
+                        return
+                    self._emit_with_target(self.wLOOP, entry.index)
+                    loop_end = self.cc_ptr
+                    for leave_addr in entry.leave_addrs:
+                        self.current_lits[leave_addr] = W_IntObject(loop_end)
+                    continue
+
+                if tkey == "[CHAR]":
+                    if i >= toks_len:
+                        print "[CHAR] requires a following character"
+                        continue
+                    char_tok = toks[i]
+                    i += 1
+                    char_tok_len = len(char_tok)
+                    if char_tok_len > 0:
+                        char_code = ord(char_tok[0])
+                        self._emit_lit(W_IntObject(char_code))
+                    else:
+                        print "[CHAR] got empty token"
+                    continue
+
             w = self.dict.get(tkey, None)
             if self.state == INTERPRET:
                 if w is not None:
                     self.inner.execute_word_now(w)
+                elif self._is_float(t):
+                    self.inner.push_ds(self._to_float(t))
                 elif self._is_number(t):
                     self.inner.push_ds(self._to_number(t))
                 else:
@@ -263,6 +394,8 @@ class OuterInterpreter(object):
             elif self.state == COMPILE:
                 if w is not None:
                     self._emit_word(w)
+                elif self._is_float(t):
+                    self._emit_lit(self._to_float(t))
                 elif self._is_number(t):
                     self._emit_lit(self._to_number(t))
                 else:

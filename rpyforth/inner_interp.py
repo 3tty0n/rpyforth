@@ -10,16 +10,34 @@ from rpyforth.objects import (
     CELL_SIZE,
 )
 
+from rpython.rlib.jit import JitDriver, promote, elidable, unroll_safe
+
+STACK_SIZE = 256
+BUF_SIZE = 1024
 HEAP_CELL_COUNT = 65536
 HEAP_SIZE_BYTES = HEAP_CELL_COUNT * CELL_SIZE_BYTES
 
+def get_printable_location(ip, thread):
+    return "ip=%d %s %s" % (ip, thread.code[ip], thread.lits[ip])
+
+jitdriver = JitDriver(
+    greens=['ip', 'thread'],
+    reds=['self'],
+    virtualizables=['self'],
+    get_printable_location=get_printable_location
+)
+
 class InnerInterpreter(object):
+    _immutable_fields_ = ["cell_size", "cell_size_bytes", "base"]
+    _virtualizable_ = ["ip", "ds_ptr", "rs_ptr", "_ds[*]", "_rs[*]"]
+
 
     def __init__(self):
-        self._ds = [None] * 16 # data stack
+        # Pre-allocate larger stacks to reduce growth overhead
+        self._ds = [None] * STACK_SIZE # data stack
         self.ds_ptr = 0
 
-        self._rs = [None] * 16  # return stack
+        self._rs = [None] * STACK_SIZE  # return stack
         self.rs_ptr = 0
 
         self.mem = [0] * HEAP_SIZE_BYTES
@@ -27,24 +45,26 @@ class InnerInterpreter(object):
         self.cell_size = CELL_SIZE
         self.cell_size_bytes = CELL_SIZE_BYTES
 
-        self.buf = [None] * 1024
+        self.buf = [None] * BUF_SIZE
         self.buf_ptr = 0
 
         self.base = DECIMAL
         self._pno_active = False      # inside <# ... #> or not
-        self._pno_buf = []            # buffoer for pno (pictured numeric output)
+        self._pno_buf = []            # buffer for pno (pictured numeric output)
 
         self.ip = 0
-        self.cur = None       # type: CodeThread
 
     def push_ds(self, w_x):
-        self._ds[self.ds_ptr] = w_x
-        self.ds_ptr += 1
+        ds_ptr = self.ds_ptr
+        self._ds[ds_ptr] = w_x
+        self.ds_ptr = ds_ptr + 1
 
     def pop_ds(self):
-        self.ds_ptr -= 1
-        assert self.ds_ptr >= 0
-        w_x = self._ds[self.ds_ptr]
+        ds_ptr = self.ds_ptr - 1
+        assert ds_ptr >= 0
+        w_x = self._ds[ds_ptr]
+        self._ds[ds_ptr] = None
+        self.ds_ptr = ds_ptr
         return w_x
 
     def top2_ds(self):
@@ -53,13 +73,16 @@ class InnerInterpreter(object):
         return w_x, w_y
 
     def push_rs(self, w_x):
-        self._rs[self.rs_ptr] = w_x
-        self.rs_ptr += 1
+        rs_ptr = self.rs_ptr
+        self._rs[rs_ptr] = w_x
+        self.rs_ptr = rs_ptr + 1
 
     def pop_rs(self):
-        self.rs_ptr -= 1
-        assert self.rs_ptr >= 0
-        w_x = self._rs[self.rs_ptr]
+        rs_ptr = self.rs_ptr - 1
+        assert rs_ptr >= 0
+        w_x = self._rs[rs_ptr]
+        self._rs[rs_ptr] = None
+        self.rs_ptr = rs_ptr
         return w_x
 
     def print_int(self, x):
@@ -105,26 +128,37 @@ class InnerInterpreter(object):
         return W_IntObject(accum)
 
     def execute_thread(self, thread):
-        self.cur = thread
         self.ip = 0
-        code = thread.code
-        while self.ip < len(code):
-            w = code[self.ip]
+        while True:
+            jitdriver.jit_merge_point(
+                ip=self.ip,
+                thread=thread,
+                self=self
+            )
+            if self.ip >= len(thread.code):
+                break
+
+            w = promote(thread.code[self.ip])
+            if w is None:
+                break
+
+            next_ip = self.ip + 1
+            self.ip = next_ip
+
             if w.prim is not None:
-                w.prim(self)
+                w.prim(self, thread)
             else:
                 self.execute_thread(w.thread)
-            self.ip += 1
-        self.cur = None
+                self.ip = next_ip
 
     def execute_word_now(self, w):
         code = [w]
         lits = [ZERO]
         self.execute_thread(CodeThread(code, lits))
 
-    def prim_LIT(self):
-        lit = self.cur.lits[self.ip]
+    def prim_LIT(self, thread):
+        lit = thread.lits[self.ip - 1]
         self.push_ds(lit)
 
-    def prim_EXIT(self):
-        self.ip = len(self.cur.code)
+    def prim_EXIT(self, thread):
+        self.ip = len(thread.code)

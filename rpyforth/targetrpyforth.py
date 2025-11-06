@@ -13,8 +13,8 @@ def entry_point(argv):
         return 1
     path = argv[1]
     f = open_file_as_stream(path)
-    txt = f.readall()
-    outer.interpret_line(txt)
+    for line in f.readall().split('\n'):
+        outer.interpret_line(line)
     f.close()
     return 0
 
