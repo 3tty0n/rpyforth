@@ -28,7 +28,7 @@ jitdriver = JitDriver(
 )
 
 class InnerInterpreter(object):
-    _immutable_fields_ = ["cell_size", "cell_size_bytes"]
+    _immutable_fields_ = ["cell_size", "cell_size_bytes", "base"]
     _virtualizable_ = ["ip", "ds_ptr", "rs_ptr", "_ds[*]", "_rs[*]"]
 
 
