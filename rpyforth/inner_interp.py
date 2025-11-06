@@ -134,6 +134,37 @@ class InnerInterpreter(object):
             accum -= sign_adjust
         return W_IntObject(accum)
 
+    @unroll_safe
+    def float_store(self, addr_obj, value_obj):
+        """Store a float at the given address."""
+        assert isinstance(addr_obj, W_IntObject)
+        assert isinstance(value_obj, W_FloatObject)
+        addr = intmask(addr_obj.getvalue())
+        float_size = 8  # 64-bit float
+        self._ensure_addr(addr, float_size)
+        # float_pack returns an r_ulonglong representing the IEEE 754 bits
+        packed = float_pack(value_obj.getvalue(), 8)
+        # Store the bytes in little-endian order
+        for offset in range(float_size):
+            byte_val = intmask((packed >> (offset * 8)) & 0xFF)
+            self.mem[addr + offset] = byte_val
+
+    @unroll_safe
+    def float_fetch(self, addr_obj):
+        """Fetch a float from the given address."""
+        assert isinstance(addr_obj, W_IntObject)
+        addr = addr_obj.getvalue()
+        float_size = 8  # 64-bit float
+        self._ensure_addr(addr, float_size)
+        # Read bytes and reconstruct the r_ulonglong
+        packed = r_ulonglong(0)
+        for offset in range(float_size):
+            byte_val = r_ulonglong(self.mem[addr + offset])
+            packed |= byte_val << (offset * 8)
+        # float_unpack takes an r_ulonglong and returns a float
+        floatval = float_unpack(packed, 8)
+        return W_FloatObject(floatval)
+
     def execute_thread(self, thread):
         self.ip = 0
         while True:

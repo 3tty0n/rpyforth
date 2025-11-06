@@ -762,6 +762,10 @@ def install_primitives(outer):
     outer.define_prim("F/", prim_FDIV)
     outer.define_prim("F>", prim_FGREATER)
     outer.define_prim("FSWAP", prim_FSWAP)
+    outer.define_prim("S>F", prim_S2F)
+    outer.define_prim("F!", prim_FSTORE)
+    outer.define_prim("F@", prim_FFETCH)
+    outer.define_prim("FDUP", prim_FDUP)
 
     # stack manipulation
     outer.define_prim("PICK", prim_PICK)
