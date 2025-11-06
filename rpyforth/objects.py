@@ -1,3 +1,10 @@
+try:
+    from rpython.rlib.rarithmetic import LONG_BIT
+except ImportError:
+    import struct
+    LONG_BIT = struct.calcsize("P") * 8
+
+
 class Word(object):
     """
     Dictionary entry for a Forth word.
@@ -115,3 +122,7 @@ HEX     = W_IntObject(16)
 DECIMAL = W_IntObject(10)
 OCTAL   = W_IntObject(8)
 BINARY  = W_IntObject(2)
+
+# data space characteristics
+CELL_SIZE_BYTES = LONG_BIT // 8
+CELL_SIZE = W_IntObject(CELL_SIZE_BYTES)

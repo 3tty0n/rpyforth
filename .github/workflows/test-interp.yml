@@ -53,16 +53,9 @@ jobs:
           ls -al pypy/rpython/bin
           python pypy/rpython/bin/rpython --help || true
 
-      - name: Cache translation artifacts
-        id: cache-build
-        uses: actions/cache@v4
-        with:
-          path: build
-          key: rpython-build-${{ hashFiles('**/*.py') }}
-
       - name: Translate (compile) the RPython Forth interpreter
         run: |
-          mkdir -p build
+          make build
 
       - name: Run test
         run: |

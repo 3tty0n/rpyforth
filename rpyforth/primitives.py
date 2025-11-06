@@ -1,6 +1,15 @@
-from rpyforth.objects import BINARY, OCTAL, DECIMAL, HEX, TRUE, ZERO
+from rpyforth.objects import (
+    BINARY,
+    OCTAL,
+    DECIMAL,
+    HEX,
+    TRUE,
+    ZERO,
+    W_IntObject,
+    W_StringObject,
+    CELL_SIZE,
+)
 from rpyforth.util import digit_to_char
-from rpyforth.objects import W_IntObject, W_StringObject
 
 
 # 0= ( x -- flag )
@@ -245,16 +254,33 @@ def prim_STORE(inner):
     """GForth core 2012: store x at cell address addr."""
     addr_obj = inner.pop_ds()
     val_obj = inner.pop_ds()
-    idx = addr_obj.intval
-    inner.mem[idx] = val_obj
+    inner.cell_store(addr_obj, val_obj)
 
 
 # @ ( addr -- x )
 def prim_FETCH(inner):
     """GForth core 2012: fetch the cell contents at addr."""
     addr_obj = inner.pop_ds()
-    idx = addr_obj.intval
-    inner.push_ds(inner.mem[idx])
+    inner.push_ds(inner.cell_fetch(addr_obj))
+
+
+# ( -- n )
+def prim_CELL(inner):
+    """push the size of one cell in address units."""
+    inner.push_ds(CELL_SIZE)
+
+# ( n -- n )
+def prim_CELLPLUS(inner):
+    """GForth core 2012: add one cell to an address."""
+    addr = inner.pop_ds()
+    inner.push_ds(addr.add(CELL_SIZE))
+
+
+# ( n -- n * cell_size )
+def prim_CELLS(inner):
+    """GForth core 2012: convert a cell count to address units."""
+    count = inner.pop_ds()
+    inner.push_ds(count.mul(CELL_SIZE))
 
 
 # IF THEN ELSE
@@ -461,6 +487,9 @@ def install_primitives(outer):
     # memory management
     outer.define_prim("!", prim_STORE)
     outer.define_prim("@", prim_FETCH)
+    outer.define_prim("CELL", prim_CELL)
+    outer.define_prim("CELL+", prim_CELLPLUS)
+    outer.define_prim("CELLS", prim_CELLS)
 
     # BASE
     outer.define_prim("BASE@", prim_BASE_FETCH)
