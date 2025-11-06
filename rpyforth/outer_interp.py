@@ -104,7 +104,7 @@ class OuterInterpreter(object):
             # handle ':' and ';' lexically (not as immediate words)
             if t == ':':
                 if i >= len(toks):
-                    self.inner.print_str(W_StringObject(": requires a name"))
+                    print ": requires a name"
                     return
                 self.state = COMPILE
                 self.current_name = toks[i]
@@ -115,7 +115,7 @@ class OuterInterpreter(object):
 
             if t == ';':
                 if self.state != COMPILE:
-                    self.inner.print_str(W_StringObject("; outside definition"))
+                    print "; outside definition"
                     continue
 
                 # append EXIT and install
@@ -135,7 +135,7 @@ class OuterInterpreter(object):
             if self.state == INTERPRET:
                 if tkey == "VARIABLE":
                    if i >= len(toks):
-                       self.inner.print_str(W_StringObject("VARIABLE requires a name"))
+                       print "VARIABLE requires a name"
                        return
                    name = toks[i]
                    i += 1
@@ -151,7 +151,7 @@ class OuterInterpreter(object):
 
                 if tkey == "CONSTANT":
                     if i >= len(toks):
-                        self.inner.print_str(W_StringObject("CONSTANT requires a name"))
+                        print "CONSTANT requires a name"
                         return
                     name = toks[i]
                     i += 1
@@ -204,13 +204,13 @@ class OuterInterpreter(object):
                 elif self._is_number(t):
                     self.inner.push_ds(self._to_number(t))
                 else:
-                    self.inner.print_str(W_StringObject("UNKNOWN: " + t))
+                    print "UNKNOWN: " + t
             elif self.state == COMPILE:
                 if w is not None:
                     self._emit_word(w)
                 elif self._is_number(t):
                     self._emit_lit(self._to_number(t))
                 else:
-                    self.inner.print_str(W_StringObject("UNKNOWN: " + t))
+                    print "UNKNOWN: " + t
             else:
                 assert 0, "unreachable state"

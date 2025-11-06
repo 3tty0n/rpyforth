@@ -1,15 +1,21 @@
+import sys
+
 from rpyforth.inner_interp import InnerInterpreter
 from rpyforth.outer_interp import OuterInterpreter
+
+from rpython.rlib.streamio import open_file_as_stream
 
 def entry_point(argv):
     inner = InnerInterpreter()
     outer = OuterInterpreter(inner)
-    if len(argv) > 1:
-        line = ' '.join(argv[1:])
-        outer.interpret_line(line)
-    else:
-        outer.interpret_line(": SQUARE DUP * ; 3 SQUARE")
-        print inner.pop_ds().intval
+    if len(argv) < 2:
+        print "Please specify the path your target file"
+        return 1
+    path = argv[1]
+    f = open_file_as_stream(path)
+    txt = f.readall()
+    outer.interpret_line(txt)
+    f.close()
     return 0
 
 def target(*args):

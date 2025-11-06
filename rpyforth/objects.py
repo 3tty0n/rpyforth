@@ -49,6 +49,9 @@ class W_IntObject(W_Object):
         self.intval = intval
 
     def __repr__(self):
+        return self.to_string()
+
+    def to_string(self):
         return str(self.intval)
 
     def is_true(self):
@@ -116,7 +119,10 @@ class W_StringObject(W_Object):
         self.strval = strval
 
     def __repr__(self):
-        return str(self.strval)
+        return self.to_string()
+
+    def to_string(self):
+        return self.strval
 
 ZERO = W_IntObject(0)
 TRUE = W_IntObject(-1)

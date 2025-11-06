@@ -1,3 +1,5 @@
+from rpython.rlib.rfile import create_stdio
+
 from rpyforth.objects import (
     BINARY,
     OCTAL,

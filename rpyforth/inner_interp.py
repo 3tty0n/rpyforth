@@ -64,11 +64,11 @@ class InnerInterpreter(object):
 
     def print_int(self, x):
         assert isinstance(x, W_IntObject)
-        print(x)
+        print x.to_string()
 
     def print_str(self, s):
         assert isinstance(s, W_StringObject)
-        print(s)
+        print s.to_string()
 
     def alloc_buf(self, content, size):
         assert isinstance(content, str)
