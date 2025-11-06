@@ -1,5 +1,5 @@
 from rpyforth.objects import (
-    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, ZERO)
+    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, W_FloatObject, ZERO)
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
 
@@ -81,6 +81,50 @@ class OuterInterpreter(object):
             n = n * 10 + (ord(s[i]) - ord('0'))
         result = sign * n
         return W_IntObject(result)
+
+    def _is_float(self, s):
+        """Check if string is a floating point literal like 0., 1.0, 2.0E0, -3.14E0"""
+        if len(s) == 0:
+            return False
+
+        # Handle negative sign
+        idx = 0
+        if s[idx] == '-':
+            idx += 1
+            if idx >= len(s):
+                return False
+
+        # Must have at least one digit or decimal point
+        has_digit = False
+        has_dot = False
+        has_e = False
+
+        while idx < len(s):
+            ch = s[idx]
+            if ch == '.':
+                if has_dot or has_e:
+                    return False
+                has_dot = True
+            elif ch == 'E' or ch == 'e':
+                if has_e or not has_digit:
+                    return False
+                has_e = True
+                # Check for optional sign after E
+                if idx + 1 < len(s) and (s[idx + 1] == '+' or s[idx + 1] == '-'):
+                    idx += 1
+            elif '0' <= ch <= '9':
+                has_digit = True
+            else:
+                return False
+            idx += 1
+
+        # Must have at least a dot or E to be a float
+        return has_digit and (has_dot or has_e)
+
+    def _to_float(self, s):
+        """Convert string to float"""
+        # Python's float() handles the format we need
+        return W_FloatObject(float(s))
 
     def _emit_with_target(self, w, target_index):
         self.current_code.append(w)
@@ -189,13 +233,12 @@ class OuterInterpreter(object):
                     continue
 
                 if tkey == "THEN":
-                    # THEN in interpret mode is just a no-op marker
                     continue
 
             if self.state == INTERPRET:
-                if tkey == "VARIABLE":
+                if tkey == "VARIABLE" or tkey == "FVARIABLE":
                    if i >= len(toks):
-                       print "VARIABLE requires a name"
+                       print "VARIABLE/FVARIABLE requires a name"
                        return
                    name = toks[i]
                    i += 1
@@ -212,6 +255,20 @@ class OuterInterpreter(object):
                 if tkey == "CONSTANT":
                     if i >= len(toks):
                         print "CONSTANT requires a name"
+                        return
+                    name = toks[i]
+                    i += 1
+                    val = self.inner.pop_ds()
+
+                    code = [self.wLIT, self.wEXIT]
+                    lits = [val, ZERO]
+                    thread = CodeThread(code, lits)
+                    self.define_colon(name, thread)
+                    continue
+
+                if tkey == "FCONSTANT":
+                    if i >= len(toks):
+                        print "FCONSTANT requires a name"
                         return
                     name = toks[i]
                     i += 1
@@ -252,10 +309,42 @@ class OuterInterpreter(object):
                     self._patch_here(entry.index)
                     continue
 
+                if tkey == "DO":
+                    self._emit_word(self.wDO)
+                    do_body_start = len(self.current_code)
+                    self.ctrl.append(CtrlEntry(CTRL_DO, do_body_start))
+                    continue
+
+                if tkey == "LOOP":
+                    entry = self.ctrl.pop()
+                    if entry.kind != CTRL_DO:
+                        print "LOOP without DO"
+                        return
+                    self._emit_with_target(self.wLOOP, entry.index)
+                    loop_end = len(self.current_code)
+                    for leave_addr in entry.leave_addrs:
+                        self.current_lits[leave_addr] = W_IntObject(loop_end)
+                    continue
+
+                if tkey == "[CHAR]":
+                    if i >= len(toks):
+                        print "[CHAR] requires a following character"
+                        continue
+                    char_tok = toks[i]
+                    i += 1
+                    if len(char_tok) > 0:
+                        char_code = ord(char_tok[0])
+                        self._emit_lit(W_IntObject(char_code))
+                    else:
+                        print "[CHAR] got empty token"
+                    continue
+
             w = self.dict.get(tkey, None)
             if self.state == INTERPRET:
                 if w is not None:
                     self.inner.execute_word_now(w)
+                elif self._is_float(t):
+                    self.inner.push_ds(self._to_float(t))
                 elif self._is_number(t):
                     self.inner.push_ds(self._to_number(t))
                 else:
@@ -263,6 +352,8 @@ class OuterInterpreter(object):
             elif self.state == COMPILE:
                 if w is not None:
                     self._emit_word(w)
+                elif self._is_float(t):
+                    self._emit_lit(self._to_float(t))
                 elif self._is_number(t):
                     self._emit_lit(self._to_number(t))
                 else:

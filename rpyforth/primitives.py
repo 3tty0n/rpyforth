@@ -9,6 +9,7 @@ from rpyforth.objects import (
     ZERO,
     W_IntObject,
     W_StringObject,
+    W_FloatObject,
     CELL_SIZE,
 )
 from rpyforth.util import digit_to_char
@@ -565,3 +566,12 @@ def install_primitives(outer):
     # thread ops
     outer.define_prim("LIT", prim_LIT)
     outer.define_prim("EXIT", prim_EXIT)
+
+    # floating point
+    outer.define_prim("F*", prim_FMUL)
+    outer.define_prim("F+", prim_FADD)
+    outer.define_prim("F-", prim_FSUB)
+    outer.define_prim("F/", prim_FDIV)
+    outer.define_prim("F>", prim_FGREATER)
+    outer.define_prim("FSWAP", prim_FSWAP)
+

@@ -114,3 +114,68 @@ def test_SDOUBLE_QUOTE():
     inner = run("S\" Hello, World!\"")
     assert inner.pop_ds().intval == len(str)
     assert inner.pop_ds().ptrval == len(str) # Cheating!
+
+# Floating point tests
+def test_float_literals():
+    assert run_and_pop("1.0").floatval == 1.0
+    assert run_and_pop("3.14").floatval == 3.14
+    assert run_and_pop("-2.5").floatval == -2.5
+    assert run_and_pop("0.").floatval == 0.0
+
+def test_float_addition():
+    assert run_and_pop("1.0 2.0 F+").floatval == 3.0
+    assert run_and_pop("3.5 2.5 F+").floatval == 6.0
+    assert run_and_pop("-1.5 1.5 F+").floatval == 0.0
+
+def test_float_subtraction():
+    assert run_and_pop("5.0 3.0 F-").floatval == 2.0
+    assert run_and_pop("10.5 2.5 F-").floatval == 8.0
+    assert run_and_pop("1.0 5.0 F-").floatval == -4.0
+
+def test_float_multiplication():
+    assert run_and_pop("3.0 4.0 F*").floatval == 12.0
+    assert run_and_pop("2.5 2.0 F*").floatval == 5.0
+    assert run_and_pop("-2.0 3.0 F*").floatval == -6.0
+
+def test_float_division():
+    assert run_and_pop("10.0 2.0 F/").floatval == 5.0
+    assert run_and_pop("7.0 2.0 F/").floatval == 3.5
+    assert run_and_pop("1.0 4.0 F/").floatval == 0.25
+
+def test_float_comparison():
+    assert run_and_pop("5.0 3.0 F>").intval == -1  # True
+    assert run_and_pop("2.0 8.0 F>").intval == 0   # False
+    assert run_and_pop("3.0 3.0 F>").intval == 0   # False
+
+def test_float_swap():
+    inner = run("1.0 2.0 FSWAP")
+    assert inner.pop_ds().floatval == 1.0
+    assert inner.pop_ds().floatval == 2.0
+
+def test_float_in_colon_def():
+    assert run_and_pop(": CIRCLE-AREA 3.14159 F* ; 5.0 5.0 F* CIRCLE-AREA").floatval == 78.53975
+
+def test_compare_op():
+    assert run_and_pop("5 3 >").intval == -1  # True
+    assert run_and_pop("2 8 >").intval == 0   # False
+    assert run_and_pop("3 3 >").intval == 0   # False
+
+    assert run_and_pop("5 3 <").intval == 0
+    assert run_and_pop("2 8 <").intval == -1
+    assert run_and_pop("3 3 <").intval == 0
+
+    assert run_and_pop("5 5 =").intval == -1  # True
+    assert run_and_pop("3 7 =").intval == 0   # False
+    assert run_and_pop("0 0 =").intval == -1  # True
+
+def test_float():
+    assert run_and_pop("1.0").floatval == 1.0
+    assert run_and_pop("3.14").floatval == 3.14
+
+    assert run_and_pop("1.0 2.0 F+").floatval == 3.0
+    assert run_and_pop("5.0 3.0 F-").floatval == 2.0
+    assert run_and_pop("3.0 4.0 F*").floatval == 12.0
+    assert run_and_pop("10.0 2.0 F/").floatval == 5.0
+
+    assert run_and_pop("5.0 3.0 F>").intval == -1
+    assert run_and_pop("2.0 8.0 F>").intval == 0

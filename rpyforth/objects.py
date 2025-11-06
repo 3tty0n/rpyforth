@@ -130,6 +130,36 @@ class W_StringObject(W_Object):
     def to_string(self):
         return self.strval
 
+class W_FloatObject(W_Object):
+    def __init__(self, floatval):
+        self.floatval = floatval
+
+    def __repr__(self):
+        return self.to_string()
+
+    def to_string(self):
+        return str(self.floatval)
+
+    def add(self, other):
+        assert isinstance(other, W_FloatObject)
+        return W_FloatObject(self.floatval + other.floatval)
+
+    def sub(self, other):
+        assert isinstance(other, W_FloatObject)
+        return W_FloatObject(self.floatval - other.floatval)
+
+    def mul(self, other):
+        assert isinstance(other, W_FloatObject)
+        return W_FloatObject(self.floatval * other.floatval)
+
+    def div(self, other):
+        assert isinstance(other, W_FloatObject)
+        return W_FloatObject(self.floatval / other.floatval)
+
+    def gt(self, other):
+        assert isinstance(other, W_FloatObject)
+        return self.floatval > other.floatval
+
 ZERO = W_IntObject(0)
 TRUE = W_IntObject(-1)
 
