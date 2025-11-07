@@ -113,9 +113,9 @@ class InnerInterpreter(object):
     def cell_store(self, addr_obj, value_obj):
         assert isinstance(addr_obj, W_IntObject)
         assert isinstance(value_obj, W_IntObject)
-        addr = intmask(addr_obj.getvalue())
+        addr = intmask(addr_obj.intval)
         self._ensure_addr(addr, self.cell_size_bytes)
-        masked = intmask(value_obj.getvalue())
+        masked = value_obj.intval
         for offset in range(self.cell_size_bytes):
             self.mem[addr + offset] = masked & 0xFF
             masked >>= 8
@@ -123,7 +123,7 @@ class InnerInterpreter(object):
     @unroll_safe
     def cell_fetch(self, addr_obj):
         assert isinstance(addr_obj, W_IntObject)
-        addr = addr_obj.getvalue()
+        addr = addr_obj.intval
         self._ensure_addr(addr, self.cell_size_bytes)
         accum = 0
         for offset in range(self.cell_size_bytes):
@@ -139,11 +139,11 @@ class InnerInterpreter(object):
         """Store a float at the given address."""
         assert isinstance(addr_obj, W_IntObject)
         assert isinstance(value_obj, W_FloatObject)
-        addr = intmask(addr_obj.getvalue())
+        addr = intmask(addr_obj.intval)
         float_size = 8  # 64-bit float
         self._ensure_addr(addr, float_size)
         # float_pack returns an r_ulonglong representing the IEEE 754 bits
-        packed = float_pack(value_obj.getvalue(), 8)
+        packed = float_pack(value_obj.floatval, 8)
         # Store the bytes in little-endian order
         for offset in range(float_size):
             byte_val = intmask((packed >> (offset * 8)) & 0xFF)
@@ -153,7 +153,7 @@ class InnerInterpreter(object):
     def float_fetch(self, addr_obj):
         """Fetch a float from the given address."""
         assert isinstance(addr_obj, W_IntObject)
-        addr = addr_obj.getvalue()
+        addr = addr_obj.intval
         float_size = 8  # 64-bit float
         self._ensure_addr(addr, float_size)
         # Read bytes and reconstruct the r_ulonglong
