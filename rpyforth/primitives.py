@@ -422,8 +422,9 @@ def prim_DOT(inner):
 def prim_EMIT(inner):
     """GForth core 2012: if x is a character, display x. """
     x = inner.pop_ds()
+    assert isinstance(x, W_IntObject)
     assert 0 <= x.intval <= 255, "EMIT argument out of range"
-    inner.print_str(W_StringObject(chr(x.intval)))
+    print(chr(x.intval)),
 
 
 # CodeThread-aware primitives
