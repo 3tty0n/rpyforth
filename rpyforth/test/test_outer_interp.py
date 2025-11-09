@@ -129,10 +129,18 @@ def test_rshift():
     assert run_and_pop("1 1 RSHIFT").intval == 0
     assert run_and_pop("2 1 RSHIFT").intval == 1
     assert run_and_pop("4 2 RSHIFT").intval == 1
-    #assert run_and_pop("0x8000 0xF RSHIFT").intval == 1
+    assert run_and_pop("32768 15 RSHIFT").intval == 1
 
 def test_lshift():
     assert run_and_pop("1 0 LSHIFT").intval == 1
     assert run_and_pop("1 1 LSHIFT").intval == 2
     assert run_and_pop("1 2 LSHIFT").intval == 4
-    #assert run_and_pop("1 0xF LSHIFT").intval == 0x8000
+    assert run_and_pop("1 15 LSHIFT").intval == 32768
+
+def test_s_to_d():
+    inner = run("2 S>D")
+    assert inner.pop_ds().intval == 0
+    assert inner.pop_ds().intval == 2
+    inner = run("-2 S>D")
+    assert inner.pop_ds().intval == -1
+    assert inner.pop_ds().intval == -2

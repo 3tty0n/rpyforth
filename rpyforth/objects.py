@@ -106,6 +106,12 @@ class W_IntObject(W_Object):
     
     def lshift(self, other):
         return W_IntObject(self.intval << other.intval)
+    
+    def s_to_d(self):
+        if self.intval >= 0:
+            return W_IntObject(0)
+        else:
+            return W_IntObject(-1)
 
 class W_StringObject(W_Object):
     def __init__(self, strval):

@@ -187,6 +187,12 @@ def prim_LSHIFT(inner):
     b = inner.pop_ds()
     inner.push_ds(b.lshift(a))
 
+# S>D ( n -- d )
+def prim_S_TO_D(inner):
+    """GForth core 2012: convert tne number n to double-cell number d."""
+    a = inner.pop_ds()
+    inner.push_ds(a)  
+    inner.push_ds(a.s_to_d())  
 
 # Arithmetic
 
@@ -469,6 +475,7 @@ def install_primitives(outer):
     outer.define_prim("RSHIFT", prim_RSHIFT)
     outer.define_prim("LSHIFT", prim_LSHIFT)
 
+    outer.define_prim("S>D", prim_S_TO_D)
     # arithmetic
     outer.define_prim("+", prim_ADD)
     outer.define_prim("-", prim_SUB)
