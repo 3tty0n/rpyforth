@@ -252,6 +252,15 @@ def prim_DEC(inner):
     inner.push_ds(a.dec())
 
 
+# M* ( n1 n2 -- d)
+def prim_MUL_STAR(inner):
+    """GForth core 2012: d is the signed product of n1 times n2."""
+    a, b = inner.top2_ds()
+    c = a.mul(b)
+    inner.push_ds(c)
+    inner.push_ds(c.s_to_d())
+
+
 # memory management
 
 
@@ -487,6 +496,8 @@ def install_primitives(outer):
 
     outer.define_prim("1+", prim_INC)
     outer.define_prim("1-", prim_DEC)
+
+    outer.define_prim("M*", prim_MUL_STAR)
 
     # I/O
     outer.define_prim(".", prim_DOT)

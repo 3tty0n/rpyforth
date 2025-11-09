@@ -138,9 +138,20 @@ def test_lshift():
     assert run_and_pop("1 15 LSHIFT").intval == 32768
 
 def test_s_to_d():
-    inner = run("2 S>D")
+    inner = run("1024 S>D")
     assert inner.pop_ds().intval == 0
-    assert inner.pop_ds().intval == 2
-    inner = run("-2 S>D")
+    assert inner.pop_ds().intval == 1024
+    inner = run("-1024 S>D")
     assert inner.pop_ds().intval == -1
-    assert inner.pop_ds().intval == -2
+    assert inner.pop_ds().intval == -1024
+
+def test_mul_star():
+    inner = run("1024 4 M*")
+    assert inner.pop_ds().intval == 0  
+    assert inner.pop_ds().intval == 4096 
+    inner = run("-1024 4 M*")
+    assert inner.pop_ds().intval == -1  
+    assert inner.pop_ds().intval == -4096
+    inner = run("-1024 -4 M*")
+    assert inner.pop_ds().intval == 0
+    assert inner.pop_ds().intval == 4096
