@@ -25,6 +25,9 @@ FVARIABLE ZX2
 FVARIABLE ZY2
 FVARIABLE TEMP
 
+: PRINTLN
+    10 EMIT ;
+
 \ Convert pixel coordinates to complex number coordinates
 : pixel>complex ( col row -- ) ( F: -- cx cy )
   S>F YSCALE F* YMIN F+  CY F!
@@ -99,21 +102,21 @@ FVARIABLE TEMP
     EMIT
   LOOP
   DROP
-  CR
+  PRINTLN
 ;
 
 \ Draw the complete Mandelbrot set
 : mandelbrot-set
-  CR
-  ." Computing Mandelbrot set..." CR CR
+  PRINTLN
+  ." Computing Mandelbrot set..." PRINTLN
   HEIGHT 0 DO
-    I draw-row
+    I draw-row           \ Each draw-row ends with CR
   LOOP
-  CR
+  PRINTLN
   ." Done!" CR
 ;
 
 \ Run it
-." Mandelbrot Set Viewer" CR
+." Mandelbrot Set Viewer"
 ." ===================" CR CR
 mandelbrot-set
