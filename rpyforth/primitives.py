@@ -8,6 +8,7 @@ from rpyforth.objects import (
     W_IntObject,
     W_StringObject,
     CELL_SIZE,
+    LONG_BIT,
 )
 from rpyforth.util import digit_to_char
 
@@ -256,10 +257,20 @@ def prim_DEC(inner):
 def prim_MUL_STAR(inner):
     """GForth core 2012: d is the signed product of n1 times n2."""
     a, b = inner.top2_ds()
-    c = a.mul(b)
-    inner.push_ds(c)
-    inner.push_ds(c.s_to_d())
+    c = a.mul(b)    #c is 128bits
+    
+    BIT_MASK = (1 << LONG_BIT) - 1   #111...11 64bits 
+    SIGN_BIT = 1 << (LONG_BIT - 1)  #100...00 64bits
 
+    low = c.intval & BIT_MASK    # get c's low 64bits
+
+    if low & SIGN_BIT:  # if highest bit is 1 
+        low = low - (1 << LONG_BIT)  # convert to negative number  
+
+    high = c.intval >> LONG_BIT # get c's high 64bits
+
+    inner.push_ds(W_IntObject(low))
+    inner.push_ds(W_IntObject(high))
 
 # memory management
 

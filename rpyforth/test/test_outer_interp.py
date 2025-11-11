@@ -155,3 +155,6 @@ def test_mul_star():
     inner = run("-1024 -4 M*")
     assert inner.pop_ds().intval == 0
     assert inner.pop_ds().intval == 4096
+    inner = run("9223372036854775807 2 M*")
+    assert inner.pop_ds().intval == 0
+    assert inner.pop_ds().intval == -2
