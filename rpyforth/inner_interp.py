@@ -18,7 +18,7 @@ from rpython.rlib.rarithmetic import r_ulonglong, intmask
 from rpython.rlib.jit import JitDriver, promote, elidable, unroll_safe, promote_string
 from rpython.rlib.rfile import create_stdio
 
-STACK_SIZE = 16  # Increased for deeper nesting
+STACK_SIZE = 64  # Increased for deeper nesting
 BUF_SIZE = 1024
 HEAP_CELL_COUNT = 65536
 HEAP_SIZE_BYTES = HEAP_CELL_COUNT * CELL_SIZE_BYTES
