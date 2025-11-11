@@ -195,6 +195,11 @@ def prim_S_TO_D(inner):
     inner.push_ds(a)  
     inner.push_ds(a.s_to_d())  
 
+# BL ( -- char )
+def prim_BL(inner):
+    """GForth core 2012: char is the character value of a space."""
+    inner.push_ds(W_IntObject(ord(' ')))
+
 # Arithmetic
 
 
@@ -496,6 +501,7 @@ def install_primitives(outer):
     outer.define_prim("LSHIFT", prim_LSHIFT)
 
     outer.define_prim("S>D", prim_S_TO_D)
+    outer.define_prim("BL", prim_BL)
     # arithmetic
     outer.define_prim("+", prim_ADD)
     outer.define_prim("-", prim_SUB)
