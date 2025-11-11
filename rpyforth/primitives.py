@@ -1,5 +1,5 @@
 from rpython.rlib.rfile import create_stdio
-from rpython.rlib.jit import promote
+from rpython.rlib.jit import promote, unroll_safe
 
 from rpyforth.objects import (
     BINARY,
@@ -21,7 +21,7 @@ from rpyforth.util import digit_to_char
 
 def _maybe_enter_jit(inner, target_ip, origin_ip, thread):
     """Signal the interpreter back-edge to the JIT when jumping backward."""
-    if target_ip <= origin_ip:
+    if target_ip < origin_ip:
         jitdriver.can_enter_jit(
             ip=target_ip,
             thread=thread,
@@ -497,6 +497,7 @@ def prim_NUMSIGN(inner, cur, ip):
 
 
 # #S ( ud -- 0 )
+@unroll_safe
 def prim_NUMSIGN_S(inner, cur, ip):
     """GForth core 2012: convert remaining digits during pictured numeric output."""
     if not inner._pno_active:
