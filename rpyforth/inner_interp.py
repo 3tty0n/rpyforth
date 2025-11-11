@@ -15,12 +15,16 @@ from rpyforth.objects import (
 
 from rpython.rlib.rstruct.ieee import float_pack, float_unpack
 from rpython.rlib.rarithmetic import r_ulonglong, intmask
-from rpython.rlib.jit import JitDriver, promote, elidable, unroll_safe
+from rpython.rlib.jit import JitDriver, promote, elidable, unroll_safe, promote_string
+from rpython.rlib.rfile import create_stdio
 
-STACK_SIZE = 64  # Increased for deeper nesting
+STACK_SIZE = 16  # Increased for deeper nesting
 BUF_SIZE = 1024
 HEAP_CELL_COUNT = 65536
 HEAP_SIZE_BYTES = HEAP_CELL_COUNT * CELL_SIZE_BYTES
+
+class Exit(Exception):
+    pass
 
 def get_printable_location(ip, thread):
     return "ip=%d %s %s" % (ip, thread.code[ip].to_string(), thread.lits[ip].to_string())
@@ -34,15 +38,15 @@ jitdriver = JitDriver(
 
 class InnerInterpreter(object):
     _immutable_fields_ = ["cell_size", "cell_size_bytes", "base"]
-    _virtualizable_ = ["ip", "ds_ptr", "_ds[*]", "rs_ptr", "_rs[*]"]
+    _virtualizable_ = ["ds_ptr", "ds[*]", "rs_ptr", "rs[*]"]
 
 
     def __init__(self):
         # Pre-allocate larger stacks to reduce growth overhead
-        self._ds = [None] * STACK_SIZE # data stack
+        self.ds = [None] * STACK_SIZE # data stack
         self.ds_ptr = 0
 
-        self._rs = [None] * STACK_SIZE  # return stack
+        self.rs = [None] * STACK_SIZE  # return stack
         self.rs_ptr = 0
 
         self.mem = [0] * HEAP_SIZE_BYTES
@@ -57,18 +61,16 @@ class InnerInterpreter(object):
         self._pno_active = False      # inside <# ... #> or not
         self._pno_buf = []            # buffer for pno (pictured numeric output)
 
-        self.ip = 0
-
     def push_ds(self, w_x):
         ds_ptr = self.ds_ptr
-        self._ds[ds_ptr] = w_x
+        self.ds[ds_ptr] = w_x
         self.ds_ptr = ds_ptr + 1
 
     def pop_ds(self):
         ds_ptr = self.ds_ptr - 1
         assert ds_ptr >= 0
-        w_x = self._ds[ds_ptr]
-        self._ds[ds_ptr] = None
+        w_x = self.ds[ds_ptr]
+        self.ds[ds_ptr] = None
         self.ds_ptr = ds_ptr
         return w_x
 
@@ -79,24 +81,28 @@ class InnerInterpreter(object):
 
     def push_rs(self, w_x):
         rs_ptr = self.rs_ptr
-        self._rs[rs_ptr] = w_x
+        self.rs[rs_ptr] = w_x
         self.rs_ptr = rs_ptr + 1
 
     def pop_rs(self):
         rs_ptr = self.rs_ptr - 1
         assert rs_ptr >= 0
-        w_x = self._rs[rs_ptr]
-        self._rs[rs_ptr] = None
+        w_x = self.rs[rs_ptr]
+        self.rs[rs_ptr] = None
         self.rs_ptr = rs_ptr
         return w_x
 
     def print_int(self, x):
         assert isinstance(x, W_IntObject)
-        print x.to_string()
+        _, stdout, _ = create_stdio()
+        stdout.write(x.to_string())
+        stdout.flush()
 
     def print_str(self, s):
         assert isinstance(s, W_StringObject)
-        print s.to_string()
+        _, stdout, _ = create_stdio()
+        stdout.write(s.to_string())
+        stdout.flush()
 
     def alloc_buf(self, content, size):
         assert isinstance(content, str)
@@ -165,45 +171,35 @@ class InnerInterpreter(object):
         floatval = float_unpack(packed, 8)
         return W_FloatObject(floatval)
 
-    def execute_thread(self, thread):
-        self.ip = 0
+    def execute_thread(self, thread, ip=0):
         while True:
             jitdriver.jit_merge_point(
-                ip=self.ip,
+                ip=ip,
                 thread=thread,
                 self=self
             )
-            if self.ip >= len(thread.code):
+            if ip >= len(thread.code):
                 break
 
-            current_ip = self.ip
             # Promote the word to allow JIT to specialize on it
-            w = promote(thread.code[current_ip])
+            w = promote(thread.code[ip])
             if w is None:
                 break
-
-            next_ip = current_ip + 1
-            self.ip = next_ip
+            ip += 1
 
             # Promote the primitive function pointer for better inlining
-            prim = promote(w.prim)
-            if prim is not None:
-                prim(self, thread)
-            else:
-                # Promote the nested thread for better inlining of colon definitions
-                nested_thread = promote(w.thread)
-                self.execute_thread(nested_thread)
-                self.ip = next_ip
+            try:
+                prim = promote(w.prim)
+                if prim is not None:
+                    ip = prim(self, thread, ip)
+                else:
+                    # Promote the nested thread for better inlining of colon definitions
+                    nested_thread = promote(w.thread)
+                    self.execute_thread(nested_thread)
+            except Exit:
+                break
 
     def execute_word_now(self, w):
         code = [w]
         lits = [ZERO]
-        self.execute_thread(CodeThread(code, lits))
-
-    def prim_LIT(self, thread):
-        # Promote the literal value so JIT can constant-fold it
-        lit = promote(thread.lits[self.ip - 1])
-        self.push_ds(lit)
-
-    def prim_EXIT(self, thread):
-        self.ip = len(thread.code)
+        self.execute_thread(CodeThread(code, lits), 0)
