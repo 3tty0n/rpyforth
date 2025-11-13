@@ -152,6 +152,12 @@ class W_IntObject(W_Object):
         if isinstance(other, W_IntObject):
             return self.intval == other.intval
         return False
+    
+    def rshift(self, other):
+        return W_IntObject(self.intval >> other.intval)
+    
+    def lshift(self, other):
+        return W_IntObject(self.intval << other.intval)
 
 class W_PtrObject(W_Object):
     _immutable_fields_ = ['ptrval']

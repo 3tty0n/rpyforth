@@ -113,13 +113,24 @@ def prim_DUP(inner, cur, ip):
     return ip
 
 
-def prim_DUP2(inner, cur, ip):
+
+def prim_2DUP(inner, cur, ip):
     b = inner.pop_ds()
     a = inner.pop_ds()
     inner.push_ds(a)
     inner.push_ds(b)
     inner.push_ds(a)
     inner.push_ds(b)
+    return ip
+
+
+# ?DUP ( x -- 0 | x x )
+def prim_QUESTIONDUP(inner, cur, ip):
+    """GForth core 2012: duplicate x if it is non-zero."""
+    a = inner.pop_ds()
+    inner.push_ds(a)
+    if not a.zero_equal():
+        inner.push_ds(a)
     return ip
 
 
@@ -130,7 +141,9 @@ def prim_DROP(inner, cur, ip):
     return ip
 
 
-def prim_DROP2(inner, cur, ip):
+# 2DROP ( x1 x2 -- )
+def prim_2DROP(inner, cur, ip):
+    """GForth core 2012: discard the top two stack items."""
     inner.pop_ds()
     inner.pop_ds()
     return ip
@@ -144,7 +157,8 @@ def prim_SWAP(inner, cur, ip):
     return ip
 
 
-def prim_SWAP2(inner, cur, ip):
+# 2SWAP ( x1 x2 x3 x4 -- x3 x4 x1 x2 )
+def prim_2SWAP(inner, cur, ip):
     c, d = inner.top2_ds()
     a, b = inner.top2_ds()
     inner.push_ds(c)
@@ -165,7 +179,9 @@ def prim_OVER(inner, cur, ip):
     return ip
 
 
-def prim_OVER2(inner, cur, ip):
+# 2OVER ( x1 x2 x3 x4 -- x1 x2 x3 x4 x1 x2 )
+def prim_2OVER(inner, cur, ip):
+    """GForth core 2012: copy cell pair x1 x2 to the top of the stack."""
     d = inner.pop_ds()
     c = inner.pop_ds()
     b = inner.pop_ds()
@@ -179,6 +195,7 @@ def prim_OVER2(inner, cur, ip):
     return ip
 
 
+# ROT ( x1 x2 x3 -- x2 x3 x1 )
 def prim_ROT(inner, cur, ip):
     c = inner.pop_ds()
     b = inner.pop_ds()
@@ -189,7 +206,9 @@ def prim_ROT(inner, cur, ip):
     return ip
 
 
+# MAX ( n1 n2 -- n3 )
 def prim_MAX(inner, cur, ip):
+    """GForth core 2012: n3 is the greater of n1 and n2."""
     a, b = inner.top2_ds()
     if a.lt(b):
         inner.push_ds(b)
@@ -198,12 +217,39 @@ def prim_MAX(inner, cur, ip):
     return ip
 
 
+# MIN ( n1 n2 -- n3 )
 def prim_MIN(inner, cur, ip):
+    """GForth core 2012: n3 is the lesser of n1 and n2."""
     a, b = inner.top2_ds()
     if a.lt(b):
         inner.push_ds(a)
     else:
         inner.push_ds(b)
+    return ip
+
+
+# DEPTH ( -- +n )
+def prim_DEPTH(inner, cur, ip):
+    """GForth core 2012: +n is the number of single-cell values contained in the data stack."""
+    inner.push_ds(W_IntObject(inner.ds_ptr))
+    return ip
+
+
+# RSHIFT ( n1 u -- n2 )
+def prim_RSHIFT(inner, cur, ip):
+    """GForth core 2012: perform a logical right shift of u bit-places on n1, giving n2."""
+    a = inner.pop_ds()
+    b = inner.pop_ds()
+    inner.push_ds(b.rshift(a))
+    return ip
+
+
+# LSHIFT ( n1 u -- n2 )
+def prim_LSHIFT(inner, cur, ip):
+    """GForth core 2012: perform a logical left shift of u bit-places on n1, giving n2."""
+    a = inner.pop_ds()
+    b = inner.pop_ds()
+    inner.push_ds(b.lshift(a))
     return ip
 
 
@@ -245,32 +291,39 @@ def prim_MUL(inner, cur, ip):
     inner.push_ds(W_IntObject(a.intval * b.intval))
     return ip
 
-
+# ABS ( n -- u )
 def prim_ABS(inner, cur, ip):
     a = inner.pop_ds()
     inner.push_ds(a.abs())
     return ip
 
-
+# NEGATE ( n1 -- n2 )
 def prim_NEGATE(inner, cur, ip):
+    """GForth core 2012: negate n1, giving its arithmetic inverse n2."""
     a = inner.pop_ds()
     inner.push_ds(a.neg())
     return ip
 
 
+# MOD ( n1 n2 -- n3 )
 def prim_MOD(inner, cur, ip):
+    """GForth core 2012: divide n1 by n2, giving the single-cell remainder n3."""
     a, b = inner.top2_ds()
     inner.push_ds(a.mod(b))
     return ip
 
 
+# 1+ ( n1 -- n2 )
 def prim_INC(inner, cur, ip):
+    """GForth core 2012: add one to n1."""
     a = inner.pop_ds()
     inner.push_ds(a.inc())
     return ip
 
 
+# 1- ( n1 -- n2 )
 def prim_DEC(inner, cur, ip):
+    """GForth core 2012: subtract one from n1."""
     a = inner.pop_ds()
     inner.push_ds(a.dec())
     return ip
@@ -757,14 +810,21 @@ def install_primitives(outer):
     outer.define_prim("SWAP", prim_SWAP)
     outer.define_prim("OVER", prim_OVER)
 
-    outer.define_prim("2DUP", prim_DUP2)
-    outer.define_prim("2DROP", prim_DROP2)
-    outer.define_prim("2SWAP", prim_SWAP2)
-    outer.define_prim("2OVER", prim_OVER2)
+    outer.define_prim("2DUP", prim_2DUP)
+    outer.define_prim("2DROP", prim_2DROP)
+    outer.define_prim("2SWAP", prim_2SWAP)
+    outer.define_prim("2OVER", prim_2OVER)
+
+    outer.define_prim("?DUP", prim_QUESTIONDUP)
 
     outer.define_prim("ROT", prim_ROT)
     outer.define_prim("MAX", prim_MAX)
     outer.define_prim("MIN", prim_MIN)
+
+    outer.define_prim("DEPTH", prim_DEPTH)
+
+    outer.define_prim("RSHIFT", prim_RSHIFT)
+    outer.define_prim("LSHIFT", prim_LSHIFT)
 
     # arithmetic
     outer.define_prim("+", prim_ADD)
