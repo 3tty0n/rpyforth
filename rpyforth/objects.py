@@ -153,11 +153,20 @@ class W_IntObject(W_Object):
             return self.intval == other.intval
         return False
     
+    @elidable
     def rshift(self, other):
         return W_IntObject(self.intval >> other.intval)
-    
+  
+    @elidable
     def lshift(self, other):
         return W_IntObject(self.intval << other.intval)
+    
+    @elidable
+    def s_to_d(self):
+        if self.intval >= 0:
+            return W_IntObject(0)
+        else:
+            return W_IntObject(-1)
 
 class W_PtrObject(W_Object):
     _immutable_fields_ = ['ptrval']

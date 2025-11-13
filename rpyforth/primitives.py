@@ -12,6 +12,7 @@ from rpyforth.objects import (
     W_StringObject,
     W_FloatObject,
     CELL_SIZE,
+    LONG_BIT,
 )
 from rpyforth.inner_interp import jitdriver
 from rpyforth.util import digit_to_char
@@ -113,7 +114,7 @@ def prim_DUP(inner, cur, ip):
     return ip
 
 
-
+# 2DUP ( x1 x2 -- x1 x2 x1 x2 )
 def prim_2DUP(inner, cur, ip):
     b = inner.pop_ds()
     a = inner.pop_ds()
@@ -140,7 +141,7 @@ def prim_DROP(inner, cur, ip):
     inner.pop_ds()
     return ip
 
-
+  
 # 2DROP ( x1 x2 -- )
 def prim_2DROP(inner, cur, ip):
     """GForth core 2012: discard the top two stack items."""
@@ -159,6 +160,7 @@ def prim_SWAP(inner, cur, ip):
 
 # 2SWAP ( x1 x2 x3 x4 -- x3 x4 x1 x2 )
 def prim_2SWAP(inner, cur, ip):
+    """GForth core 2012: exchange the top two cell pairs."""
     c, d = inner.top2_ds()
     a, b = inner.top2_ds()
     inner.push_ds(c)
@@ -252,6 +254,19 @@ def prim_LSHIFT(inner, cur, ip):
     inner.push_ds(b.lshift(a))
     return ip
 
+# S>D ( n -- d )
+def prim_S_TO_D(inner, cur, ip):
+    """GForth core 2012: convert tne number n to double-cell number d."""
+    a = inner.pop_ds()
+    inner.push_ds(a)
+    inner.push_ds(a.s_to_d())
+    return ip
+
+# BL ( -- char )
+def prim_BL(inner, cur, ip):
+    """GForth core 2012: char is the character value of a space."""
+    inner.push_ds(W_IntObject(ord(' ')))
+    return ip
 
 # Arithmetic
 
@@ -291,11 +306,14 @@ def prim_MUL(inner, cur, ip):
     inner.push_ds(W_IntObject(a.intval * b.intval))
     return ip
 
+
 # ABS ( n -- u )
 def prim_ABS(inner, cur, ip):
+    """GForth core 2012: u is the absolute value of n."""
     a = inner.pop_ds()
     inner.push_ds(a.abs())
     return ip
+
 
 # NEGATE ( n1 -- n2 )
 def prim_NEGATE(inner, cur, ip):
@@ -328,6 +346,27 @@ def prim_DEC(inner, cur, ip):
     inner.push_ds(a.dec())
     return ip
 
+
+# M* ( n1 n2 -- d)
+def prim_MUL_STAR(inner, cur, ip):
+    """GForth core 2012: d is the signed product of n1 times n2."""
+    a, b = inner.top2_ds()
+    c = a.mul(b)    #c is 128bits
+
+    BIT_MASK = (1 << LONG_BIT) - 1   #111...11 64bits
+    SIGN_BIT = 1 << (LONG_BIT - 1)  #100...00 64bits
+
+    low = c.intval & BIT_MASK    # get c's low 64bits
+
+    if low & SIGN_BIT:  # if highest bit is 1
+        low = low - (1 << LONG_BIT)  # convert to negative number
+
+    high = c.intval >> LONG_BIT # get c's high 64bits
+
+    inner.push_ds(W_IntObject(low))
+    inner.push_ds(W_IntObject(high))
+
+    return ip
 
 # memory management
 
@@ -640,7 +679,6 @@ def prim_EMIT(inner, cur, ip):
     stdout.flush()
     return ip
 
-
 # CodeThread-aware primitives
 
 # LIT ( -- x )
@@ -839,6 +877,9 @@ def install_primitives(outer):
     outer.define_prim("RSHIFT", prim_RSHIFT)
     outer.define_prim("LSHIFT", prim_LSHIFT)
 
+    outer.define_prim("S>D", prim_S_TO_D)
+    outer.define_prim("BL", prim_BL)
+
     # arithmetic
     outer.define_prim("+", prim_ADD)
     outer.define_prim("-", prim_SUB)
@@ -850,6 +891,8 @@ def install_primitives(outer):
 
     outer.define_prim("1+", prim_INC)
     outer.define_prim("1-", prim_DEC)
+
+    outer.define_prim("M*", prim_MUL_STAR)
 
     # I/O
     outer.define_prim(".", prim_DOT)
