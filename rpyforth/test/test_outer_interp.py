@@ -132,6 +132,7 @@ def test_rshift():
     assert run_and_pop("2 1 RSHIFT").intval == 1
     assert run_and_pop("4 2 RSHIFT").intval == 1
     assert run_and_pop("32768 15 RSHIFT").intval == 1
+    #assert run_and_pop("0x8000 0xF RSHIFT").intval == 1
 
 def test_lshift():
     assert run_and_pop("1 0 LSHIFT").intval == 1
@@ -163,6 +164,7 @@ def test_mul_star():
 
 def test_bl():
     assert run_and_pop("BL").intval == 32
+    #assert run_and_pop("1 0xF LSHIFT").intval == 0x8000
 
 def test_SDOUBLE_QUOTE():
     str = "Hello, World!"

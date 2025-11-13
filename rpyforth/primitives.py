@@ -141,6 +141,7 @@ def prim_DROP(inner, cur, ip):
     inner.pop_ds()
     return ip
 
+  
 # 2DROP ( x1 x2 -- )
 def prim_2DROP(inner, cur, ip):
     """GForth core 2012: discard the top two stack items."""
@@ -206,6 +207,7 @@ def prim_ROT(inner, cur, ip):
     inner.push_ds(a)
     return ip
 
+
 # MAX ( n1 n2 -- n3 )
 def prim_MAX(inner, cur, ip):
     """GForth core 2012: n3 is the greater of n1 and n2."""
@@ -215,6 +217,7 @@ def prim_MAX(inner, cur, ip):
     else:
         inner.push_ds(a)
     return ip
+
 
 # MIN ( n1 n2 -- n3 )
 def prim_MIN(inner, cur, ip):
@@ -863,6 +866,7 @@ def install_primitives(outer):
 
     outer.define_prim("S>D", prim_S_TO_D)
     outer.define_prim("BL", prim_BL)
+
     # arithmetic
     outer.define_prim("+", prim_ADD)
     outer.define_prim("-", prim_SUB)
