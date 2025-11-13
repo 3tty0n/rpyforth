@@ -1,6 +1,7 @@
-from rpyforth.objects import W_StringObject, CELL_SIZE_BYTES
+from rpyforth.objects import W_StringObject, CELL_SIZE_BYTES, W_IntObject
 from rpyforth.outer_interp import OuterInterpreter
 from rpyforth.inner_interp import InnerInterpreter
+
 
 import pytest
 
@@ -255,3 +256,8 @@ def test_float():
 def test_CHAR():
     assert run_and_pop("CHAR Hello").intval == ord('H')
     assert run_and_pop("CHAR ello").intval == ord('e')
+
+def test_2STORE():
+    inner = run("2VARIABLE buf 10 20 buf 2!")
+    assert inner.cell_fetch(W_IntObject(0)).intval == 10
+    assert inner.cell_fetch(W_IntObject(CELL_SIZE_BYTES)).intval == 20

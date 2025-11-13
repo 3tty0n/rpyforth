@@ -330,6 +330,24 @@ class OuterInterpreter(object):
                    self.define_colon(name, thread)
                    continue
 
+                if tkey == "2VARIABLE":
+                    if i >= toks_len:
+                        print "VARIABLE/FVARIABLE requires a name"
+                        return
+                    name, i = self._read_tok(toks, i)
+
+                    addr = W_IntObject(self.inner.here)
+                    self.inner.here += self.inner.cell_size_bytes
+
+                    addr2 = W_IntObject(self.inner.here)
+                    self.inner.here += self.inner.cell_size_bytes
+
+                    code = [self.wLIT, self.wEXIT]
+                    lits = [addr, ZERO]
+                    thread = CodeThread(code, lits)
+                    self.define_colon(name, thread)
+                    continue
+
                 if tkey == "CONSTANT":
                     if i >= toks_len:
                         print "CONSTANT requires a name"

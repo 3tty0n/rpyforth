@@ -341,6 +341,19 @@ def prim_STORE(inner, cur, ip):
     return ip
 
 
+# ! ( x1 x2 a-addr -- )
+def prim_2STORE(inner, cur, ip):
+    """
+    Store the cell pair x1 x2 at a-addr,
+    with x2 at a-addr and x1 at the next consecutive cell.
+    It is equivalent to the sequence SWAP OVER ! CELL+ !.
+    """
+    addr_obj = inner.pop_ds()
+    w_x2 = inner.pop_ds()
+    w_x1 = inner.pop_ds()
+    inner.cell_2store(addr_obj, w_x1, w_x2)
+    return ip
+
 # @ ( addr -- x )
 def prim_FETCH(inner, cur, ip):
     """GForth core 2012: fetch the cell contents at addr."""
@@ -844,6 +857,7 @@ def install_primitives(outer):
 
     # memory management
     outer.define_prim("!", prim_STORE)
+    outer.define_prim("2!", prim_2STORE)
     outer.define_prim("@", prim_FETCH)
     outer.define_prim("CELL", prim_CELL)
     outer.define_prim("CELL+", prim_CELLPLUS)

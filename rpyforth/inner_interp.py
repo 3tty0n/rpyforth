@@ -127,6 +127,24 @@ class InnerInterpreter(object):
             masked >>= 8
 
     @unroll_safe
+    def cell_2store(self, addr_obj, value_obj, value2_obj):
+        assert isinstance(addr_obj, W_IntObject)
+        assert isinstance(value_obj, W_IntObject)
+        assert isinstance(value2_obj, W_IntObject)
+        addr = intmask(addr_obj.intval)
+        self._ensure_addr(addr, self.cell_size_bytes)
+        masked = value_obj.intval
+        for offset in range(self.cell_size_bytes):
+            self.mem[addr + offset] = masked & 0xFF
+            masked >>= 8
+
+        addr2 = addr + self.cell_size_bytes
+        masked2 = value2_obj.intval
+        for offset in range(self.cell_size_bytes):
+            self.mem[addr2 + offset] = masked2 & 0xFF
+            masked2 >>= 8
+
+    @unroll_safe
     def cell_fetch(self, addr_obj):
         assert isinstance(addr_obj, W_IntObject)
         addr = addr_obj.intval
