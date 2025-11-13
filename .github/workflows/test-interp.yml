@@ -59,4 +59,4 @@ jobs:
 
       - name: Run test
         run: |
-          make test-interp
+          make test

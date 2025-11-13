@@ -1,20 +1,27 @@
-.PHONY: default
-default: build
+PYTHON2 = ./_pypy_binary/bin/python2
+RPYTHON = ./pypy/rpython/bin/rpython
+RPYTHON_ARGS =
+
+TARGET = targetrpyforth
+
+.PHONY: build
+build: build-jit
 
 .PHONY: setup-pypy
 setup-pypy:
 	if [ ! -d pypy ]; then git clone https://github.com/pypy/pypy.git --depth=1; fi
 
+.PHONY: build-interp
+build-interp: _pypy_binary/bin/python setup-pypy
+	PYTHONPATH=. $(PYTHON2) $(RPYTHON) -O2 $(RPYTHON_ARGS) rpyforth/$(TARGET).py
 
-.PHONY: build
-build: _pypy_binary/bin/python setup-pypy
-	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/rpython/bin/rpython -O2 rpyforth/targetrpyforth.py
+.PHONY: build-jit
+build-jit: _pypy_binary/bin/python setup-pypy
+	PYTHONPATH=. $(PYTHON2) $(RPYTHON) -Ojit $(RPYTHON_ARGS) rpyforth/$(TARGET).py
 
-
-.PHONY: test-inerp
-test-interp: _pypy_binary/bin/python setup-pypy
-	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/pytest.py rpyforth/test/test_outer_interp.py -vv -s
-
+.PHONY: test
+test: _pypy_binary/bin/python setup-pypy
+	PYTHONPATH=. ./_pypy_binary/bin/python2 ./pypy/pytest.py rpyforth/test -vv -s
 
 _pypy_binary/bin/python:  ## Download a PyPy binary
 	mkdir -p _pypy_binary

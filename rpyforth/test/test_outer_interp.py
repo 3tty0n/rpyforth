@@ -2,6 +2,8 @@ from rpyforth.objects import W_StringObject, CELL_SIZE_BYTES
 from rpyforth.outer_interp import OuterInterpreter
 from rpyforth.inner_interp import InnerInterpreter
 
+import pytest
+
 def run(line):
     inner = InnerInterpreter()
     outer = OuterInterpreter(inner)
@@ -147,10 +149,10 @@ def test_s_to_d():
 
 def test_mul_star():
     inner = run("1024 4 M*")
-    assert inner.pop_ds().intval == 0  
-    assert inner.pop_ds().intval == 4096 
+    assert inner.pop_ds().intval == 0
+    assert inner.pop_ds().intval == 4096
     inner = run("-1024 4 M*")
-    assert inner.pop_ds().intval == -1  
+    assert inner.pop_ds().intval == -1
     assert inner.pop_ds().intval == -4096
     inner = run("-1024 -4 M*")
     assert inner.pop_ds().intval == 0
@@ -161,3 +163,120 @@ def test_mul_star():
 
 def test_bl():
     assert run_and_pop("BL").intval == 32
+
+def test_SDOUBLE_QUOTE():
+    str = "Hello, World!"
+    inner = run("S\" Hello, World!\"")
+    assert inner.pop_ds().intval == len(str)
+    assert inner.pop_ds().ptrval == len(str) # Cheating!
+
+# Floating point tests
+def test_float_literals():
+    assert run_and_pop("1.0").floatval == 1.0
+    assert run_and_pop("3.14").floatval == 3.14
+    assert run_and_pop("-2.5").floatval == -2.5
+    assert run_and_pop("0.").floatval == 0.0
+
+def test_float_addition():
+    assert run_and_pop("1.0 2.0 F+").floatval == 3.0
+    assert run_and_pop("3.5 2.5 F+").floatval == 6.0
+    assert run_and_pop("-1.5 1.5 F+").floatval == 0.0
+
+def test_float_subtraction():
+    assert run_and_pop("5.0 3.0 F-").floatval == 2.0
+    assert run_and_pop("10.5 2.5 F-").floatval == 8.0
+    assert run_and_pop("1.0 5.0 F-").floatval == -4.0
+
+def test_float_multiplication():
+    assert run_and_pop("3.0 4.0 F*").floatval == 12.0
+    assert run_and_pop("2.5 2.0 F*").floatval == 5.0
+    assert run_and_pop("-2.0 3.0 F*").floatval == -6.0
+
+def test_float_division():
+    assert run_and_pop("10.0 2.0 F/").floatval == 5.0
+    assert run_and_pop("7.0 2.0 F/").floatval == 3.5
+    assert run_and_pop("1.0 4.0 F/").floatval == 0.25
+
+def test_float_comparison():
+    assert run_and_pop("5.0 3.0 F>").intval == -1  # True
+    assert run_and_pop("2.0 8.0 F>").intval == 0   # False
+    assert run_and_pop("3.0 3.0 F>").intval == 0   # False
+
+def test_float_swap():
+    inner = run("1.0 2.0 FSWAP")
+    assert inner.pop_ds().floatval == 1.0
+    assert inner.pop_ds().floatval == 2.0
+
+def test_float_in_colon_def():
+    assert run_and_pop(": CIRCLE-AREA 3.14159 F* ; 5.0 5.0 F* CIRCLE-AREA").floatval == 78.53975
+
+# DO...LOOP tests
+def test_simple_do_loop():
+    # : TEST 10 0 DO I LOOP ; should leave 0-9 on stack
+    inner = run(": TEST 10 0 DO I LOOP ; TEST")
+    results = []
+    for i in range(10):
+        results.append(inner.pop_ds().intval)
+    assert results == list(range(9, -1, -1))  # popped in reverse order
+
+    inner = run(": SUM 0 5 0 DO I + LOOP ; SUM")
+    assert inner.pop_ds().intval == 10
+
+    run(": TEST 10 0 DO I . LOOP ; TEST")
+    assert run_and_pop(": SUM 0 5 0 DO I + LOOP ; SUM").intval == 10
+
+def test_nested_do_loops():
+    inner = run(": NESTED 3 0 DO 3 0 DO I J * LOOP LOOP ; NESTED")
+    expected = [0, 0, 0, 0, 1, 2, 0, 2, 4]
+    results = []
+    for i in range(9):
+        results.append(inner.pop_ds().intval)
+    assert results == expected[::-1]  # reversed because stack
+
+def test_leave_in_loop():
+    inner = run(": EARLY 10 0 DO I DUP 5 = IF LEAVE THEN LOOP ; EARLY")
+    results = []
+    while inner.ds_ptr > 0:
+        results.append(inner.pop_ds().intval)
+    assert results == [5, 4, 3, 2, 1, 0]
+
+def test_compare_op():
+    assert run_and_pop("5 3 >").intval == -1  # True
+    assert run_and_pop("2 8 >").intval == 0   # False
+    assert run_and_pop("3 3 >").intval == 0   # False
+
+    assert run_and_pop("5 3 <").intval == 0
+    assert run_and_pop("2 8 <").intval == -1
+    assert run_and_pop("3 3 <").intval == 0
+
+    assert run_and_pop("5 5 =").intval == -1  # True
+    assert run_and_pop("3 7 =").intval == 0   # False
+    assert run_and_pop("0 0 =").intval == -1  # True
+
+def test_pick():
+    assert run_and_pop("10 20 30 0 PICK").intval == 30
+    assert run_and_pop("10 20 30 1 PICK").intval == 20
+    assert run_and_pop("10 20 30 2 PICK").intval == 10
+
+def test_char_bracket():
+    # [CHAR] A should compile character code for 'A'
+    assert run_and_pop(": TEST [CHAR] A ; TEST").intval == ord('A')
+    assert run_and_pop(": TEST [CHAR] Z ; TEST").intval == ord('Z')
+    assert run_and_pop(": TEST [CHAR] 0 ; TEST").intval == ord('0')
+
+
+def test_float():
+    assert run_and_pop("1.0").floatval == 1.0
+    assert run_and_pop("3.14").floatval == 3.14
+
+    assert run_and_pop("1.0 2.0 F+").floatval == 3.0
+    assert run_and_pop("5.0 3.0 F-").floatval == 2.0
+    assert run_and_pop("3.0 4.0 F*").floatval == 12.0
+    assert run_and_pop("10.0 2.0 F/").floatval == 5.0
+
+    assert run_and_pop("5.0 3.0 F>").intval == -1
+    assert run_and_pop("2.0 8.0 F>").intval == 0
+
+def test_CHAR():
+    assert run_and_pop("CHAR Hello").intval == ord('H')
+    assert run_and_pop("CHAR ello").intval == ord('e')
