@@ -287,4 +287,4 @@ def test_CHAR():
 def test_2STORE():
     inner = run("2VARIABLE buf 10 20 buf 2!")
     assert inner.cell_fetch(W_IntObject(0)).intval == 10
-    assert inner.cell_fetch(W_IntObject(CELL_SIZE_BYTES)).intval == 20
+    assert inner.cell_fetch(W_IntObject(1)).intval == 20
