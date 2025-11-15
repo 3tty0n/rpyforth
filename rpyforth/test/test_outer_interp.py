@@ -287,7 +287,7 @@ def test_CHAR():
 def test_2STORE():
     inner = run("2VARIABLE buf 10 20 buf 2!")
     assert inner.cell_fetch(W_IntObject(0)).intval == 10
-    assert inner.cell_fetch(W_IntObject(1)).intval == 20
+    assert inner.cell_fetch(W_IntObject(CELL_SIZE_BYTES)).intval == 20
 
 def test_s2f():
     """Test S>F (integer to float conversion)"""
@@ -530,3 +530,67 @@ def test_to_body():
     outer.interpret_line("MYVAR")
     var_addr = inner.pop_ds()
     assert body_addr.intval == var_addr.intval
+
+# Source Input Tests
+
+def test_source():
+    """Test SOURCE - returns current input buffer"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    test_line = "1 2 3 SOURCE"
+    outer.interpret_line(test_line)
+    # SOURCE pushes ( c-addr u )
+    u = inner.pop_ds()
+    caddr = inner.pop_ds()
+    # Should return the length of the line
+    assert isinstance(u, W_IntObject)
+    assert u.intval == len(test_line)
+
+def test_to_in():
+    """Test >IN - returns address of parse position variable"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line(">IN")
+    addr = inner.pop_ds()
+    assert isinstance(addr, W_IntObject)
+    # The address should contain the parse position
+    pos = inner.cell_fetch(addr)
+    assert isinstance(pos, W_IntObject)
+    # Initial position should be 0
+    assert pos.intval == 0
+
+# Special Tests
+
+def test_tick():
+    """Test ' (tick) - get execution token of next word"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("' DUP")
+    xt = inner.pop_ds()
+    assert isinstance(xt, W_WordObject)
+    assert xt.word.name == "DUP"
+
+def test_paren_comment():
+    """Test ( (paren) - comment word"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # The parenthetical comment should be ignored
+    outer.interpret_line("1 ( this is a comment ) 2")
+    val2 = inner.pop_ds()
+    val1 = inner.pop_ds()
+    assert val1.intval == 1
+    assert val2.intval == 2
+
+def test_tick_execute():
+    """Test ' (tick) with EXECUTE"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("' DUP")
+    xt = inner.pop_ds()
+    inner.push_ds(W_IntObject(42))
+    inner.push_ds(xt)
+    outer.interpret_line("EXECUTE")
+    val2 = inner.pop_ds()
+    val1 = inner.pop_ds()
+    assert val1.intval == 42
+    assert val2.intval == 42

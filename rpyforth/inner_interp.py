@@ -120,8 +120,11 @@ class InnerInterpreter(object):
         assert isinstance(addr_obj, W_IntObject)
         assert isinstance(value_obj, W_IntObject)
         addr = intmask(addr_obj.intval)
-        masked = intmask(value_obj.intval)
-        self.mem[addr] = masked
+        self._ensure_addr(addr, self.cell_size_bytes)
+        masked = value_obj.intval
+        for offset in range(self.cell_size_bytes):
+            self.mem[addr + offset] = masked & 0xFF
+            masked >>= 8
 
     @unroll_safe
     def cell_2store(self, addr_obj, value_obj, value2_obj):
@@ -130,20 +133,30 @@ class InnerInterpreter(object):
         assert isinstance(value2_obj, W_IntObject)
         addr = intmask(addr_obj.intval)
         self._ensure_addr(addr, self.cell_size_bytes)
-        masked = intmask(value_obj.intval)
-        self.mem[addr] = masked
+        masked = value_obj.intval
+        for offset in range(self.cell_size_bytes):
+            self.mem[addr + offset] = masked & 0xFF
+            masked >>= 8
 
-        addr2 = addr + 1
-        masked2 = intmask(value2_obj.intval)
-        self.mem[addr2] = masked2
+        addr2 = addr + self.cell_size_bytes
+        masked2 = value2_obj.intval
+        for offset in range(self.cell_size_bytes):
+            self.mem[addr2 + offset] = masked2 & 0xFF
+            masked2 >>= 8
 
     @unroll_safe
     def cell_fetch(self, addr_obj):
         assert isinstance(addr_obj, W_IntObject)
         addr = addr_obj.intval
         self._ensure_addr(addr, self.cell_size_bytes)
-        intval = self.mem[addr]
-        return W_IntObject(intval)
+        accum = 0
+        for offset in range(self.cell_size_bytes):
+            accum |= self.mem[addr + offset] << (8 * offset)
+        top_byte = self.mem[addr + self.cell_size_bytes - 1]
+        if top_byte & 0x80:
+            sign_adjust = 1 << (self.cell_size_bytes * 8)
+            accum -= sign_adjust
+        return W_IntObject(accum)
 
     @unroll_safe
     def float_store(self, addr_obj, value_obj):
@@ -156,7 +169,9 @@ class InnerInterpreter(object):
         # float_pack returns an r_ulonglong representing the IEEE 754 bits
         packed = float_pack(value_obj.floatval, 8)
         # Store the bytes in little-endian order
-        self.mem[addr] = packed
+        for offset in range(float_size):
+            byte_val = intmask((packed >> (offset * 8)) & 0xFF)
+            self.mem[addr + offset] = byte_val
 
     @unroll_safe
     def float_fetch(self, addr_obj):
@@ -166,7 +181,10 @@ class InnerInterpreter(object):
         float_size = 8  # 64-bit float
         self._ensure_addr(addr, float_size)
         # Read bytes and reconstruct the r_ulonglong
-        packed = self.mem[addr]
+        packed = r_ulonglong(0)
+        for offset in range(float_size):
+            byte_val = r_ulonglong(self.mem[addr + offset])
+            packed |= byte_val << (offset * 8)
         # float_unpack takes an r_ulonglong and returns a float
         floatval = float_unpack(packed, 8)
         return W_FloatObject(floatval)
