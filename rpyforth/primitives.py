@@ -602,23 +602,39 @@ def prim_NUMSIGN(inner, cur, ip):
     return ip
 
 
-# #S ( ud -- 0 )
+# #S ( ud -- ud )
 @unroll_safe
 def prim_NUMSIGN_S(inner, cur, ip):
-    """GForth core 2012: convert remaining digits during pictured numeric output."""
+    """GForth core 2012: convert all remaining digits during pictured numeric output."""
     if not inner._pno_active:
         inner.print_str(W_StringObject("#S outside <# #>"))
         return ip
-    while True:
-        x = inner.pop_ds()
-        assert isinstance(x, W_IntObject)
-        base = inner.base.intval
-        q = x.getvalue() // base
-        r = x.getvalue() % base
-        inner._pno_buf.insert(0, digit_to_char(r))
-        inner.push_ds(W_IntObject(q))
-        if q == 0:
-            break
+
+    # Pop double-cell number (d.lo d.hi) where d.hi is on top
+    hi = inner.pop_ds()
+    lo = inner.pop_ds()
+    assert isinstance(hi, W_IntObject)
+    assert isinstance(lo, W_IntObject)
+
+    # For simplified implementation, use the low-order cell
+    # (assumes the number fits in single cell)
+    value = lo.getvalue()
+
+    base = inner.base.intval
+    # Convert all remaining digits
+    if value == 0:
+        # At least one digit for zero
+        inner._pno_buf.insert(0, digit_to_char(0))
+    else:
+        while value > 0:
+            q = value // base
+            r = value % base
+            inner._pno_buf.insert(0, digit_to_char(r))
+            value = q
+
+    # Push double-cell zero (0 0)
+    inner.push_ds(W_IntObject(0))
+    inner.push_ds(W_IntObject(0))
     return ip
 
 
@@ -631,6 +647,20 @@ def prim_HOLD(inner, cur, ip):
     ch = inner.pop_ds()
     assert isinstance(ch, W_IntObject)
     inner._pno_buf.insert(0, chr(ch.getvalue()))
+    return ip
+
+
+# SIGN ( n -- )
+def prim_SIGN(inner, cur, ip):
+    """GForth core 2012: add a minus sign to pictured numeric output if n is negative."""
+    if not inner._pno_active:
+        inner.print_str(W_StringObject("SIGN outside <# #>"))
+        return ip
+    n = inner.pop_ds()
+    assert isinstance(n, W_IntObject)
+    if n.intval < 0:
+        # Append to put the sign at the end (left side of the final string)
+        inner._pno_buf.append('-')
     return ip
 
 
@@ -1155,6 +1185,7 @@ def install_primitives(outer):
     outer.define_prim("#S", prim_NUMSIGN_S)
     outer.define_prim("#>", prim_NUMGREATER)
     outer.define_prim("HOLD", prim_HOLD)
+    outer.define_prim("SIGN", prim_SIGN)
 
     outer.define_prim("TYPE", prim_TYPE)  # for testing output
 

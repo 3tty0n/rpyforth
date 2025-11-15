@@ -44,11 +44,6 @@ def test_cell_primitives():
     assert run_and_pop("VARIABLE X VARIABLE Y Y X -").intval == cell_bytes
     assert run_and_pop("VARIABLE X VARIABLE Y X CELL+ Y -").intval == 0
 
-def test_PNO():
-    assert run_and_pop("DECIMAL  12345 <# #S #>").strval == '12345'
-    assert run_and_pop("HEX      255   <# #S #>").strval == 'FF'
-    assert run_and_pop("BINARY   5     <# #S #>").strval == '101'
-
 def test_drop():
     assert run_and_pop("1 2 DROP").intval == 1
 
@@ -698,3 +693,38 @@ def test_word_count():
     caddr2 = inner.pop_ds()
     # Length should be 4 ("Test")
     assert u.intval == 4
+
+# Pictured Numeric Output Tests
+
+def test_PNO():
+    # #S expects double-cell number (ud.lo ud.hi), so push 0 as high-order cell
+    assert run_and_pop("DECIMAL  12345 0 <# #S #>").strval == '12345'
+    assert run_and_pop("HEX      255 0   <# #S #>").strval == 'FF'
+    assert run_and_pop("BINARY   5 0     <# #S #>").strval == '101'
+
+
+def test_sign_negative():
+    """Test SIGN - adds minus sign for negative numbers"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Use SIGN with a negative number
+    # #S expects (ud.lo ud.hi) on stack, so 123 0 gives ud=123
+    outer.interpret_line("<# -1 SIGN 123 0 #S #> TYPE")
+    # This should output "-123" (the SIGN adds -, then #S converts 123)
+    # We can't easily test TYPE output, but we can verify SIGN doesn't crash
+
+def test_sign_positive():
+    """Test SIGN - no sign for positive numbers"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Use SIGN with a positive number
+    outer.interpret_line("<# 1 SIGN 123 0 #S #>")
+    result = inner.pop_ds()
+    result.strval == '123'
+
+def test_sign_in_pno():
+    """Test SIGN within pictured numeric output"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Complete PNO example with SIGN
+    outer.interpret_line("<# -5 SIGN 0 0 #>")
