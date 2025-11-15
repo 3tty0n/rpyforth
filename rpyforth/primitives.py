@@ -766,6 +766,65 @@ def prim_FSWAP(inner, cur, ip):
     return ip
 
 
+# Return Stack Operations
+
+# >R ( x -- ) ( R: -- x )
+def prim_TORETURN(inner, cur, ip):
+    """GForth core 2012: move x from data stack to return stack."""
+    x = inner.pop_ds()
+    inner.push_rs(x)
+    return ip
+
+
+# R> ( -- x ) ( R: x -- )
+def prim_FROMRETURN(inner, cur, ip):
+    """GForth core 2012: move x from return stack to data stack."""
+    x = inner.pop_rs()
+    inner.push_ds(x)
+    return ip
+
+
+# R@ ( -- x ) ( R: x -- x )
+def prim_RFETCH(inner, cur, ip):
+    """GForth core 2012: copy x from top of return stack to data stack."""
+    x = inner.pop_rs()
+    inner.push_rs(x)
+    inner.push_ds(x)
+    return ip
+
+
+# 2>R ( x1 x2 -- ) ( R: -- x1 x2 )
+def prim_2TORETURN(inner, cur, ip):
+    """GForth core 2012: move x1 and x2 from data stack to return stack."""
+    x2 = inner.pop_ds()
+    x1 = inner.pop_ds()
+    inner.push_rs(x1)
+    inner.push_rs(x2)
+    return ip
+
+
+# 2R> ( -- x1 x2 ) ( R: x1 x2 -- )
+def prim_2FROMRETURN(inner, cur, ip):
+    """GForth core 2012: move x1 and x2 from return stack to data stack."""
+    x2 = inner.pop_rs()
+    x1 = inner.pop_rs()
+    inner.push_ds(x1)
+    inner.push_ds(x2)
+    return ip
+
+
+# 2R@ ( -- x1 x2 ) ( R: x1 x2 -- x1 x2 )
+def prim_2RFETCH(inner, cur, ip):
+    """GForth core 2012: copy x1 and x2 from top of return stack to data stack."""
+    x2 = inner.pop_rs()
+    x1 = inner.pop_rs()
+    inner.push_rs(x1)
+    inner.push_rs(x2)
+    inner.push_ds(x1)
+    inner.push_ds(x2)
+    return ip
+
+
 # Stack manipulation
 
 # PICK ( xu ... x1 x0 u -- xu ... x1 x0 xu )
@@ -949,6 +1008,14 @@ def install_primitives(outer):
 
     # stack manipulation
     outer.define_prim("PICK", prim_PICK)
+
+    # return stack
+    outer.define_prim(">R", prim_TORETURN)
+    outer.define_prim("R>", prim_FROMRETURN)
+    outer.define_prim("R@", prim_RFETCH)
+    outer.define_prim("2>R", prim_2TORETURN)
+    outer.define_prim("2R>", prim_2FROMRETURN)
+    outer.define_prim("2R@", prim_2RFETCH)
 
     # comparison
     outer.define_prim("=", prim_EQUAL)
