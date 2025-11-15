@@ -36,6 +36,10 @@ class OuterInterpreter(object):
         self.comment = False
         self.current_name = ''
 
+        # Input source tracking for SOURCE and >IN
+        self.source_buffer = ''  # Current input line
+        self.source_index = 0    # Current parse position (>IN)
+
         self.reset_code()
 
         self.ctrl = []         # control stack at compilation
@@ -191,6 +195,10 @@ class OuterInterpreter(object):
 
     # main outer interpreter
     def interpret_line(self, line):
+        # Store the source line for SOURCE word
+        self.source_buffer = line
+        self.source_index = 0
+
         toks = split_whitespace(line)
         toks_len = len(toks)
         i = 0
@@ -429,6 +437,50 @@ class OuterInterpreter(object):
                         self.inner.push_ds(w_caddr)
                         self.inner.push_ds(w_u)
                         self.inner.push_ds(ZERO)
+                    continue
+
+                if tkey == "SOURCE":
+                    # SOURCE ( -- c-addr u )
+                    # Return address and length of current input buffer
+                    size = len(self.source_buffer)
+                    c_addr = self.inner.alloc_buf(self.source_buffer, size)
+                    self.inner.push_ds(c_addr)
+                    self.inner.push_ds(W_IntObject(size))
+                    continue
+
+                if tkey == ">IN":
+                    # >IN ( -- a-addr )
+                    # Return address of variable containing parse position
+                    # For simplicity, we'll allocate a cell and store the current index
+                    addr = W_IntObject(self.inner.here)
+                    self.inner.cell_store(addr, W_IntObject(self.source_index))
+                    self.inner.push_ds(addr)
+                    continue
+
+                if tkey == "'":
+                    # ' (tick) ( "<spaces>name" -- xt )
+                    # Parse next word and return its execution token
+                    if i >= toks_len:
+                        print "' requires a following word"
+                        continue
+                    name, i = self._read_tok(toks, i)
+                    name_upper = to_upper(name)
+                    if name_upper in self.dict:
+                        word = self.dict[name_upper]
+                        xt = W_WordObject(word)
+                        self.inner.push_ds(xt)
+                    else:
+                        print "' cannot find word:", name
+                    continue
+
+                if tkey == "(":
+                    # ( (paren) - comment, skip until )
+                    # Note: This is usually preprocessed by remove_comments,
+                    # but we provide it here for completeness
+                    while i < toks_len:
+                        tok, i = self._read_tok(toks, i)
+                        if ')' in tok:
+                            break
                     continue
 
             if self.state == COMPILE:
