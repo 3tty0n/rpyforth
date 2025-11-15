@@ -11,6 +11,7 @@ from rpyforth.objects import (
     W_IntObject,
     W_StringObject,
     W_FloatObject,
+    W_WordObject,
     CELL_SIZE,
     LONG_BIT,
 )
@@ -894,6 +895,76 @@ def prim_FDUP(inner, cur, ip):
     return ip
 
 
+# Dictionary Operations
+
+# EXECUTE ( xt -- )
+def prim_EXECUTE(inner, cur, ip):
+    """GForth core 2012: execute the execution token xt."""
+    xt = inner.pop_ds()
+    assert isinstance(xt, W_WordObject)
+    word = xt.word
+    inner.execute_word_now(word)
+    return ip
+
+
+# >BODY ( xt -- a-addr )
+def prim_TOBODY(inner, cur, ip):
+    """GForth core 2012: return the parameter field address corresponding to xt."""
+    xt = inner.pop_ds()
+    assert isinstance(xt, W_WordObject)
+    word = xt.word
+    # For words created with CREATE, VARIABLE, CONSTANT, etc.,
+    # the body is in the first literal of the code thread
+    if word.thread is not None and len(word.thread.lits) > 0:
+        body = word.thread.lits[0]
+        inner.push_ds(body)
+    else:
+        # For primitive words, there's no body
+        # Push 0 or raise an error
+        inner.push_ds(W_IntObject(0))
+    return ip
+
+
+# Data Space Operations
+
+# HERE ( -- addr )
+def prim_HERE(inner, cur, ip):
+    """GForth core 2012: return the address of the next available data space location."""
+    inner.push_ds(W_IntObject(inner.here))
+    return ip
+
+
+# , ( x -- )
+def prim_COMMA(inner, cur, ip):
+    """GForth core 2012: reserve one cell of data space and store x in it."""
+    x = inner.pop_ds()
+    addr = W_IntObject(inner.here)
+    inner.cell_store(addr, x)
+    inner.here += inner.cell_size_bytes
+    return ip
+
+
+# C, ( char -- )
+def prim_C_COMMA(inner, cur, ip):
+    """GForth core 2012: reserve one character of data space and store char in it."""
+    char = inner.pop_ds()
+    assert isinstance(char, W_IntObject)
+    # For simplicity, we'll use cell_store but only increment by 1 byte
+    addr = W_IntObject(inner.here)
+    inner.cell_store(addr, char)
+    inner.here += 1
+    return ip
+
+
+# ALLOT ( n -- )
+def prim_ALLOT(inner, cur, ip):
+    """GForth core 2012: reserve n address units of data space."""
+    n = inner.pop_ds()
+    assert isinstance(n, W_IntObject)
+    inner.here += n.intval
+    return ip
+
+
 # Comparison
 
 # = ( x1 x2 -- flag )
@@ -1016,6 +1087,16 @@ def install_primitives(outer):
     outer.define_prim("2>R", prim_2TORETURN)
     outer.define_prim("2R>", prim_2FROMRETURN)
     outer.define_prim("2R@", prim_2RFETCH)
+
+    # dictionary
+    outer.define_prim("EXECUTE", prim_EXECUTE)
+    outer.define_prim(">BODY", prim_TOBODY)
+
+    # data space
+    outer.define_prim("HERE", prim_HERE)
+    outer.define_prim(",", prim_COMMA)
+    outer.define_prim("C,", prim_C_COMMA)
+    outer.define_prim("ALLOT", prim_ALLOT)
 
     # comparison
     outer.define_prim("=", prim_EQUAL)

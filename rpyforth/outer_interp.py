@@ -1,5 +1,5 @@
 from rpyforth.objects import (
-    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, W_FloatObject, ZERO)
+    W_StringObject, Word, CodeThread, W_IntObject, W_PtrObject, W_FloatObject, W_WordObject, ZERO, TRUE)
 from rpyforth.primitives import install_primitives
 from rpyforth.util import to_upper, split_whitespace
 
@@ -372,6 +372,63 @@ class OuterInterpreter(object):
                     lits = [val, ZERO]
                     thread = CodeThread(code, lits)
                     self.define_colon(name, thread)
+                    continue
+
+                if tkey == "CREATE":
+                    if i >= toks_len:
+                        print "CREATE requires a name"
+                        return
+                    name, i = self._read_tok(toks, i)
+
+                    # Allocate data space for the body
+                    addr = W_IntObject(self.inner.here)
+                    # Don't increment here yet - let user use ALLOT or , to allocate
+
+                    # Create a word that pushes the body address
+                    code = [self.wLIT, self.wEXIT]
+                    lits = [addr, ZERO]
+                    thread = CodeThread(code, lits)
+                    self.define_colon(name, thread)
+                    continue
+
+                if tkey == "FIND":
+                    # FIND ( c-addr u -- c-addr 0 | xt 1 | xt -1 )
+                    # Expects ( c-addr u ) format from S"
+                    w_u = self.inner.pop_ds()
+                    w_caddr = self.inner.pop_ds()
+
+                    # Extract string from buffer
+                    if isinstance(w_caddr, W_PtrObject):
+                        ptr = w_caddr.ptrval
+                        length = w_u.intval
+                        # Reconstruct string from buffer
+                        name = ''.join([self.inner.buf[ptr - length + i] for i in range(length)])
+                    elif isinstance(w_caddr, W_StringObject):
+                        # Also support W_StringObject for convenience
+                        name = w_caddr.strval
+                    else:
+                        # Unexpected type, push back and return 0
+                        self.inner.push_ds(w_caddr)
+                        self.inner.push_ds(w_u)
+                        self.inner.push_ds(ZERO)
+                        continue
+
+                    name_upper = to_upper(name)
+
+                    if name_upper in self.dict:
+                        word = self.dict[name_upper]
+                        xt = W_WordObject(word)
+                        self.inner.push_ds(xt)
+                        # Push 1 if not immediate, -1 if immediate
+                        if word.immediate:
+                            self.inner.push_ds(TRUE)  # -1 for immediate
+                        else:
+                            self.inner.push_ds(W_IntObject(1))  # 1 for non-immediate
+                    else:
+                        # Word not found, push string back and 0
+                        self.inner.push_ds(w_caddr)
+                        self.inner.push_ds(w_u)
+                        self.inner.push_ds(ZERO)
                     continue
 
             if self.state == COMPILE:

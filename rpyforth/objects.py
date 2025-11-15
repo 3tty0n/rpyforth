@@ -257,6 +257,27 @@ class W_FloatObject(W_Object):
         assert isinstance(other, W_FloatObject)
         return self.floatval > other.floatval
 
+
+class W_WordObject(W_Object):
+    """Wrapper for Word objects to use as execution tokens."""
+    _immutable_fields_ = ['word']
+
+    def __init__(self, word):
+        W_Object.__init__(self)
+        self.word = word  # Word instance
+
+    def __repr__(self):
+        return self.to_string()
+
+    @elidable
+    def to_string(self):
+        return "<XT:%s>" % self.word.name
+
+    @elidable
+    def getvalue(self):
+        return self.word
+
+
 ZERO = W_IntObject(0)
 TRUE = W_IntObject(-1)
 

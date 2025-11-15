@@ -1,4 +1,4 @@
-from rpyforth.objects import W_StringObject, CELL_SIZE_BYTES, W_IntObject, W_FloatObject
+from rpyforth.objects import W_StringObject, CELL_SIZE_BYTES, W_IntObject, W_FloatObject, W_WordObject
 from rpyforth.outer_interp import OuterInterpreter
 from rpyforth.inner_interp import InnerInterpreter
 
@@ -404,3 +404,129 @@ def test_return_stack_complex():
     assert result1.intval == 3
     assert result2.intval == 2
     assert result3.intval == 1
+
+# Data Space Tests
+
+def test_here():
+    """Test HERE - return current data space pointer"""
+    inner = run("HERE")
+    addr1 = inner.pop_ds()
+    assert isinstance(addr1, W_IntObject)
+    # HERE should return a valid address
+    assert addr1.intval >= 0
+
+def test_comma():
+    """Test , (comma) - store value at HERE and increment"""
+    inner = run("HERE  42 ,  HERE")
+    addr2 = inner.pop_ds()
+    addr1 = inner.pop_ds()
+    assert isinstance(addr1, W_IntObject)
+    assert isinstance(addr2, W_IntObject)
+    # addr2 should be addr1 + cell_size_bytes
+    assert addr2.intval == addr1.intval + inner.cell_size_bytes
+    # Check that 42 was stored at addr1
+    stored_val = inner.cell_fetch(addr1)
+    assert stored_val.intval == 42
+
+def test_c_comma():
+    """Test C, - store character at HERE and increment by 1"""
+    inner = run("HERE  65 C,  HERE")
+    addr2 = inner.pop_ds()
+    addr1 = inner.pop_ds()
+    assert isinstance(addr1, W_IntObject)
+    assert isinstance(addr2, W_IntObject)
+    # addr2 should be addr1 + 1
+    assert addr2.intval == addr1.intval + 1
+
+def test_allot():
+    """Test ALLOT - allocate n address units"""
+    inner = run("HERE  10 ALLOT  HERE")
+    addr2 = inner.pop_ds()
+    addr1 = inner.pop_ds()
+    assert isinstance(addr1, W_IntObject)
+    assert isinstance(addr2, W_IntObject)
+    # addr2 should be addr1 + 10
+    assert addr2.intval == addr1.intval + 10
+
+# Dictionary Tests
+
+def test_create():
+    """Test CREATE - create a new word with data field"""
+    result = run_and_pop("CREATE MYDATA  MYDATA")
+    # MYDATA should push its address
+    assert isinstance(result, W_IntObject)
+    assert result.intval >= 0
+
+def test_create_with_comma():
+    """Test CREATE with , to store data"""
+    result = run_and_pop("CREATE MYVAR  123 ,  456 ,  MYVAR")
+    # MYVAR should push its address
+    addr = result
+    # We need to access the inner interpreter to fetch values
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("CREATE MYVAR2  123 ,  456 ,  MYVAR2")
+    addr = inner.pop_ds()
+    # Fetch the first value
+    val1 = inner.cell_fetch(addr)
+    assert val1.intval == 123
+    # Fetch the second value
+    addr2 = W_IntObject(addr.intval + CELL_SIZE_BYTES)
+    val2 = inner.cell_fetch(addr2)
+    assert val2.intval == 456
+
+def test_find():
+    """Test FIND - find a word in the dictionary"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line('S" DUP"')
+    outer.interpret_line("FIND")
+    flag = inner.pop_ds()
+    xt = inner.pop_ds()
+    assert isinstance(flag, W_IntObject)
+    assert isinstance(xt, W_WordObject)
+    assert xt.word.name == "DUP"
+    assert flag.intval == 1
+
+def test_find_not_found():
+    """Test FIND with non-existent word"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line('S" NOTAWORD"')
+    outer.interpret_line("FIND")
+    flag = inner.pop_ds()
+    u = inner.pop_ds()
+    caddr = inner.pop_ds()
+    assert flag.intval == 0
+
+def test_execute():
+    """Test EXECUTE - execute an execution token"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line('S" DUP"')
+    outer.interpret_line("FIND")
+    flag = inner.pop_ds()
+    xt = inner.pop_ds()
+    inner.push_ds(W_IntObject(42))
+    inner.push_ds(xt)
+    outer.interpret_line("EXECUTE")
+    val2 = inner.pop_ds()
+    val1 = inner.pop_ds()
+    assert val1.intval == 42
+    assert val2.intval == 42
+
+def test_to_body():
+    """Test >BODY - get body address from execution token"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("VARIABLE MYVAR")
+    outer.interpret_line('S" MYVAR"')
+    outer.interpret_line("FIND")
+    flag = inner.pop_ds()
+    xt = inner.pop_ds()
+    inner.push_ds(xt)
+    outer.interpret_line(">BODY")
+    body_addr = inner.pop_ds()
+    outer.interpret_line("MYVAR")
+    var_addr = inner.pop_ds()
+    assert body_addr.intval == var_addr.intval
