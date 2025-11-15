@@ -142,7 +142,7 @@ def prim_DROP(inner, cur, ip):
     inner.pop_ds()
     return ip
 
-  
+
 # 2DROP ( x1 x2 -- )
 def prim_2DROP(inner, cur, ip):
     """GForth core 2012: discard the top two stack items."""
@@ -925,6 +925,103 @@ def prim_TOBODY(inner, cur, ip):
     return ip
 
 
+# Memory Access Operations (additional)
+
+# +! ( n|u a-addr -- )
+def prim_PLUSSTORE(inner, cur, ip):
+    """GForth core 2012: add n to the value stored at a-addr."""
+    addr_obj = inner.pop_ds()
+    n = inner.pop_ds()
+    assert isinstance(addr_obj, W_IntObject)
+    assert isinstance(n, W_IntObject)
+    # Fetch current value, add n, store back
+    current = inner.cell_fetch(addr_obj)
+    assert isinstance(current, W_IntObject)
+    new_val = W_IntObject(current.intval + n.intval)
+    inner.cell_store(addr_obj, new_val)
+    return ip
+
+
+# 2@ ( a-addr -- x1 x2 )
+def prim_2FETCH(inner, cur, ip):
+    """GForth core 2012: fetch the cell pair stored at a-addr."""
+    addr_obj = inner.pop_ds()
+    assert isinstance(addr_obj, W_IntObject)
+    # Actual storage from cell_2store: x1 at addr, x2 at addr+cell
+    x1 = inner.cell_fetch(addr_obj)
+    addr2 = W_IntObject(addr_obj.intval + inner.cell_size_bytes)
+    x2 = inner.cell_fetch(addr2)
+    # Push x1 first, then x2 to get stack ( x1 x2 )
+    inner.push_ds(x1)
+    inner.push_ds(x2)
+    return ip
+
+
+# C! ( char c-addr -- )
+def prim_C_STORE(inner, cur, ip):
+    """GForth core 2012: store char at c-addr."""
+    addr_obj = inner.pop_ds()
+    char = inner.pop_ds()
+    assert isinstance(addr_obj, W_IntObject)
+    assert isinstance(char, W_IntObject)
+    # Store just the character (we'll use cell_store for simplicity)
+    inner.cell_store(addr_obj, char)
+    return ip
+
+
+# C@ ( c-addr -- char )
+def prim_C_FETCH(inner, cur, ip):
+    """GForth core 2012: fetch the character stored at c-addr."""
+    addr_obj = inner.pop_ds()
+    assert isinstance(addr_obj, W_IntObject)
+    char = inner.cell_fetch(addr_obj)
+    inner.push_ds(char)
+    return ip
+
+
+# CHAR+ ( c-addr1 -- c-addr2 )
+def prim_CHAR_PLUS(inner, cur, ip):
+    """GForth core 2012: add the size of a character to c-addr1."""
+    addr = inner.pop_ds()
+    assert isinstance(addr, W_IntObject)
+    # In our implementation, characters are 1 byte
+    inner.push_ds(W_IntObject(addr.intval + 1))
+    return ip
+
+
+# CHARS ( n1 -- n2 )
+def prim_CHARS(inner, cur, ip):
+    """GForth core 2012: convert n1 characters to address units."""
+    n = inner.pop_ds()
+    assert isinstance(n, W_IntObject)
+    # In our implementation, 1 char = 1 address unit
+    inner.push_ds(n)
+    return ip
+
+
+# ALIGN ( -- )
+def prim_ALIGN(inner, cur, ip):
+    """GForth core 2012: align the data-space pointer."""
+    # Align to cell boundary
+    remainder = inner.here % inner.cell_size_bytes
+    if remainder != 0:
+        inner.here += (inner.cell_size_bytes - remainder)
+    return ip
+
+
+# ALIGNED ( addr -- a-addr )
+def prim_ALIGNED(inner, cur, ip):
+    """GForth core 2012: return the aligned address."""
+    addr = inner.pop_ds()
+    assert isinstance(addr, W_IntObject)
+    addr_val = addr.intval
+    remainder = addr_val % inner.cell_size_bytes
+    if remainder != 0:
+        addr_val += (inner.cell_size_bytes - remainder)
+    inner.push_ds(W_IntObject(addr_val))
+    return ip
+
+
 # Data Space Operations
 
 # HERE ( -- addr )
@@ -951,6 +1048,7 @@ def prim_C_COMMA(inner, cur, ip):
     assert isinstance(char, W_IntObject)
     # For simplicity, we'll use cell_store but only increment by 1 byte
     addr = W_IntObject(inner.here)
+    assert isinstance(char, W_IntObject)
     inner.cell_store(addr, char)
     inner.here += 1
     return ip
@@ -1035,6 +1133,14 @@ def install_primitives(outer):
     outer.define_prim("CELL", prim_CELL)
     outer.define_prim("CELL+", prim_CELLPLUS)
     outer.define_prim("CELLS", prim_CELLS)
+    outer.define_prim("+!", prim_PLUSSTORE)
+    outer.define_prim("2@", prim_2FETCH)
+    outer.define_prim("C!", prim_C_STORE)
+    outer.define_prim("C@", prim_C_FETCH)
+    outer.define_prim("CHAR+", prim_CHAR_PLUS)
+    outer.define_prim("CHARS", prim_CHARS)
+    outer.define_prim("ALIGN", prim_ALIGN)
+    outer.define_prim("ALIGNED", prim_ALIGNED)
 
     # BASE
     outer.define_prim("BASE@", prim_BASE_FETCH)

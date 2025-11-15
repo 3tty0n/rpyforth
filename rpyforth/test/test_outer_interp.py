@@ -594,3 +594,107 @@ def test_tick_execute():
     val1 = inner.pop_ds()
     assert val1.intval == 42
     assert val2.intval == 42
+
+# Memory Access Tests
+
+def test_plusstore():
+    """Test +! - add to memory location"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("VARIABLE X  10 X !  5 X +!  X @")
+    result = inner.pop_ds()
+    assert result.intval == 15
+
+def test_2fetch():
+    """Test 2@ - fetch cell pair"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("2VARIABLE BUF  10 20 BUF 2!  BUF 2@")
+    x2 = inner.pop_ds()
+    x1 = inner.pop_ds()
+    assert x1.intval == 10
+    assert x2.intval == 20
+
+def test_c_store_fetch():
+    """Test C! and C@ - character store and fetch"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("VARIABLE CBUF  65 CBUF C!  CBUF C@")
+    result = inner.pop_ds()
+    assert result.intval == 65
+
+def test_char_plus():
+    """Test CHAR+ - increment address by character size"""
+    result = run_and_pop("10 CHAR+")
+    assert result.intval == 11
+
+def test_chars():
+    """Test CHARS - convert character count to address units"""
+    result = run_and_pop("5 CHARS")
+    assert result.intval == 5
+
+def test_align():
+    """Test ALIGN - align data space pointer"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Set HERE to unaligned position
+    outer.interpret_line("HERE  1 C,  ALIGN  HERE")
+    here_after = inner.pop_ds()
+    here_before = inner.pop_ds()
+    # After ALIGN, HERE should be aligned to cell boundary
+    assert here_after.intval % CELL_SIZE_BYTES == 0
+
+def test_aligned():
+    """Test ALIGNED - return aligned address"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    outer.interpret_line("1 ALIGNED")
+    result = inner.pop_ds()
+    # Should be aligned to cell boundary
+    assert result.intval % CELL_SIZE_BYTES == 0
+
+# Parsing Tests
+
+def test_count():
+    """Test COUNT - convert counted string to addr/len"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Create a counted string manually
+    # Store length 3 at HERE
+    outer.interpret_line("HERE  3 ,")
+    addr = inner.pop_ds()
+    # Store characters 'A', 'B', 'C'
+    outer.interpret_line("65 C,  66 C,  67 C,")
+    # Now use COUNT on the counted string address
+    inner.push_ds(addr)
+    outer.interpret_line("COUNT")
+    u = inner.pop_ds()
+    caddr2 = inner.pop_ds()
+    # Length should be 3
+    assert u.intval == 3
+    # caddr2 should be addr + cell_size (skipping the count cell)
+    assert caddr2.intval == addr.intval + CELL_SIZE_BYTES
+
+def test_word():
+    """Test WORD - parse word delimited by character"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Parse a word delimited by space (32)
+    # Use separate calls to avoid "World" being executed
+    outer.interpret_line("32 WORD Hello")
+    caddr = inner.pop_ds()
+    # caddr points to counted string
+    # Fetch the length
+    length = inner.cell_fetch(caddr)
+    assert length.intval == 5  # "Hello"
+
+def test_word_count():
+    """Test WORD with COUNT"""
+    inner = InnerInterpreter()
+    outer = OuterInterpreter(inner)
+    # Parse a word and use COUNT to get addr/len
+    outer.interpret_line("32 WORD Test COUNT")
+    u = inner.pop_ds()
+    caddr2 = inner.pop_ds()
+    # Length should be 4 ("Test")
+    assert u.intval == 4

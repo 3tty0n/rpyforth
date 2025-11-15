@@ -483,6 +483,49 @@ class OuterInterpreter(object):
                             break
                     continue
 
+                if tkey == "COUNT":
+                    # COUNT ( c-addr1 -- c-addr2 u )
+                    # Convert counted string to ( addr len ) format
+                    # In our implementation, count is stored in a full cell
+                    c_addr1 = self.inner.pop_ds()
+                    assert isinstance(c_addr1, W_IntObject)
+                    # Fetch the count (stored in a cell)
+                    count = self.inner.cell_fetch(c_addr1)
+                    assert isinstance(count, W_IntObject)
+                    # c-addr2 is c-addr1 + cell_size (skip the count cell)
+                    c_addr2 = W_IntObject(c_addr1.intval + self.inner.cell_size_bytes)
+                    self.inner.push_ds(c_addr2)
+                    self.inner.push_ds(count)
+                    continue
+
+                if tkey == "WORD":
+                    # WORD ( char "<chars>ccc<char>" -- c-addr )
+                    # Simplified: parse next token and return as counted string
+                    char_obj = self.inner.pop_ds()
+                    assert isinstance(char_obj, W_IntObject)
+
+                    # Parse next token (simplified implementation)
+                    if i >= toks_len:
+                        # No more tokens, return empty string
+                        word_str = ''
+                    else:
+                        word_str, i = self._read_tok(toks, i)
+
+                    # Create counted string: length byte followed by string
+                    length = len(word_str)
+                    addr = W_IntObject(self.inner.here)
+                    # Store length at HERE
+                    self.inner.cell_store(addr, W_IntObject(length))
+                    self.inner.here += self.inner.cell_size_bytes
+                    # Store string characters
+                    for ch in word_str:
+                        ch_addr = W_IntObject(self.inner.here)
+                        self.inner.cell_store(ch_addr, W_IntObject(ord(ch)))
+                        self.inner.here += 1
+                    # Push the address (pointing to the count)
+                    self.inner.push_ds(addr)
+                    continue
+
             if self.state == COMPILE:
                 if tkey == "IF":
                     orig = self.cc_ptr
