@@ -1,0 +1,29 @@
+#! /bin/bash
+#call it as follows:
+#BENCH="benchgc" RUN=3 FORTH="gforth-fast-0.5.0 -m4M -e " TIMEFORMAT="%U" TIME=time ./run
+#or just
+#./run
+#the defaults for the environment variables are:
+BENCH=${BENCH-"benchgc brainless brew cd16sim fcp lexex"}
+RUNS=${RUNS-3}
+FORTH="${FORTH-"gforth-fast -m 16M ../setup/gforth.fs -e "}"
+TIMEFORMAT=${TIMEFORMAT-"%U"}
+TIME=${TIME-time}
+. benchstrings
+for i in $BENCH
+do
+  #echo $i
+  eval forth=\$run$i
+  (
+      cd $i;
+      for ((j=0; $j<$RUNS; j=$j+1))
+        do
+        if test $TIME=time; then
+            #use bash's time; $TIME does not give that
+            time $FORTH "$forth"
+        else
+            $TIME $FORTH "$forth"
+        fi
+      done 2>&1 >/dev/null|sort -n|tr '\n' ' '|awk '{print "["$0"] '$i'"}'
+  )
+done

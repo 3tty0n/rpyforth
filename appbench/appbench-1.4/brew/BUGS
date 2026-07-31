@@ -1,0 +1,37 @@
+\ BUGS
+#	$Id: BUGS,v 1.48 2005/06/02 14:43:08 f Exp $	
+
+My policy is to fix every bug that I can immediately, when it shows up.
+So you will not find many known bugs in this file...
+
+
+Parameter diversification in elitism mode			no fix now
+This is more a thinking bug in the experiment than a brew bug
+
+Nucs from individuals menu should get a new genome id when sown or set !
+(Fixing that might break benchmark compatibility, test first...)
+
+'.world' seems to have a bug in multidimensional worlds,
+when the 2D plane is not screen sized.
+
+in films (continuous-column) starts at 1.
+
+In 'pfe' cursor and function keys don't function when brew is brewing.
+You have to stop it first. It's not a bad bug, but a bit inconvenient.
+I wonder why that is...
+
+PFE: sm/rem does not throw when dividing by zero.	workaround installed.
+
+Bug when recording multiple sow's.
+Workaround: uncomment all time-step's but the last.
+
+strange bug: 'check-items-to-replace' does crash sometimes if 'xt>string' is
+	     not executed. Could be a gforth bug. OK: I just call 'xt>string'.
+             That's an old bug and I don't know if it would still bite...
+
+to avoid 'Dictionary overflow' crashes there's a new variable
+minimal-dictionary-space now. Increase it's value if it still happens.
+
+genes grow too big to see them.			workaround catching 'see'
+That's an old bug in Gforth 'see', I think.
+Probably I will not use 'see' any more anyway, someday.

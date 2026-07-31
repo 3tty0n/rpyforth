@@ -1,0 +1,26 @@
+Benchmark third-party notices
+=============================
+
+This file indexes license / provenance NOTICE documents for vendored
+or local benchmark trees used by this repository.
+
+  appbench/NOTICE
+      Forth application suite appbench-1.4 (mixed; see that file).
+
+  shootout/NOTICE
+      Forth shootout micro-benchmarks (Bagley / dada.perl.it provenance
+      comments; no in-tree license grant found).
+
+  benchmark/coremark-src/NOTICE
+      ulixxe forth_coremark (MIT License in LICENSE).
+
+  benchmark/joy/NOTICE
+      Joy shootout / Axis-B homologs (no in-tree license grant).
+
+  benchmark/factor/NOTICE
+      Factor shootout / Axis-B / Phase-B homologs (no in-tree license
+      grant).
+
+Harness scripts under benchmark/*.py are part of this repository unless
+a separate top-level project license applies; they are not third-party
+benchmark sources.

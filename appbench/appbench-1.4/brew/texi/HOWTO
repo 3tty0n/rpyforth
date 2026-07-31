@@ -1,0 +1,26 @@
+I keep forgetting how I do this, so this is a memory aid for me:
+
+Edit cycle:
+ (within Emacs):
+
+	Edit 'brew.texi'
+	C-u C-c C-u m		C-x C-s
+?	C-x b
+	C-u C-c C-e C-b		C-x C-s
+	M-x Info-tagify		C-x C-s
+	C-x b			C-u C-c C-u m		C-x C-s
+
+Try result:
+ (within Emacs):
+	C-u C-h i brew.info
+
+I have in .emacs
+(fset 'make-brew-info
+   "\C-xbbrew.texi\C-m\C-u\C-c\C-um\C-x\C-s\C-u\C-c\C-e\C-b\C-x\C-s\C-[xInfo-tagify\C-m\C-x\C-s\C-xbbrew.texi\C-m\C-u\C-c\C-um\C-x\C-s\C-u\C-hibrew.info\C-m")
+
+
+Make html version:
+	makeinfo --html --no-split brew.texi
+
+Make dvi version:
+	texi2dvi brew.texi

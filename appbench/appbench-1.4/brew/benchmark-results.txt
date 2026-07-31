@@ -1,0 +1,4308 @@
+\ benchmark-results.txt
+\	$Id: benchmark-results.txt,v 1.22 2005/06/05 14:15:34 f Exp $	
+
+\ (All bench result are taken the second time of two consecutive runs).
+
+\ Systems used:
+
+\ ****************************************************************
+\ Initial system configuration:
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+\ ****************************************************************
+\ Changed BIOS:
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ ****************************************************************
+\ Changed CPU:
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-transit_8
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create startup-bench"   brew.fs
+real    0m0.776s
+user    0m0.760s
+sys     0m0.010s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-transit_8
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create simple-bench"    brew.fs
+'brew' running benchmark:  simple suite.
+
+   Phase 1      'nomadic'       Result is valid.
+   Phase 2      'yeast1'        Result is valid.
+   Phase 3      'yeast2'        Result is valid.
+   Phase 4      'appetite'      Result is valid.
+   Phase 5      'symbiotic'     Result is valid.
+
+real    0m55.554s
+user    0m55.530s
+sys     0m0.020s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create startup-bench"   brew.fs
+real    0m0.709s
+user    0m0.690s
+sys     0m0.010s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create simple-bench"    brew.fs
+real    0m57.963s
+user    0m57.400s
+sys     0m0.560s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create mutations-1"     brew.fs
+Result is valid.
+real    7m26.413s
+user    7m25.590s
+sys     0m0.760s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create displayed-bench" brew.fs
+Result is valid.
+real    2m31.084s
+user    1m52.180s
+sys     0m38.850s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS Revision 1003.A
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create long-mutations"  brew.fs
+'brew' running benchmark:  long mutations.
+
+Phase 1   Mutation builds some long gene sequences.
+
+Phase 2   Continue mutation and force evaluation of long buffered strings.
+          This implies a lot of dictionary searches.
+
+Result is valid.
+
+real    8m24.332s
+user    8m23.750s
+sys     0m0.470s
+
+
+\ ****************************************************************
+
+\ SYSTEM HAS CHANGED BIOS:
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+\ ****************************************************************
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_8
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create startup-bench"   brew.fs
+real    0m0.770s
+user    0m0.770s
+sys     0m0.000s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_8
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create simple-bench"    brew.fs
+real    0m55.108s
+user    0m54.920s
+sys     0m0.050s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_8
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create simple-bench"    brew.fs
+
+'brew' running benchmark:  simple suite.
+
+   Phase 1      'nomadic'       Result is valid.
+   Phase 2      'yeast1'        Result is valid.
+   Phase 3      'yeast2'        Result is valid.
+   Phase 4      'appetite'      Result is valid.
+   Phase 5      'symbiotic'     Result is valid.
+
+real    0m32.120s
+user    0m32.110s
+sys     0m0.010s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create startup-bench"   brew.fs
+real    0m0.705s
+user    0m0.690s
+sys     0m0.010s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create simple-bench"    brew.fs
+Result is valid.
+real    0m57.636s
+user    0m57.080s
+sys     0m0.550s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create simple-bench"    brew.fs
+
+Result is valid.
+
+real    0m34.080s
+user    0m33.680s
+sys     0m0.400s
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create mutations-1"     brew.fs
+Result is valid.
+real    7m25.550s
+user    7m24.740s
+sys     0m0.810s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create mutations-1"     brew.fs
+
+'brew' running benchmark:  mutations-1
+                           takes a while...
+
+Result is valid.
+
+real    4m1.991s
+user    4m1.460s
+sys     0m0.540s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create displayed-bench" brew.fs
+real    2m37.474s
+user    1m52.780s
+sys     0m44.690s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-0_03z9
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "create displayed-bench" brew.fs
+
+step: 2001          cells: 219331       living: 512          burden: 686
+Result is valid.
+
+real    1m34.333s
+user    1m1.570s
+sys     0m32.770s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_11  new-genes is TRUE
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+'brew' running benchmark 'transit-11-bench-A'
+running on 'brew' version:
+        Id: brew.fs,v 1.170 2001/06/29 17:43:21 f
+        Id: genes-0.3.fs,v 1.5 2001/06/25 06:53:17 f
+        Id: mutation-0.3.fs,v 1.12 2001/06/25 14:51:57 f
+
+        Result is valid.
+
+real    0m57.720s
+user    0m57.570s
+sys     0m0.080s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_11  new-genes is TRUE
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark
+running on 'brew' version:
+        Id: brew.fs,v 1.170 2001/06/29 17:43:21 f
+        Id: genes-0.3.fs,v 1.5 2001/06/25 06:53:17 f
+        Id: mutation-0.3.fs,v 1.12 2001/06/25 14:51:57 f
+
+        Result is valid.
+
+real    0m32.393s
+user    0m32.320s
+sys     0m0.080s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_11  new-genes is FALSE
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+running on 'brew' version:
+        Id: brew.fs,v 1.170 2001/06/29 17:43:21 f
+        Id: genes-0.2.fs,v 1.27 2001/06/29 15:47:48 f
+        Id: mutation-0.2.fs,v 1.62 2001/06/29 15:49:31 f
+
+        Result is valid.
+
+real    0m54.895s
+user    0m53.920s
+sys     0m0.070s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit-12 (well, nearly ;-)	new-genes on
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark transit-12-bench.fs
+
+running on 'brew' version:
+        Id: brew.fs,v 1.176 2001/06/30 15:56:19 f
+        Id: genes-0.3.fs,v 1.6 2001/06/30 08:57:53 f
+        Id: mutation-0.3.fs,v 1.14 2001/06/30 08:57:28 f
+
+        Result is valid.
+
+real    2m26.950s
+user    2m26.000s
+sys     0m0.290s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_12  new-genes is TRUE
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark transit-12-bench.fs
+
+running on 'brew' version:
+        Id: brew.fs,v 1.179 2001/07/01 08:15:17 f
+        Id: genes-0.3.fs,v 1.6 2001/06/30 08:57:53 f
+        Id: mutation-0.3.fs,v 1.14 2001/06/30 08:57:28 f
+
+        Result is valid.
+
+real    1m21.130s
+user    1m20.980s
+sys     0m0.150s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit-12 (well, nearly ;-)	new-genes OFF
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark transit-12-bench.fs
+
+running on 'brew' version:
+        Id: brew.fs,v 1.179 2001/07/01 08:15:17 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.65 2001/06/30 08:56:56 f
+
+        Result is valid.
+
+real    2m6.086s
+user    2m5.780s
+sys     0m0.310s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+new-genes is true
+
+\ Portable Forth Environment 0.30.83 (Mar 10 2001 09:05:22)
+
+time  pfe  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+running on 'brew' version:
+        Id: brew.fs,v 1.184 2001/07/04 16:10:08 f
+        Id: genes-0.3.fs,v 1.7 2001/07/02 21:37:17 f
+        Id: mutation-0.3.fs,v 1.14 2001/06/30 08:57:28 f
+
+        Result is valid.
+
+Goodbye!
+
+real    1m50.336s
+user    1m49.340s
+sys     0m0.000s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+new-genes is FALSE
+
+\ Portable Forth Environment 0.30.83 (Mar 10 2001 09:05:22)
+
+time  pfe  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+running on 'brew' version:
+        Id: brew.fs,v 1.184 2001/07/04 16:10:08 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.65 2001/06/30 08:56:56 f
+
+        Result is valid.
+
+Goodbye!
+
+real    1m51.637s
+user    1m50.730s
+sys     0m0.030s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+new-genes is true
+
+\ Portable Forth Environment 0.30.83 (Mar 10 2001 09:05:22)
+
+time  pfe  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark transit-12-bench.fs
+
+running on 'brew' version:
+        Id: brew.fs,v 1.184 2001/07/04 16:10:08 f
+        Id: genes-0.3.fs,v 1.7 2001/07/02 21:37:17 f
+        Id: mutation-0.3.fs,v 1.14 2001/06/30 08:57:28 f
+
+        Result is valid.
+
+Goodbye!
+
+real    3m58.034s
+user    3m55.920s
+sys     0m0.030s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+new-genes is FALSE
+
+\ Portable Forth Environment 0.30.83 (Mar 10 2001 09:05:22)
+
+time  pfe  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark transit-12-bench.fs
+
+running on 'brew' version:
+        Id: brew.fs,v 1.184 2001/07/04 16:10:08 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.65 2001/06/30 08:56:56 f
+
+        Result is valid.
+
+Goodbye!
+
+real    4m1.830s
+user    3m59.020s
+sys     0m0.050s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14
+
+new-genes is true
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.203 2001/07/11 20:19:24 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+real    1m3.384s
+user    1m3.280s
+sys     0m0.100s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14  new-genes is TRUE
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.203 2001/07/11 20:19:24 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+real    0m36.545s
+user    0m36.510s
+sys     0m0.040s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix.
+
+new-genes is FALSE
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.68 2001/07/07 18:09:35 f
+
+        Result is valid.
+
+real    0m55.062s
+user    0m54.940s
+sys     0m0.120s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14
+
+new-genes is true
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.203 2001/07/11 20:19:24 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+real    2m39.363s
+user    2m39.020s
+sys     0m0.350s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14  new-genes is TRUE
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.203 2001/07/11 20:19:24 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+real    1m29.441s
+user    1m29.270s
+sys     0m0.170s
+
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+new-genes is FALSE
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.68 2001/07/07 18:09:35 f
+
+        Result is valid.
+
+real    2m14.405s
+user    2m14.130s
+sys     0m0.270s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+ANS bigFORTH 386-Linux rev. 2.0.2
+
+new-genes is true
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+real    2m3.287s
+user    2m2.820s
+sys     0m0.470s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+ANS bigFORTH 386-Linux rev. 2.0.2
+
+new-genes is FALSE
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.68 2001/07/07 18:09:35 f
+
+        Result is valid.
+
+real    1m30.836s
+user    1m30.350s
+sys     0m0.480s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+ANS bigFORTH 386-Linux rev. 2.0.2
+
+new-genes is true
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+real    0m38.571s
+user    0m38.490s
+sys     0m0.080s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+ANS bigFORTH 386-Linux rev. 2.0.2
+
+new-genes is FALSE
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.68 2001/07/07 18:09:35 f
+
+        Result is valid.
+
+real    0m30.344s
+user    0m30.250s
+sys     0m0.090s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+ANS bigFORTH 386-Linux rev. 2.0.2
+
+new-genes is true
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE startup-bench" brew.fs
+
+real    0m0.237s
+user    0m0.210s
+sys     0m0.020s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14 with small bugfix
+
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE startup-bench" brew.fs
+
+real    0m0.908s
+user    0m0.900s
+sys     0m0.010s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ brew-transit_14 with small bugfix
+
+\ Portable Forth Environment 0.31.34 (Jul 12 2001 19:18:51)
+./configure options see below
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+Goodbye!
+
+./configure options:
+	no options	--disable-shared	--with-static-dict
+real    1m52.561s	real    1m20.843s	real    1m56.027s
+user    1m52.550s	user    1m20.810s	user    1m55.670s
+sys     0m0.010s	sys     0m0.030s 	sys     0m0.020s 
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ brew-transit_14 with small bugfix
+
+\ Portable Forth Environment 0.31.34 (Jul 12 2001 19:18:51)
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+Goodbye!
+
+			--disable-shared
+real    4m25.409s	real    3m17.008s
+user    4m25.350s	user    3m16.390s
+sys     0m0.060s	sys     0m0.050s 
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ brew-transit_14 with small bugfix
+
+\ Portable Forth Environment 0.30.97 
+.\ configure options see below
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+Goodbye!
+
+	no options	--with-regs	--disable-shared
+real    1m53.198s	1m11.393s	1m21.212s
+user    1m52.950s	1m11.370s	1m21.150s
+sys     0m0.100s	0m0.020s 	0m0.060s 
+
+--with-regs --disable-shared
+real    1m11.403s
+user    1m11.370s
+sys     0m0.030s
+
+--with-regs --disable-shared --with-static-dict
+real    1m11.425s
+user    1m11.390s
+sys     0m0.030s
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ brew-transit_14 with small bugfix
+
+\ Portable Forth Environment 0.30.97 
+.\ configure --with-regs
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+Goodbye!
+
+real    1m11.327s
+user    1m11.300s
+sys     0m0.030s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14  new-genes is TRUE
+\ Portable Forth Environment 0.30.97
+.\ configure --with-regs
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.203 2001/07/11 20:19:24 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+Goodbye!
+
+real    0m38.337s
+user    0m38.270s
+sys     0m0.060s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ brew-transit_14 with small bugfix
+
+\ Portable Forth Environment 0.30.97 
+.\ configure --with-regs
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.204 2001/07/12 14:32:20 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+Goodbye!
+
+real    2m50.008s
+user    2m49.960s
+sys     0m0.050s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_14  new-genes is TRUE
+\ Portable Forth Environment 0.30.97
+.\ configure --with-regs
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.203 2001/07/11 20:19:24 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+
+        Result is valid.
+
+Goodbye!
+
+real    1m30.226s
+user    1m30.210s
+sys     0m0.020s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+real    1m0.471s
+user    1m0.400s
+sys     0m0.070s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+real    0m33.873s
+user    0m33.810s
+sys     0m0.070s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.68 2001/07/07 18:09:35 f
+'new-genes' is FALSE
+
+        Result is valid.
+
+real    0m58.848s
+user    0m58.780s
+sys     0m0.070s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+real    2m34.509s
+user    2m34.240s
+sys     0m0.270s
+
+
+\ ****************************************************************
+\ same bench on new system with changed CPU for comparison
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+real    1m24.784s
+user    1m24.630s
+sys     0m0.150s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.2.fs,v 1.28 2001/06/29 20:40:52 f
+        Id: mutation-0.2.fs,v 1.68 2001/07/07 18:09:35 f
+'new-genes' is FALSE
+
+        Result is valid.
+
+real    2m21.239s
+user    2m20.920s
+sys     0m0.320s
+
+
+\ ****************************************************************
+SYSTEM: PIII 450mHz  i440BX  Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_15
+ANS bigFORTH 386-Linux rev. 2.0.2
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+
+running on 'brew' version:
+        Id: brew.fs,v 1.206 2001/07/14 13:29:34 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.19 2001/07/07 18:10:21 f
+'new-genes' is true
+
+        Result is valid.
+
+real    0m38.817s
+user    0m38.690s
+sys     0m0.130s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        Id: transit-11-bench-A.fs,v 1.12 2001/08/23 18:30:09 f
+
+running on 'brew' version:
+        Id: brew.fs,v 1.217 2001/08/26 09:10:04 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.24 2001/08/25 23:48:24 f
+        Id: stringbuf-0.4.fs,v 1.4 2001/08/25 23:38:38 f
+        Id: worlds.fs,v 1.9 2001/08/23 19:58:18 f
+        Id: world-spots-arrayed.fs,v 1.2 2001/08/23 19:57:29 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    0m35.364s
+user    0m35.320s
+sys     0m0.040s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+
+'brew' running benchmark 'transit-12-bench.fs'
+        Id: transit-12-bench.fs,v 1.10 2001/08/23 18:30:19 f
+
+running on 'brew' version:
+        Id: brew.fs,v 1.217 2001/08/26 09:10:04 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.24 2001/08/25 23:48:24 f
+        Id: stringbuf-0.4.fs,v 1.4 2001/08/25 23:38:38 f
+        Id: worlds.fs,v 1.9 2001/08/23 19:58:18 f
+        Id: world-spots-arrayed.fs,v 1.2 2001/08/23 19:57:29 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    1m25.525s
+user    1m25.330s
+sys     0m0.200s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+ANS bigFORTH 386-Linux rev. 2.0.3
+
+time bigforth	--mem-size 4M --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+
+'brew' running benchmark 'transit-11-bench-A'
+        Id: transit-11-bench-A.fs,v 1.12 2001/08/23 18:30:09 f
+
+running on 'brew' version:
+        Id: brew.fs,v 1.217 2001/08/26 09:10:04 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.24 2001/08/25 23:48:24 f
+        Id: stringbuf-0.4.fs,v 1.4 2001/08/25 23:38:38 f
+        Id: worlds.fs,v 1.9 2001/08/23 19:58:18 f
+        Id: world-spots-arrayed.fs,v 1.2 2001/08/23 19:57:29 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    0m23.897s
+user    0m23.780s
+sys     0m0.120s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+ANS bigFORTH 386-Linux rev. 2.0.3
+
+time bigforth	--mem-size 4M --dictionary-size 2M\
+		-e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        Id: transit-12-bench.fs,v 1.10 2001/08/23 18:30:19 f
+
+running on 'brew' version:
+        Id: brew.fs,v 1.217 2001/08/26 09:10:04 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.24 2001/08/25 23:48:24 f
+        Id: stringbuf-0.4.fs,v 1.4 2001/08/25 23:38:38 f
+        Id: worlds.fs,v 1.9 2001/08/23 19:58:18 f
+        Id: world-spots-arrayed.fs,v 1.2 2001/08/23 19:57:29 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    1m21.443s
+user    1m21.160s
+sys     0m0.280s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+\ Portable Forth Environment 0.30.97
+.\ configure --with-regs
+
+
+'brew' running benchmark 'transit-11-bench-A'
+        Id: transit-11-bench-A.fs,v 1.12 2001/08/23 18:30:09 f
+
+running on 'brew' version:
+        Id: brew.fs,v 1.217 2001/08/26 09:10:04 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.24 2001/08/25 23:48:24 f
+        Id: stringbuf-0.4.fs,v 1.4 2001/08/25 23:38:38 f
+        Id: worlds.fs,v 1.9 2001/08/23 19:58:18 f
+        Id: world-spots-arrayed.fs,v 1.2 2001/08/23 19:57:29 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+Goodbye!
+
+real    0m45.126s
+user    0m45.060s
+sys     0m0.070s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+\ Portable Forth Environment 0.30.97
+.\ configure --with-regs
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        Id: transit-12-bench.fs,v 1.10 2001/08/23 18:30:19 f
+
+running on 'brew' version:
+        Id: brew.fs,v 1.217 2001/08/26 09:10:04 f
+        Id: genes-0.3.fs,v 1.8 2001/07/08 14:14:27 f
+        Id: mutation-0.3.fs,v 1.24 2001/08/25 23:48:24 f
+        Id: stringbuf-0.4.fs,v 1.4 2001/08/25 23:38:38 f
+        Id: worlds.fs,v 1.9 2001/08/23 19:58:18 f
+        Id: world-spots-arrayed.fs,v 1.2 2001/08/23 19:57:29 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+Goodbye!
+
+real    1m39.433s
+user    1m39.290s
+sys     0m0.040s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+GForth 0.5.0
+
+Testing old-worlds 'spot-offset' as VARIABLE and (new) as VALUE:
+new-worlds is FALSE
+new-genes is FALSE
+
+time  gforth-fast --dictionary-size 2M -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        \       exact versions lost, probably vanilla brew-transit_18
+
+running on 'brew' version:
+        \       exact versions lost, probably vanilla brew-transit_18
+
+'new-worlds' is FALSE
+'new-genes'  is FALSE   'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+unchanged:                    changed:
+'spot-offset' as VARIABLE     'spot-offset' as VALUE
+real    0m31.475s             real    0m30.470s
+user    0m31.430s	      user    0m30.400s
+sys     0m0.040s	      sys     0m0.070s 
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_18
+GForth 0.5.0
+
+Testing old-worlds 'spot-offset' as VARIABLE and (new) as VALUE:
+new-worlds is FALSE
+new-genes is FALSE
+
+time  gforth-fast --dictionary-size 2M -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        \       exact versions lost, probably vanilla brew-transit_18
+
+running on 'brew' version:
+        \       exact versions lost, probably vanilla brew-transit_18
+
+'new-worlds' is FALSE
+'new-genes'  is FALSE   'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+unchanged:                    changed:
+'spot-offset' as VARIABLE     'spot-offset' as VALUE
+real    1m13.323s             real    1m11.359s
+user    1m13.110s	      user    1m11.160s
+sys     0m0.220s	      sys     0m0.200s 
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_19
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.226 2001/08/30 19:59:19 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    0m34.871s
+user    0m34.640s
+sys     0m0.080s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_19
+GForth 0.5.0
+
+gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.226 2001/08/30 19:59:19 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    1m24.069s
+user    1m23.930s
+sys     0m0.140s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_19
+ANS bigFORTH 386-Linux rev. 2.0.3
+
+time bigforth	--mem-size 4M --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.226 2001/08/30 19:59:19 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    0m24.920s
+user    0m24.880s
+sys     0m0.040s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_19
+ANS bigFORTH 386-Linux rev. 2.0.3
+
+time bigforth	--mem-size 4M --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.226 2001/08/30 19:59:19 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+
+
+        Result is valid.
+
+real    1m23.230s
+user    1m22.910s
+sys     0m0.310s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_20
+GForth 0.5.0
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.229 2001/09/01 20:41:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    0m33.948s
+user    0m33.870s
+sys     0m0.080s
+
+\ same but old style nuc vars using 'CREATE DOES>':
+'alternative-nuc-vars' is FALSE
+
+real    0m35.189s
+user    0m35.140s
+sys     0m0.050s
+
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_20
+GForth 0.5.0
+
+gforth-fast --dictionary-size 2M  -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.229 2001/09/01 20:41:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    1m22.594s
+user    1m22.480s
+sys     0m0.120s
+
+\ same but old style nuc vars using 'CREATE DOES>':
+'alternative-nuc-vars' is FALSE
+
+real    1m24.747s
+user    1m24.540s
+sys     0m0.210s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_20
+ANS bigFORTH 386-Linux rev. 2.0.3
+
+time bigforth	--mem-size 4M --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.229 2001/09/01 20:41:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    0m25.037s
+user    0m24.980s
+sys     0m0.050s
+
+\ same but old style nuc vars using 'CREATE DOES>':
+'alternative-nuc-vars' is FALSE
+
+real    0m26.328s
+user    0m26.230s
+sys     0m0.090s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+brew-transit_20
+ANS bigFORTH 386-Linux rev. 2.0.3
+
+time bigforth	--mem-size 4M --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.229 2001/09/01 20:41:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.11 2001/08/27 21:53:16 f
+        world-spots-arrayed.fs,v 1.4 2001/08/27 21:56:34 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    1m26.676s
+user    1m26.370s
+sys     0m0.310s
+
+\ same but old style nuc vars using 'CREATE DOES>':
+'alternative-nuc-vars' is FALSE
+
+real    1m24.493s
+user    1m24.130s
+sys     0m0.360s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_21
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.237 2001/09/09 08:01:32 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.14 2001/09/08 20:13:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    0m35.705s
+user    0m35.620s
+sys     0m0.090s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_21
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.237 2001/09/09 08:01:32 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.14 2001/09/08 20:13:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    1m25.551s
+user    1m25.400s
+sys     0m0.110s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+brew-transit_21
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.237 2001/09/09 08:01:32 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.14 2001/09/08 20:13:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    0m25.574s
+user    0m25.490s
+sys     0m0.080s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+brew-transit_21
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.237 2001/09/09 08:01:32 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.14 2001/09/08 20:13:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+real    1m24.732s
+user    1m24.330s
+sys     0m0.400s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ Portable Forth Environment 0.30.97
+\ configure --with-regs
+brew-transit_21
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.13 2001/08/27 21:53:40 f
+
+running on 'brew' version:
+        brew.fs,v 1.237 2001/09/09 08:01:32 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.14 2001/09/08 20:13:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+Goodbye!
+
+real    0m45.560s
+user    0m45.560s
+sys     0m0.000s
+
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ Portable Forth Environment 0.30.97
+\ configure --with-regs
+brew-transit_21
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.11 2001/08/27 21:54:05 f
+
+running on 'brew' version:
+        brew.fs,v 1.237 2001/09/09 08:01:32 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.14 2001/09/08 20:13:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+
+
+        Result is valid.
+
+Goodbye!
+
+real    1m39.937s
+user    1m39.910s
+sys     0m0.020s
+
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_23
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    0m36.136s
+user    0m36.070s
+sys     0m0.060s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m34.798s
+user    0m34.770s
+sys     0m0.030s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    0m35.693s
+user    0m35.660s
+sys     0m0.030s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_23
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    1m26.407s
+user    1m26.250s
+sys     0m0.150s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    1m24.500s
+user    1m24.390s
+sys     0m0.110s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    1m25.482s
+user    1m25.250s
+sys     0m0.230s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+brew-transit_23
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    0m24.526s
+user    0m24.490s
+sys     0m0.040s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m25.655s
+user    0m25.620s
+sys     0m0.040s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    0m24.479s
+user    0m24.430s
+sys     0m0.050s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+brew-transit_23
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    1m22.106s
+user    1m21.710s
+sys     0m0.400s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    1m27.519s
+user    1m27.200s
+sys     0m0.320s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    1m22.311s
+user    1m21.930s
+sys     0m0.380s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+Portable Forth Environment 0.30.97
+configure --with-regs
+brew-transit_23
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+
+real    0m45.593s
+user    0m45.570s
+sys     0m0.020s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    0m45.534s
+user    0m45.500s
+sys     0m0.030s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+
+real    0m45.585s
+user    0m45.550s
+sys     0m0.040s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+Portable Forth Environment 0.30.97
+configure --with-regs
+brew-transit_23
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.8 2001/09/08 12:07:51 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+
+real    1m39.742s
+user    1m39.690s
+sys     0m0.050s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    1m39.736s
+user    1m39.710s
+sys     0m0.030s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+
+real    1m39.867s
+user    1m39.800s
+sys     0m0.070s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_23
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.2.fs,v 1.30 2001/08/27 21:49:30 f
+        mutation-0.2.fs,v 1.73 2001/08/27 21:50:23 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        old-world.fs,v 1.9 2001/09/10 19:01:09 f
+
+'new-worlds' is FALSE
+'new-genes'  is FALSE   'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    0m31.872s
+user    0m31.810s
+sys     0m0.060s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m32.194s
+user    0m32.120s
+sys     0m0.070s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    0m31.997s
+user    0m31.920s
+sys     0m0.080s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_23
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.2.fs,v 1.30 2001/08/27 21:49:30 f
+        mutation-0.2.fs,v 1.73 2001/08/27 21:50:23 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        old-world.fs,v 1.9 2001/09/10 19:01:09 f
+
+'new-worlds' is FALSE
+'new-genes'  is FALSE   'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    1m13.960s
+user    1m13.770s
+sys     0m0.190s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    1m14.584s
+user    1m14.380s
+sys     0m0.210s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    1m14.158s
+user    1m13.970s
+sys     0m0.190s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+brew-transit_23
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.2.fs,v 1.30 2001/08/27 21:49:30 f
+        mutation-0.2.fs,v 1.73 2001/08/27 21:50:23 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        old-world.fs,v 1.9 2001/09/10 19:01:09 f
+
+'new-worlds' is FALSE
+'new-genes'  is FALSE   'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    0m16.435s
+user    0m16.340s
+sys     0m0.090s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m16.547s
+user    0m16.470s
+sys     0m0.080s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    0m17.166s
+user    0m17.040s
+sys     0m0.130s
+
+\ ****************************************************************
+\ experimental: brew-transit_23 bench.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_23'.  This will be redone.
+  'brew-transit_23' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+brew-transit_23
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.240 2001/09/11 15:21:39 f
+        genes-0.2.fs,v 1.30 2001/08/27 21:49:30 f
+        mutation-0.2.fs,v 1.73 2001/08/27 21:50:23 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        old-world.fs,v 1.9 2001/09/10 19:01:09 f
+
+'new-worlds' is FALSE
+'new-genes'  is FALSE   'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+USING block variables.
+
+        Result is valid.
+real    0m50.011s
+user    0m49.720s
+sys     0m0.290s
+
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m51.368s
+user    0m51.030s
+sys     0m0.340s
+
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+real    0m52.902s
+user    0m52.660s
+sys     0m0.240s
+
+\ ****************************************************************
+\ experimental: PRE brew-transit_24 bench.
+\ *Before* changing back \VARIABLES and such back to VARIABLES.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_24'.  This will be redone.
+  'brew-transit_24' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+PRE brew-transit_24
+*Before* changing back \VARIABLES and such back to VARIABLES.
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.242 2001/09/14 12:33:02 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    0m34.654s
+user    0m34.620s
+sys     0m0.030s
+
+using VARIABLEs defined scattered in source, no blocks.
+real    0m35.252s
+user    0m35.230s
+sys     0m0.020s
+
+USING block variables.
+real    0m34.935s
+user    0m34.900s
+sys     0m0.030s
+
+\ ****************************************************************
+\ experimental: PRE brew-transit_24 bench.
+\ *Before* changing back \VARIABLES and such back to VARIABLES.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_24'.  This will be redone.
+  'brew-transit_24' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+PRE brew-transit_24
+*Before* changing back \VARIABLES and such back to VARIABLES.
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.243 2001/09/14 19:10:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    1m25.847s
+user    1m25.710s
+sys     0m0.140s
+
+using VARIABLEs defined scattered in source, no blocks.
+real    1m24.792s
+user    1m24.630s
+sys     0m0.120s
+
+USING block variables.
+real    1m24.417s
+user    1m24.200s
+sys     0m0.220s
+
+\ ****************************************************************
+\ experimental: PRE brew-transit_24 bench.
+\ *Before* changing back \VARIABLES and such back to VARIABLES.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_24'.  This will be redone.
+  'brew-transit_24' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+PRE brew-transit_24
+*Before* changing back \VARIABLES and such back to VARIABLES.
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.243 2001/09/14 19:10:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    0m25.022s
+user    0m24.930s
+sys     0m0.090s
+
+using VARIABLEs defined scattered in source, no blocks.
+real    0m25.320s
+user    0m25.230s
+sys     0m0.080s
+
+USING block variables.
+real    0m24.949s
+user    0m24.890s
+sys     0m0.060s
+
+\ ****************************************************************
+\ experimental: PRE brew-transit_24 bench.
+\ *Before* changing back \VARIABLES and such back to VARIABLES.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_24'.  This will be redone.
+  'brew-transit_24' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.3
+PRE brew-transit_24
+*Before* changing back \VARIABLES and such back to VARIABLES.
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.243 2001/09/14 19:10:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    1m26.414s
+user    1m26.100s
+sys     0m0.310s
+
+using VARIABLEs defined scattered in source, no blocks.
+real    1m33.247s
+user    1m32.900s
+sys     0m0.340s
+
+USING block variables.
+real    1m24.624s
+user    1m24.310s
+sys     0m0.310s
+
+\ ****************************************************************
+\ experimental: PRE brew-transit_24 bench.
+\ *Before* changing back \VARIABLES and such back to VARIABLES.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_24'.  This will be redone.
+  'brew-transit_24' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+Portable Forth Environment 0.30.97
+configure --with-regs
+PRE brew-transit_24
+*Before* changing back \VARIABLES and such back to VARIABLES.
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.243 2001/09/14 19:10:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+Goodbye!
+
+real    0m45.695s
+user    0m45.630s
+sys     0m0.070s
+
+using VARIABLEs defined scattered in source, no blocks.
+real    0m45.566s
+user    0m45.560s
+sys     0m0.010s
+
+USING block variables.
+real    0m45.741s
+user    0m45.710s
+sys     0m0.030s
+
+
+\ ****************************************************************
+\ experimental: PRE brew-transit_24 bench.
+\ *Before* changing back \VARIABLES and such back to VARIABLES.
+\ ****************************************************************
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_24'.  This will be redone.
+  'brew-transit_24' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block variables
+  1:     use Forth variables defined when registered for a block
+  2:     use Forth variables defined when commented out in source
+  	 as '\VARIABLE' or '\2VARIABLE'
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+Portable Forth Environment 0.30.97
+configure --with-regs
+PRE brew-transit_24
+*Before* changing back \VARIABLES and such back to VARIABLES.
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.243 2001/09/14 19:10:31 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+Goodbye!
+
+real    1m40.345s
+user    1m40.270s
+sys     0m0.070s
+
+using VARIABLEs defined scattered in source, no blocks.
+real    1m40.406s
+user    1m40.380s
+sys     0m0.030s
+
+USING block variables.
+real    1m40.414s
+user    1m40.380s
+sys     0m0.030s
+
+\ ****************************************************************
+\ brew-transit_24
+\ Not using block variables.
+\ Changed back \VARIABLES and such.
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_24
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.15 2001/09/11 15:40:48 f
+
+running on 'brew' version:
+        brew.fs,v 1.244 2001/09/14 20:53:42 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A" brew.fs
+real    0m34.654s
+user    0m34.540s
+sys     0m0.070s
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+real    0m25.581s
+user    0m25.530s
+sys     0m0.050s
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+real    0m45.574s
+user    0m45.560s
+sys     0m0.010s
+
+\ ****************************************************************
+\ brew-transit_24
+\ Not using block variables.
+\ Changed back \VARIABLES and such.
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_24
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.13 2001/09/11 15:40:49 f
+
+running on 'brew' version:
+        brew.fs,v 1.244 2001/09/14 20:53:42 f
+        genes-0.3.fs,v 1.11 2001/08/27 21:49:57 f
+        mutation-0.3.fs,v 1.26 2001/08/27 21:50:49 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.16 2001/09/11 15:11:19 f
+        world-spots-arrayed.fs,v 1.9 2001/09/13 16:55:56 f
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined scattered in source, no blocks.
+
+        Result is valid.
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+real    1m23.859s
+user    1m23.740s
+sys     0m0.120s
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+real    1m23.031s
+user    1m22.680s
+sys     0m0.350s
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+real    1m40.240s
+user    1m40.210s
+sys     0m0.030s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	DEFAULT: with some (unused) nuc float variables
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_34
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.23 2002/02/15 11:52:28 f
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    0m38.044s
+user    0m37.970s
+sys     0m0.080s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	DEFAULT: with some (unused) nuc float variables
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_34
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.21 2002/02/15 11:52:45 f
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    1m31.057s
+user    1m30.820s
+sys     0m0.240s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	DEFAULT: with some (unused) nuc float variables
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.5
+brew-transit_34
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.23 2002/02/15 11:52:28 f
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    0m31.843s
+user    0m31.760s
+sys     0m0.090s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	DEFAULT: with some (unused) nuc float variables
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.5
+brew-transit_34
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.21 2002/02/15 11:52:45 f
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    1m42.222s
+user    1m41.850s
+sys     0m0.380s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	DEFAULT: with some (unused) nuc float variables
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ Portable Forth Environment 0.30.97
+brew-transit_34
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+Goodbye!
+
+real    0m49.648s
+user    0m49.430s
+sys     0m0.030s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	DEFAULT: with some (unused) nuc float variables
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+\ Portable Forth Environment 0.30.97
+brew-transit_34
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+Goodbye!
+
+real    1m49.463s
+user    1m48.520s
+sys     0m0.060s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	COMPILED *WITHOUT* NUC FLOATS
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_34
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.23 2002/02/15 11:52:28 f
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 0         f-parameters: 0     f-invisibles: 0     f-secrets: 0
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    0m36.552s
+user    0m36.400s
+sys     0m0.060s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	COMPILED *WITHOUT* NUC FLOATS
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0
+brew-transit_34
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.21 2002/02/15 11:52:45 f
+
+running on 'brew' version:
+        brew.fs,v 1.306 2002/02/15 11:38:08 f
+        genes-0.3.fs,v 1.14 2002/02/14 12:19:59 f
+        mutation-0.3.fs,v 1.31 2002/02/14 12:49:00 f
+        stringbuf-0.4.fs,v 1.8 2001/08/27 21:51:53 f
+        worlds.fs,v 1.20 2002/02/15 09:32:17 f
+        world-spots-arrayed.fs,v 1.10 2001/11/07 13:13:50 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 0         f-parameters: 0     f-invisibles: 0     f-secrets: 0
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+real    1m27.558s
+user    1m27.290s
+sys     0m0.230s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	COMPILED *WITHOUT* NUC FLOATS
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+ANS bigFORTH 386-Linux rev. 2.0.5
+brew-transit_34
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.23 2002/02/15 11:52:28 f
+f-organs: 0         f-parameters: 0     f-invisibles: 0     f-secrets: 0
+
+real    0m29.624s
+user    0m29.490s
+sys     0m0.110s
+
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+f-organs: 0         f-parameters: 0     f-invisibles: 0     f-secrets: 0
+
+real    1m36.518s
+user    1m36.080s
+sys     0m0.400s
+
+
+
+\ ****************************************************************
+\ brew-transit_34	COMPILED *WITHOUT* NUC FLOATS
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+Portable Forth Environment 0.30.97
+brew-transit_34
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+f-organs: 0         f-parameters: 0     f-invisibles: 0     f-secrets: 0
+
+real    0m46.054s
+user    0m45.970s
+sys     0m0.080s
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+f-organs: 0         f-parameters: 0     f-invisibles: 0     f-secrets: 0
+
+real    1m41.910s
+user    1m41.860s
+sys     0m0.050s
+
+
+\ ****************************************************************
+\ brew-transit_35
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+
+GForth 0.5.0	brew-transit_35
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.26 2002/04/20 20:11:47 f
+
+running on 'brew' version:
+        brew.fs,v 1.347 2002/05/18 19:00:34 f
+        genes-0.3.fs,v 1.16 2002/05/11 06:50:38 f
+        mutation-0.3.fs,v 1.33 2002/05/15 20:56:32 f
+        stringbuf-0.4.fs,v 1.9 2002/05/11 06:49:43 f
+        worlds.fs,v 1.23 2002/04/30 15:33:37 f
+        world-spots-arrayed.fs,v 1.18 2002/04/30 15:34:30 f
+
+organs:   7         parameters:   5     invisibles:   3     secrets:   1
+f-organs: 5         f-parameters: 3     f-invisibles: 1     f-secrets: 1
+
+'new-worlds' is TRUE    'localise-spot-data' is FALSE   spot-alignement#: 0
+'new-genes'  is TRUE    'new-stringbufs'     is TRUE
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m41.415s			real    0m36.857s
+user    0m41.390s			user    0m36.790s
+sys     0m0.020s			sys     0m0.060s 
+
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+transit-12-bench.fs,v 1.24 2002/04/20 20:11:55 f
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    1m35.918s			real    1m28.536s
+user    1m35.610s			user    1m28.390s
+sys     0m0.230s			sys     0m0.100s 
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE startup-bench" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m0.839s			real    0m0.718s
+user    0m0.810s			user    0m0.710s
+sys     0m0.030s			sys     0m0.010s
+
+ANS bigFORTH 386-Linux rev. 2.0.5	brew-transit_35
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m40.988s			real    0m33.465s
+user    0m40.900s			user    0m33.360s
+sys     0m0.090s			sys     0m0.110s 
+
+same thing, second run:
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m42.649s			real    0m34.051s
+user    0m42.540s			user    0m33.980s
+sys     0m0.110s			sys     0m0.070s 
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+	       -e "CREATE transit-12-bench" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    2m8.619s			real    1m50.850s
+user    2m8.280s			user    1m50.490s
+sys     0m0.340s			sys     0m0.360s 
+
+same thing, second run:
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    2m15.951s			real    1m48.500s
+user    2m15.630s			user    1m48.040s
+sys     0m0.320s			sys     0m0.460s 
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE startup-bench" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m0.269s			real    0m0.231s
+user    0m0.230s			user    0m0.200s
+sys     0m0.040s			sys     0m0.030s
+
+
+Portable Forth Environment 0.32.55 (Mar 23 2002 13:39:13)	brew-transit_35
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m51.228s			real    0m43.583s
+user    0m51.210s			user    0m43.510s
+sys     0m0.020s			sys     0m0.070s 
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    1m54.048s			real    1m40.310s
+user    1m54.000s			user    1m40.290s
+sys     0m0.040s			sys     0m0.020s 
+
+time pfe -e "CREATE startup-bench" brew.fs
+
+with (unused) nuc/spot floats		no nuc or spot floats
+real    0m0.550s			real    0m0.435s
+user    0m0.540s			user    0m0.400s
+sys     0m0.010s			sys     0m0.040s
+
+\ ****************************************************************
+\ brew-transit_39
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+Debian woody 2.4.18-bf2.4
+
+GForth 0.5.0	brew-transit_39
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.30 2002/07/11 15:33:19 f
+
+running on 'brew' version:
+        brew.fs,v 1.390 2002/09/21 08:49:26 f
+        genes-0.3.fs,v 1.18 2002/05/22 12:09:17 f
+        mutation-0.3.fs,v 1.35 2002/05/24 13:36:18 f
+        worlds.fs,v 1.32 2002/09/01 12:38:13 f
+        world-spots-arrayed.fs,v 1.20 2002/05/25 17:43:43 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m39.292s
+user    0m39.140s
+sys     0m0.130s
+
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+transit-12-bench.fs,v 1.28 2002/07/11 15:33:24 f
+
+real    1m33.075s
+user    1m32.580s
+sys     0m0.420s
+
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE startup-bench" brew.fs
+
+real    0m0.896s
+user    0m0.860s
+sys     0m0.030s
+
+
+ANS bigFORTH 386-Linux rev. 2.0.9
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+real    0m38.926s
+user    0m38.610s
+sys     0m0.280s
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-12-bench" brew.fs
+real    2m3.079s
+user    2m2.340s
+sys     0m0.710s
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE startup-bench" brew.fs
+real    0m0.291s
+user    0m0.280s
+sys     0m0.010s
+
+
+\ Portable Forth Environment 0.32.91
+It looks as if pfe 0.32.91 is case sensitive now, but manages to do
+the right thing :-)  I have no time to inquire just now.
+The benchmarks would probably come out better if I'd switch that off.
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+        Result is valid. WA.search_thread> oops, input 'BYE' hits 'bye': bad spelling?
+
+Goodbye!
+
+real    0m55.774s
+user    0m55.620s
+sys     0m0.110s
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+
+I get *a lot* of these:
+WA.search_thread> oops, input 'a-quality' hits 'A-quality': bad spelling?
+WA.search_thread> oops, input 'a-property' hits 'A-property': bad spelling?
+WA.search_thread> oops, input 'a-quality' hits 'A-quality': bad spelling?
+WA.search_thread> oops, input 'a-property' hits 'A-property': bad spelling?
+
+        Result is valid. WA.search_thread> oops, input 'BYE' hits 'bye': bad spelling?
+
+Goodbye!
+
+real    2m3.080s
+user    2m2.830s
+sys     0m0.150s
+
+time pfe -e "CREATE startup-bench" brew.fs
+real    0m0.664s
+user    0m0.620s
+sys     0m0.040s
+
+\ ****************************************************************
+
+
+\ ****************************************************************
+\ brew-0.1.0 (no: NOT QUITE)
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+Debian woody 2.4.18-bf2.4
+
+GForth 0.5.0	brew-0.1.0 (no: NOT QUITE)
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.30 2002/07/11 15:33:19 f
+
+running on 'brew' version:
+        brew.fs,v 1.392 2002/10/17 05:45:12 f
+        genes-0.3.fs,v 1.19 2002/10/07 06:08:17 f
+        mutation-0.3.fs,v 1.36 2002/10/07 06:13:09 f
+        worlds.fs,v 1.32 2002/09/01 12:38:13 f
+        world-spots-arrayed.fs,v 1.20 2002/05/25 17:43:43 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m41.836s
+user    0m41.690s
+sys     0m0.150s
+
+
+time gforth-fast  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.28 2002/07/11 15:33:24 f
+
+running on 'brew' version:
+        brew.fs,v 1.392 2002/10/17 05:45:12 f
+        genes-0.3.fs,v 1.19 2002/10/07 06:08:17 f
+        mutation-0.3.fs,v 1.36 2002/10/07 06:13:09 f
+        worlds.fs,v 1.32 2002/09/01 12:38:13 f
+        world-spots-arrayed.fs,v 1.20 2002/05/25 17:43:43 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    1m37.150s
+user    1m36.760s
+sys     0m0.330s
+
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE startup-bench" brew.fs
+real    0m0.907s
+user    0m0.860s
+sys     0m0.040s
+
+
+ANS bigFORTH 386-Linux rev. 2.0.9	brew-0.1.0 (no: NOT QUITE)
+bigFORTH gives quite variing times on each run, I have no idea why:
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+first run:
+real    0m37.743s
+user    0m37.420s
+sys     0m0.240s
+
+second run:
+real    0m40.319s
+user    0m40.080s
+sys     0m0.230s
+
+third run:
+real    0m38.672s
+user    0m38.530s
+sys     0m0.130s
+
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-12-bench" brew.fs
+first run:
+real    2m19.183s
+user    2m18.520s
+sys     0m0.650s
+
+second run:
+real    2m8.758s
+user    2m8.030s
+sys     0m0.720s
+
+third run:
+real    2m0.113s
+user    1m59.160s
+sys     0m0.860s
+
+fourth run:
+real    2m3.565s
+user    2m2.710s
+sys     0m0.850s
+
+fifth run:
+real    2m1.332s
+user    2m0.700s
+sys     0m0.620s
+
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE startup-bench" brew.fs
+real    0m0.313s
+user    0m0.270s
+sys     0m0.040s
+
+
+\ Portable Forth Environment 0.32.91	brew-0.1.0 (no: NOT QUITE)
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+real    0m55.176s
+user    0m54.930s
+sys     0m0.240s
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+real    2m2.220s
+user    2m0.910s
+sys     0m1.310s
+
+time pfe -e "CREATE startup-bench" brew.fs
+real    0m0.798s
+user    0m0.640s
+sys     0m0.160s
+
+\ ****************************************************************
+\ brew_0_1-pre-3
+\
+\ changed list implementation
+\
+\ include benchmarks of current Gforth 0.5.9-20030201 snapshot
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+Debian woody 2.4.18-bf2.4
+
+GForth 0.5.0	brew_0_1-pre-3
+
+time gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.31 2003/02/03 20:58:21 f
+
+running on 'brew' version:
+        brew.fs,v 1.407 2003/02/17 06:49:40 f
+        genes-0.3.fs,v 1.20 2002/11/16 09:49:02 f
+        mutation-0.3.fs,v 1.38 2003/02/03 20:57:37 f
+        worlds.fs,v 1.33 2002/11/05 15:19:12 f
+        world-spots-arrayed.fs,v 1.22 2002/11/05 15:19:10 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+        Result is valid.
+real    0m41.783s
+user    0m41.640s
+sys     0m0.150s
+
+
+
+gforth-fast-0.5.9-20030201	brew_0_1-pre-3
+
+time gforth-fast-0.5.9-20030201\
+ --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+
+        Result is valid.
+real    0m19.227s
+user    0m19.050s
+sys     0m0.160s
+
+
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+
+ANS bigFORTH 386-Linux rev. 2.0.9	      brew_0_1-pre-3
+
+real    0m39.239s
+user    0m39.070s
+sys     0m0.150s
+
+
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+\ Portable Forth Environment 0.32.93 (Nov 12 2002 18:09:29)	brew_0_1-pre-3
+
+real    0m54.459s
+user    0m54.110s
+sys     0m0.160s
+
+
+
+time gforth-fast-0.5.0  --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.29 2003/02/03 20:58:22 f
+
+running on 'brew' version:
+        brew.fs,v 1.407 2003/02/17 06:49:40 f
+        genes-0.3.fs,v 1.20 2002/11/16 09:49:02 f
+        mutation-0.3.fs,v 1.38 2003/02/03 20:57:37 f
+        worlds.fs,v 1.33 2002/11/05 15:19:12 f
+        world-spots-arrayed.fs,v 1.22 2002/11/05 15:19:10 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+using VARIABLEs defined one after the other as blocks.
+
+
+gforth-fast-0.5.0	brew_0_1-pre-3:
+        Result is valid.
+real    1m32.821s
+user    1m32.340s
+sys     0m0.460s
+
+
+gforth-fast-0.5.9-20030201	brew_0_1-pre-3:
+
+time gforth-fast-0.5.9-20030201\
+ --dictionary-size 2M  -e "CREATE transit-12-bench"  brew.fs
+
+real    0m44.530s
+user    0m43.960s
+sys     0m0.510s
+
+
+ANS bigFORTH 386-Linux rev. 2.0.9   brew_0_1-pre-3:
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-12-bench" brew.fs
+
+real    2m5.177s
+user    2m4.440s
+sys     0m0.710s
+
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+\ Portable Forth Environment 0.32.93 (Nov 12 2002 18:09:29)	brew_0_1-pre-3
+\ PFE does not like some of my spellings, but it runs all the same ;-)
+
+real    1m53.975s
+user    1m52.750s
+sys     0m1.220s
+
+
+
+\ ****************************************************************
+brew_0_2_rk1    22.5.2005
+benchmark-results.txt,v 1.21 2005/05/22 05:07:07 f 
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+Debian woody 2.4.19
+
+
+Gforth 0.6.2	brew_0_2_rk1
+time gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.32 2005/04/10 16:20:32 f
+
+running on 'brew' version:
+        brew.fs,v 1.425 2005/05/15 05:09:49 f
+        genes-0.3.fs,v 1.21 2005/04/05 11:16:18 f
+        mutation-0.3.fs,v 1.40 2005/04/05 14:12:39 f
+        worlds.fs,v 1.35 2005/05/10 12:25:40 f
+        world-spots-arrayed.fs,v 1.22 2002/11/05 15:19:10 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+
+        Result is valid.
+real    0m18.072s
+user    0m17.980s
+sys     0m0.090s
+
+
+\ Note this is bigFORTH 2.0.10
+ANS bigFORTH 386-Linux rev. 2.0.10	brew_0_2_rk1
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+
+real    0m48.664s
+user    0m48.530s
+sys     0m0.140s
+
+real    0m46.708s
+user    0m46.570s
+sys     0m0.140s
+
+real    0m39.140s
+user    0m39.020s
+sys     0m0.120s
+
+real    0m40.410s
+user    0m40.150s
+sys     0m0.140s
+
+real    0m40.226s
+user    0m40.130s
+sys     0m0.100s
+
+
+\ after update to bigFORTH 2.1.0
+ANS bigFORTH 386-Linux rev. 2.1.0		stack error... had to DROP
+
+real    0m39.887s
+user    0m39.800s
+sys     0m0.070s
+
+real    0m44.935s
+user    0m44.820s
+sys     0m0.110s
+
+real    0m40.232s
+user    0m40.160s
+sys     0m0.070s
+
+real    0m41.764s
+user    0m41.620s
+sys     0m0.140s
+
+
+
+\ Portable Forth Environment 0.32.94 (Aug 27 2003 07:06:12)	brew_0_2_rk1
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+real    0m54.183s
+user    0m54.100s
+sys     0m0.030s
+
+real    0m54.320s
+user    0m54.270s
+sys     0m0.050s
+
+real    0m54.082s
+user    0m54.030s
+sys     0m0.050s
+
+
+Gforth 0.5.0 	brew_0_2_rk1
+time gforth-fast-0.5.0  --dictionary-size 2M\
+  -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.30 2005/04/10 16:20:33 f
+
+running on 'brew' version:
+        brew.fs,v 1.425 2005/05/15 05:09:49 f
+        genes-0.3.fs,v 1.21 2005/04/05 11:16:18 f
+        mutation-0.3.fs,v 1.40 2005/04/05 14:12:39 f
+        worlds.fs,v 1.35 2005/05/10 12:25:40 f
+        world-spots-arrayed.fs,v 1.22 2002/11/05 15:19:10 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+
+        Result is valid.
+real    1m32.545s
+user    1m31.940s
+sys     0m0.310s
+
+real    1m32.314s
+user    1m31.990s
+sys     0m0.320s
+
+real    1m32.335s
+user    1m31.970s
+sys     0m0.370s
+
+
+
+ANS bigFORTH 386-Linux rev. 2.0.10      brew_0_2_rk1
+
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-12-bench" brew.fs
+
+real    2m5.163s
+user    2m4.290s
+sys     0m0.620s
+
+real    2m3.395s
+user    2m2.900s
+sys     0m0.500s
+
+real    2m14.332s
+user    2m13.840s
+sys     0m0.490s
+
+real    2m1.578s
+user    2m1.000s
+sys     0m0.580s
+
+
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+\ Portable Forth Environment 0.32.94 (Aug 27 2003 07:06:12)	brew_0_2_rk1
+\ PFE does not like some of my spellings, but it runs all the same ;-)
+
+real    1m56.763s
+user    1m55.480s
+sys     0m1.250s
+
+real    1m56.283s
+user    1m55.050s
+sys     0m1.240s
+
+real    1m56.056s
+user    1m54.850s
+sys     0m1.170s
+
+
+
+time  gforth-fast --dictionary-size 2M  -e "CREATE startup-bench" brew.fs
+
+brew.fs,v 1.425 2005/05/15 05:09:49 f     Identity: 5026
+No output files produced.
+
+real    0m0.737s
+user    0m0.680s
+sys     0m0.030s
+
+real    0m0.713s
+user    0m0.680s
+sys     0m0.040s
+
+real    0m0.710s
+user    0m0.650s
+sys     0m0.060s
+
+
+
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE startup-bench" brew.fs
+
+real    0m0.287s
+user    0m0.280s
+sys     0m0.010s
+
+real    0m0.284s
+user    0m0.250s
+sys     0m0.030s
+
+real    0m0.291s
+user    0m0.260s
+sys     0m0.030s
+
+
+
+time pfe -e "CREATE startup-bench" brew.fs
+real    0m0.692s
+user    0m0.680s
+sys     0m0.010s
+
+real    0m0.687s
+user    0m0.660s
+sys     0m0.020s
+
+real    0m0.694s
+user    0m0.630s
+sys     0m0.070s
+
+\ ****************************************************************
+
+
+\ ****************************************************************
+brew_0_2_0
+\ ****************************************************************
+SYSTEM: CELERON 850mHz  100 Mhz frontside bus  i440BX
+Asus P3B-F motherboard rev 1.03  512Mb RAM
+BIOS Award Medaillon 6.0     ASUS BIOS 1008.002 beta
+Debian woody 2.4.19
+
+
+Gforth 0.6.2	brew_0_2_0
+time gforth-fast --dictionary-size 2M  -e "CREATE transit-11-bench-A"  brew.fs
+
+'brew' running benchmark 'transit-11-bench-A'
+        transit-11-bench-A.fs,v 1.32 2005/04/10 16:20:32 f
+
+running on 'brew' version:
+        brew.fs,v 1.429 2005/06/01 07:45:32 f
+        genes-0.3.fs,v 1.22 2005/06/02 15:17:07 f
+        mutation-0.3.fs,v 1.40 2005/04/05 14:12:39 f
+        worlds.fs,v 1.35 2005/05/10 12:25:40 f
+        world-spots-arrayed.fs,v 1.22 2002/11/05 15:19:10 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+
+        Result is valid.
+
+real    0m18.184s         real    0m18.373s        real    0m18.336s    
+user    0m18.030s	  user    0m18.200s 	   user    0m18.180s
+sys     0m0.160s	  sys     0m0.180s  	   sys     0m0.160s 
+
+
+ANS bigFORTH 386-Linux rev. 2.1.0	brew_0_2_0
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-11-bench-A" brew.fs
+
+real    0m39.359s
+user    0m39.150s
+sys     0m0.100s
+
+real    0m39.116s
+user    0m38.810s
+sys     0m0.180s
+
+real    0m39.383s
+user    0m39.280s
+sys     0m0.100s
+
+real    0m39.376s
+user    0m39.240s
+sys     0m0.140s
+
+
+\ Portable Forth Environment 0.32.94 (Aug 27 2003 07:06:12)	brew_0_2_0
+time pfe -e "CREATE transit-11-bench-A" brew.fs
+
+real    0m54.592s
+user    0m54.340s
+sys     0m0.080s
+
+real    0m54.403s
+user    0m54.360s
+sys     0m0.050s
+
+real    0m54.448s
+user    0m54.430s
+sys     0m0.020s
+
+
+Gforth 0.6.2	brew_0_2_0
+time gforth-fast --dictionary-size 2M -e "CREATE transit-12-bench"  brew.fs
+
+'brew' running benchmark 'transit-12-bench.fs'
+        transit-12-bench.fs,v 1.30 2005/04/10 16:20:33 f
+
+running on 'brew' version:
+        brew.fs,v 1.429 2005/06/01 07:45:32 f
+        genes-0.3.fs,v 1.22 2005/06/02 15:17:07 f
+        mutation-0.3.fs,v 1.40 2005/04/05 14:12:39 f
+        worlds.fs,v 1.35 2005/05/10 12:25:40 f
+        world-spots-arrayed.fs,v 1.22 2002/11/05 15:19:10 f
+
+organs int/f: 7/5   parameters: 5/3     invisibles: 3/1     secrets: 1/1
+qualities:    5/5   properties: 5/5                         secrets: 1/1
+
+'localise-spot-data' is FALSE   spot-alignement#: 0
+'alternative-nuc-vars' is TRUE
+
+        Result is valid.
+real    0m41.682s
+user    0m41.290s
+sys     0m0.280s
+
+real    0m41.477s
+user    0m41.130s
+sys     0m0.350s
+
+real    0m41.658s
+user    0m41.320s
+sys     0m0.340s
+
+
+ANS bigFORTH 386-Linux rev. 2.1.0	brew_0_2_0
+time bigforth  --mem-size 4M  --dictionary-size 2M\
+               -e "CREATE transit-12-bench" brew.fs
+
+real    2m6.681s
+user    2m6.140s
+sys     0m0.530s
+
+real    2m3.637s
+user    2m3.120s
+sys     0m0.510s
+
+real    2m6.833s
+user    2m6.330s
+sys     0m0.510s
+
+
+time pfe -e "CREATE transit-12-bench" brew.fs
+\ Portable Forth Environment 0.32.94 (Aug 27 2003 07:06:12)	brew_0_2_0
+\ PFE does not like some of my spellings, but it runs all the same ;-)
+
+real    1m55.890s
+user    1m54.700s
+sys     0m1.180s
+
+real    1m55.903s
+user    1m54.760s
+sys     0m1.150s
+
+real    1m56.686s
+user    1m55.490s
+sys     0m1.190s
+
+
+Gforth 0.6.2	brew_0_2_0
+time  gforth-fast --dictionary-size 2M  -e "CREATE startup-bench" brew.fs
+
+brew.fs,v 1.429 2005/06/01 07:45:32 f     Identity: 5148
+No output files produced.
+
+real    0m0.727s
+user    0m0.700s
+sys     0m0.020s
+
+real    0m0.709s
+user    0m0.660s
+sys     0m0.050s
+
+real    0m0.707s
+user    0m0.670s
+sys     0m0.040s
+
+
+ANS bigFORTH 386-Linux rev. 2.1.0       brew_0_2_0
+time bigforth --mem-size 4M --dictionary-size 2M\
+ -e "CREATE startup-bench" brew.fs
+
+real    0m0.286s
+user    0m0.230s
+sys     0m0.050s
+
+real    0m0.284s
+user    0m0.270s
+sys     0m0.020s
+
+real    0m0.284s
+user    0m0.260s
+sys     0m0.030s
+
+
+\ Portable Forth Environment 0.32.94 (Aug 27 2003 07:06:12)     brew_0_2_0
+time pfe -e "CREATE startup-bench" brew.fs
+
+real    0m0.710s
+user    0m0.660s
+sys     0m0.050s
+
+real    0m0.682s
+user    0m0.650s
+sys     0m0.030s
+
+real    0m0.704s
+user    0m0.650s
+sys     0m0.060s
+
+
+\ ****************************************************************

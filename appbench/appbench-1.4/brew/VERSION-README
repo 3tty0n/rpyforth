@@ -1,0 +1,68 @@
+\ VERSION-README
+#	$Id: VERSION-README,v 1.28 2005/06/02 15:19:43 f Exp $	
+see also NEXT and BUGS ;-)
+
+================================================================
+						brew-0.2.0
+
+There has been too much development to call this 0.1 any longer.
+Compatibility has not been broken too much yet, but will be for
+the experimental 0.3 series (See file NEXT).
+
+If there is interest I plan to do bug fixes on this branch for
+some time. Please contact me if you find bugs.
+
+
+Feedback welcome,
+Robert Epprecht <epprecht@solnet.ch>
+
+
+================================================================
+						brew-0.1.0
+ok
+
+now that there have been so many brew snapshot versions,
+and things seem reasonably stable and documented,
+but major changes just ahead...
+
+it might be a good time for 'brew-0.1' release.
+
+
+Note:  version numbering.
+As my standards have evolved together with brew,
+I restart version numbering with 0.1.
+
+
+I hope this will not cause any confusion,
+but I don't think there are any older (numbered) brew versions around any more,
+despite maybe 'z9'.
+
+Please regard all older brew versions up to 'brew-0_03z9' as brew-0.0.x now
+and 'brew-transit_0' to 'brew-transit_39' would be brew-pre-0.1-x.
+
+
+
+================================================================
+older notes:
+================================================================
+
+transit versions
+brew is going through major changes, (the result is brew-0.1.0 now).
+compatibility to z9 is broken.
+
+================================================================
+z9
+last version with old benchmarks and demos.
+Compatibility to these will break now.
+
+This version has many features of the coming versions already in,
+but disabled by compile time options or so.
+
+================================================================
+z... end of series versions.
+Some of these are quite stable.
+Old demos and benchmarks should still work.
+
+================================================================
+
+[older contents snipped].

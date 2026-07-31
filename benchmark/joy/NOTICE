@@ -1,0 +1,34 @@
+Third-party notice for benchmark/joy/
+=====================================
+
+Joy benchmark programs and runners under this directory.
+
+
+---------------------------------------------------------------------------
+License grants in this tree
+---------------------------------------------------------------------------
+
+No LICENSE, COPYING, Copyright line, or redistribution grant was found
+under benchmark/joy/ (search over *.joy / *.py for
+copyright|license|GPL|MIT|BSD|Apache|public domain|SPDX|redistribut:
+no matches).
+
+
+---------------------------------------------------------------------------
+Provenance (self-declared in comments / runners)
+---------------------------------------------------------------------------
+
+shootout/*.joy
+  Headers describe each program as a homolog of the corresponding
+  Forth file under shootout/*.fs
+  (e.g. ack.joy: "shootout/ack.fs homolog: …").
+  See also shootout/NOTICE: those Forth originals
+  likewise contain no in-tree license grant.
+
+axis-b/*.joy
+  Headers label programs as "Axis B: …" suite members. No third-party
+  copyright or license text.
+
+run_joy.py / joy_runner.py
+  Local harness scripts for this repository; no third-party license
+  block in their docstrings beyond describing the suites.

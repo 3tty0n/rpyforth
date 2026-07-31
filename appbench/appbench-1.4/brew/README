@@ -1,0 +1,327 @@
+************************************************************************
+\	$Id: README,v 1.29 2005/06/02 15:22:48 f Exp $	
+************************************************************************
+
+brew-0.2.0						April 2005
+
+'Cells' alias 'brew'
+An interactive environment to try out evolutionary programming.
+
+Experimental, written out of curiosity and for fun by
+Robert Epprecht <epprecht@solnet.ch>
+
+
+Get the newest 'brew' snapshot from
+  http://reppre51.home.solnet.ch/
+
+'brew' comes to you in the spirit of the GNU General Public License.
+
+
+************************************************************************
+
+Please see the documentation delivered as info file and texi source.
+The manual is much more complete and up to date than this README.
+
+You can build a html version of it, if you have no info reader.
+See below for how to read the info file.
+
+************************************************************************
+
+
+Release brew-0.2.0
+
+I'm planing to do some deeper changes on brew.
+
+As current brew seems reasonably stable and documented I release
+the current state as brew-0.2.0.
+Feedback welcome.
+
+I intend to do bug fixes on this version for some time, and
+some new features of the new development version might be back-ported,
+if there's interest.  So let me know.
+
+
+Brew 0.3 will be very experimental and aims to much more flexibility.
+See file NEXT for some more information.
+
+************************************************************************
+
+Please note, that recorded sessions including benchmarks and demos
+will *not* run (without adaptions) on the development version (and
+later released versions), but should run on all 0.2.xxx versions.
+
+(There was a prior compatibility break after version z9.
+ So do *not* use the old z9 version any more).
+
+************************************************************************
+
+For up to date benchmark info please read the file 'maybe-run-benchmark.fs'.
+
+There are only few demos and only very basic experiments in this release.
+If you want to do some more I'd be happy to include them in later snapshot
+versions.  Tip: Use brews recording mode to create it.
+
+************************************************************************
+
+This version runs best on Linux text console.
+  I'm working on quite basic things and I like the console for that.
+  Brew depends on a *fixed* font size.
+
+
+I use Gforth 0.6.2 on Linux text console as my main development environment.
+  http://www.complang.tuwien.ac.at/forth/gforth/
+  http://www.jwdt.com/~paysan/gforth.html
+  Special thank to Anton Ertl for many answers to my questions,
+  for advice, patches, Gforth fixes, ...
+
+This version now runs also on 'pfe'.
+  I use Portable Forth Environment 0.32.94
+  http://sourceforge.net/projects/pfe
+  Many thanks to Guido Draheim for his very valuable support,
+  and some new pfe features.
+
+Brew runs also on bigFORTH
+I use ANS bigFORTH 386-Linux rev. 2.1.0
+  Many thanks to Bernd Paysan for bigFORTH, answers, patches, fixes.
+
+Brew on iForth is experimental,
+  a step more experimental than brew is anyway ;-)
+
+
+*****************************************************************************
+
+How to run 'brew' (more information in the brew info file, please see):
+
+To unpack the files, say:
+  tar -xvIf brew.tar.bz2	# if you have a xxx.tar.bz2 file
+  tar -xvzf brew.tgz		# if you have a xxx.tgz file
+
+I would do this into brew users home directory.
+
+Run brew:
+  cd brew/
+  gforth --dictionary-size 10M  brew.fs
+
+     If your computer is scare on memory say 
+     gforth --dictionary-size 2M  brew.fs
+     Having plenty of it say 'gforth --dictionary-size 80M  brew.fs' or so,
+     the more, the better.
+
+     BTW: 'gforth-fast' runs faster than 'gforth' but gives less debugging
+          information.  Please use gforth before reporting bugs.
+
+  Press <SPACE>, lean back and wait some time...
+  Then press some keys and try out...  Brew will give you some hints, enjoy...
+
+  Most things in brew are a kind of text mode menus.
+  While in other user interfaces you would move the mouse on something
+  and click the equivalent in brew is to move the text cursor to the
+  thing you want and press <RETURN>.
+
+  There are a lot of key bindings, press 'k' to see them.
+
+  You should be able to read the context related documentation by
+  pressing '?' or <F1>.
+
+  There's a fair amount of documentation to browse, hope you do.
+
+  There should be a 'default' demo too, explaining the default
+  initialisation of your brew version.  Try pressing key 'd' twice.
+
+  You are strongly advised to read the file README-SECURITY too.
+
+*****************************************************************************
+
+Manual:
+
+Brew comes with detailed documentation in texinfo format. You can press
+'?' just about everywhere in brew to see the documentation node related
+to the context.  Brew uses an external info reader or html browser.
+
+The info file  brew/texi/brew.info  does not get automatically installed
+in the systems info directories.  To read the manual from outside of brew
+you can install it by hand, or do as follows:
+
+Read the manual:
+  cd brew/
+  info --file=texi/brew.info
+
+or: Read the manual from within emacs:
+   C-u C-h i texi/brew.info <RET>
+
+There is a html version on the brew home-page,
+or you can produce it yourself from the file 'texi/brew.texi' by saying
+makeinfo --html brew.texi
+The quality is not too exciting, though.
+
+Of course you can also print the manual by creating a dvi file from brew.texi.
+
+*****************************************************************************
+
+Short description:
+(See  info brew  for more).
+
+  'brew' is a tool to try out what I call 'evolutionary programming'.
+
+  The idea is to start many small 'programs' that have to solve a given task.
+  Depending on how good they solve it they get a reward in 'energy'.
+  If they reach a certain energy level they reproduce themselves,
+  otherwise they are taken out of the play after a short time.
+  
+  The trick is, to alter a certain rate of the reproduced programs in a
+  random way. You get the idea?
+  Programs that happen to come up with a better solution to the given task
+  get more energy, so they will reproduce earlier and more often.
+
+  It sets up a kind of evolution which optimises the produced programs
+  to the given task.
+
+  'brew' is *not* meant to be a simulation of biological selection,
+  but as it is a close analogy i *do* use terms from biology to describe
+  what's happening.  This helps me thinking about the processes that 'brew'
+  is trying to implement.
+
+  I call the code snippets 'cells' (not in the sense of the FORTH term),
+  I talk about 'mutation' 'genes' 'genome' 'food' 'population control'
+  'generation' and so on, and hope you get the meaning.
+  Please don't forget that it is only an analogy and I do not think
+  in any way that brew does create something like artificial life or so.
+
+  The cells are altered in two different ways:
+
+  The first one just alters the value of some cell variables.
+  I call this 'diversication'.
+
+  The second one alters the FORTH code executed by the cell.
+  I talk about 'mutation'.  There are different mutation types.
+
+  In a biological analogy 'diversication' would change the length of
+  the legs or so, while 'mutation' would change their number,
+  or replace them by wings.
+
+  Mutation produces a lot of genomes to be tested, most of them
+  being rubbish, and I want to keep only the successful ones.
+  So I implemented a so called 'trial' phase before compiling them.
+
+  FORTH offers a unique feature in this roam:  Not only that its interpreter
+  is surprisingly fast, but it's even possible compiling new words at run time.
+  The compiled words will run at full speed then. Compiling is very fast too.
+
+  During trial phase the genome is kept as a source string of FORTH words
+  in a buffer. It gets evaluate'd (interpreted) when the cell has it's turn.
+  (Only) if the genome succeeds to survive a certain number of generations
+  the words gets compiled. This saves dictionary space...
+
+
+  I have written 'brew' for fun and out of curiosity.
+  Programs that run for an hour only to spit out a number as result are no fun.
+  I want to have an impression of what's happening while brew is running.
+
+  So brew has a pecularitity which wouldn't be needed for the evolutionary
+  process, but is fun to watch:  The cells can have a defined locality in
+  a virtual space which I call 'world' or 'field'. This field is shown on
+  the screen while brewing a gene soup.  Cells show up as characters and
+  reproduction produces waves and whirls of cell cultures running over
+  the screen.  This gives you some feedback from the evolutionary process.
+  Character and colour give more informations about the individual cells
+  they represent in a run time configurable way.
+
+  So one could see brew as a kind of 'Evolutionary Cellular Automata'.
+  (See documentation for other modes to run brew. There will be more
+  in the next version).
+
+  The cells spot in the field has certain 'qualities' which can be shown as 
+  background colour. Think about it as food, humidity, fertile soil or the like.
+  Cells can see these qualities (and some of their inner variables), they can
+  use them for calculations, decisions and the like, they can move them around
+  and change their value.  This can also influence other cells that will
+  live on the same spot.  Biotopes can develop symbiosis and such. 
+
+  There are many ways to watch brew during the evolutionary process:
+
+  * Characters and colours carry information about inner variables and spot
+    qualities.  You can change which parameters are looked at at run time.
+
+  * Some other Informations can be displayed in the last line of the display.
+    You can select at run time which infos to show.
+
+  * You can see (and edit) inner variables and procedures used,
+    by moving the cursor to a cell and pressing <return>.
+
+  * You can also see the FORTH code of the genome the cell currently uses.
+
+  * Instead of looking at the cells world you can scan their inner variables
+    like energy level, genome length, generation and so and watch a simple
+    bar graphic display as summary of the actual values in real time.
+    (If you want to get a headache you can also watch world *and* scan results)
+
+  * You can tell brew to write the produced FORTH code to the hd and watch
+    the results with 'tail -f'. You can switch the inclusion of things like
+    stack comments and others in this code files.
+
+  * You can tell brew to log various (switchable) aspects of it's inner
+    working to a file, which will fill up your gigantic new hd with enormous
+    log files within short time. Don't forget to switch that back off.
+
+
+  Brew has a sort of pseudo graphical user interface, a kind of text menu.
+  The text displays the state of variables, switches and the like.
+  Move the cursor to the name of the thing you want to alter, press <RETURN>
+  and give the new value.  This might alter the choices you're offered or
+  port you to sub pages.  BTW: The interface understands FORTH syntax.
+
+
+  'brew' has the capability to record and replay your interaction with it.
+  Replaying a recorded session should produce the same result. Try variations.
+
+
+  Brew comes with some demos.  Some of them are quite old and not guaranteed
+  to work on current versions.  As this is a transit phase I have removed
+  most old demos, and will not write new ones until things have settled down.
+
+
+  Do not expect spectacular results from brew, it's in an early phase of
+  development anyway.  Some simple tests gave good results sometimes
+  (sooner or later), but some evolutions take far too long.
+  The results are often quite unexpected, or the cells trick you out somehow.
+
+  I consider current brew versions as a kind of programming experiment.
+  Or see it as a kind of intellectual adventure game ;-)
+
+
+  Using 'brew' as a benchmark:
+
+     Depending on the initial conditions brew can run for a very long time
+     consuming a lot of cpu power.  This could be useful for benchmarking.
+     So i have set things up to be used this way. Brew uses quite a variety
+     of FORTH features, which might be interesting for benchmarks.
+
+  For up to date benchmark info please read the file 'maybe-run-benchmark.fs'.
+     See there for instructions how to run brew as a benchmark.
+     BTW: brew is constantly changing.  Only compare results from the same
+     version, as it could affect benchmark results.  Old z9 ('brew-0_03z9')
+     benchmarks do *not* run on this version.
+     Only use the benchmarks that come with this version. They should run
+     on later 0.1.xxx bug fix versions, though.
+
+
+***************************************************************************
+
+Please note what it says in DEVELOPMENT, BUGS VERSION-README and NEXT.
+You are strongly advised to read the file README-SECURITY too.
+Brews source has comments as another source of information.
+
+For more detailed information please see brews info file.
+
+
+***************************************************************************
+
+Feel free to ask me questions.
+
+
+Hope you have fun with it!
+
+Robert Epprecht
+epprecht@solnet.ch
+
+***************************************************************************

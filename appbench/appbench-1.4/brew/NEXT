@@ -1,0 +1,300 @@
+#	$Id: NEXT,v 1.11 2005/06/02 15:21:56 f Exp $	
+
+\ Brew development has one difficulty: It tries to stay compatible between
+\ versions for some time, such that demos, benchmarks experiments and the
+\ like can be developed.  From time to time compatibility must be broken.
+\ This file is a list of plans, ideas and TODO items for coming compatibility
+\ breaks.
+
+\ Just a scratch board, not edited.
+
+
+\ ****************************************************************
+PLANS for experimental 0.3 series:
+
+Much more flexibility.
+
+Brew should become more like a language to compile evolutionary experiments.
+
+Every experiment needs (at least) two configuration files now:
+  
+  * COMPILE TIME configuration (much extended).
+    Compile just the functions in, that you want.
+    Easy to compile variations and extensions. 
+  
+  * RUN TIME configuration
+    Use the compiled system to define structures (like nucs),
+    user defined variables (like nuc, spot and world variables)
+    and to initialize and populate the whole system.
+
+
+No attempt will be made to have any compatibility
+between different compile time configurations.
+
+
+Complete compatibility break, get rid of historical design limitations.
+
+
+
+\ ****************************************************************
+Some earlyer thoughts that get revied in 0.3 now:
+
+Factoring out basic things to make brew more versatile,
+compile just what you want:
+
+spot-do
+spot-do-before
+spot-do-after
+: (spot-do)	\ brew system
+    spot-do-before		\ depending on compile switches (see below)
+    spot-do			
+    spot-do-after ;		\ depending on compile switches (see below)
+
+: spot-do-all ( -- )
+    log-spot-before		\ depending on compile switches (see below)
+    \ custom-spot-do-before	\ depending on compile switches (see below)
+    (spot-do)
+    \ custom-spot-do-after	\ depending on compile switches (see below)
+    log-spot-after ;		\ depending on compile switches (see below)
+
+Same for nuc-do, step-do, world-do, brew-do...
+Similar (maybe simpler) for finding a 'neighbour' spot 
+* free-neighbour-spot?
+* fertile?
+
+BTW:  all the mentioned spot functions could/should be world local.
+      No, make this a compile option...
+
+BTW2: while there are templates for most of the above functions
+      it is still possible to compile new additions on the fly
+      and hook them in at run time.
+
+
+Brew source could do much more compile time configuration:
+
+Brew would become more like a compiler for the evolutionary programming
+experiment you want to make. Initialisation files can be links to
+different files, producing very different programs.
+* use nuc local, world local or global scoring (and eating) functions?
+* use world local or global population control
+* use any spot local things beside fcp?  (no-world-mode) ???
+
+
+Compile time switches to compile features (only) on demand:
+* don't compile the feature
+* compile it unconditionally
+* compile it run time switchable
+So one could compile fast bare bone brews for a given task.
+
+Compile time switches to find optimal implementation:
+Let's say using values instead of variables (in some critical places)
+for speed reasons. The settings should be found by a script.
+* values-are-fast
+* use-defer
+* use-xt-execute	use values-are-fast for implementation
+
+DEFER
+If there's a way to get the current xt we could use deferred words
+in many situations.
+Define the following three immediate words system dependent:
+They might use deferred words, xt-variables or xt-values.
+* set-xt'
+* get-xt'
+* do-xt'
+
+
+The following variables should become world local:	(no, compile option)
+* all population control variables
+* display-switch:
+  global-display-switch get's OR'ed with (display-switch) and
+  saved to display-switch (both world local) when entering world.
+* run-mode: split into  run-mode  and  world-run-mode .
+  LISTED-MASK: linear-mode	\ should become world local
+  LISTED-MASK: elitism		\ should become world local
+
+
+Compile time configurable locality:
+
+Variables could be (amongst others)
+- global
+- world local
+- nuc local
+- chromosome local
+- gene local
+In some cases, like population control parameters or gene-pools it
+makes sense to be able to set locality at compile time.
+
+Compile time configurable variable types:
+I want to switch from integer to dfloats for things like population
+control, probability rates and the like. But I see some advantages
+of the old integer implementation like higher reproducibility or
+moiree effects. So it could make sense to be able to switch that at
+compile time.
+
+
+Chromosomes.
+
+
+User defined nuc and spot var names.
+
+r/w (and visibility) status of variables only determined by gene
+availability, diversification by setup.  So these are not properties
+of the variables any more.
+
+Gene pool only determines read/write access to nuc and world variables.
+Blocks of nuc variables with one bit in a cell for each.
+
+dFloat mutation rate, scales and the like.
+
+Dynamic nuc size.
+
+Switch reset-nuc-masks? on.
+
+(big-bang) parameters the other way round?
+
+Different implementation of diff blocks:
+?EVAL comments out line when interpreting but EVALUATEs when doing diffs
+Let's the possibility to implement all sort of behaviours.
+
+Error/success statistics
+in nucs ?
+in trial genomes ?
+in genomes ?
+
+Token replace mutations should not accept identical replacements if
+there's more than one possibility.
+
+Selecting genes based on their stack effect for efficiency:
+  * consumers
+  * level
+  * producers
+
+Use scoring-xt, depreciate eat-xt .
+
+eat-scored  should take score not the error as argument.
+sign and range limitations???
+
+
+living  and the like should be reimplemented and made world local.
+
+compile time switch between integer and float implementation of:
+* population control  and  scoring  eating  energy  and such.
+
+Display size should be configurable at start time and must be
+dealed with in benchmarks, demos and the like.
+
+
+Mutation of trial phase genomes should become possible.
+split  trial :
+* compile-generation		when a genome get's compiled
+* mutation-on-hold		how long it will not get used for mutations
+* log-genome-generation		when will the genome be logged
+
+eliminate  elitism?  and such.
+Brew should just execute xt's like nuc-do-xt
+
+;gene should not have a code cost.
+
+naming: dfloat should become normal, integer the exception.
+
+Starting brew should not do a time-step .
+
+Bitmasks over multiple cells:
+Could be represented as double cell  ( bit offset -- )
+[The compiler can decide to leave the offset away, if only offset=0 is used]
+
+
+Compiling named indices for user nuc/spot variables:
+name ( -- addr )	used inside genes, maybe as xt for scans
+name% ( -- index )	used for mask storing (i.e. diversification masks)
+
+genes: we do not really need addresses:
+name@
+name!
+but what about 'name off' then? ... introduce zero ( -- 0 )
+any other disadvantages?
+YES: brew should write FORTH after all ;-)
+
+run ispell over all files...
+
+gene-follow  and such should not do code entries.  Let's do that late.
+Look for similar situations to fix.
+
+use  file-scoring
+
+consequent use of file dependencies					done
+
+list implementation could be better...
+even if I keep current implementation all these double offsets like
+>node-descriptor >flags  and such should be done at compile time.	done
+
+Then the list descriptor should remember the last node.			done
+
+
+
+NUC-VAR: SPOT-VAR: WORLD-VAR: CHROMOSOME-VAR: and the like
+could be made to register the defined var for things like:
+	* saving
+	* menus
+	* evtl. also scanning
+This would automagically adapt saving (and others) whenever such a var
+was declared.
+
+Split it up in:
+	int-NUC-VAR:
+	xt-NUC-VAR:
+	mask-NUC-VAR:		takes mask list as tos parameter
+	offset-NUC-VAR:		nuc internal offsets
+	dfloat-NUC-VAR:
+	etc.
+
+Data listed:
+	nuc-var-xt
+	nuc-var-exists-xt	test if var is in *this* nuc ( -- flag )
+	save-xt
+	mask-list-xt		only for mask-nuc-vars and the like
+
+	menu-text-handle	text to display or '-1' for name only
+	menu-value-display-xt	how to display the value
+	menu-input-xt		menu input method for value
+	
+Words for saving, menus and scanning could be either:
+	* generic	based on the list data
+	* compiled	brew compiles a word (based on the list)
+
+
+
+\ v0.2 related stuff:
+\ ****************************************************************
+TODOs for 0.2 RELEASE							done
+
+* brew must adapt to the locally used console screen size:		done
+
+  Next brew version will still be a console application, but it will adapt
+  to the screen size the user has configured as he likes.		done
+
+  configure-console.fs							done
+  Helper program to determine screen size and write the configuration
+  There is a choice to try heuristic configuration first (Linux only).	OK
+  Determine screen and font size interactively,				OK
+  write configuration file and inform the user.				OK
+  Use a very basic text interface to make compatibility easier...
+
+
+  Menu entry to run screen-configurator					done
+
+  Make old benchmarks independent of these settings.			done
+
+  What about automatic line wrapping in screen sized worlds?
+  It is probably not save to use them, so it should be switchable, maybe.
+
+* Issues with compatibility and earlyer versions:
+
+  big-bang is hardcoded in brew.fs				fixed
+
+  benchmarks							should be OK
+
+  BUG when mouse outside configured screen size, bottom line	fixed
+
+
+\ ****************************************************************

@@ -1,0 +1,110 @@
+\ crash-test-README
+#	$Id: crash-test-README,v 1.3 2003/02/17 06:49:52 f Exp $	
+
+Tool to help debugging crashes or changed behaviour of new brew versions
+or Forth systems.  Experimental.
+
+File brew-crash-test.fs uses many different brew features and asserts results.
+It will give an error message if results differ in any way.
+
+You *must* define a word brew-crash-test for it to work, do that from the
+command line or in file my-compile-options.fs saying:
+CREATE brew-crash-test
+
+Usage:
+(You can do these steps more conveniently from the system menu if you are
+ familiar with the brew user interface.  Assuming a user without too much
+ brew knowledge I give the Forth command interpreter version. As brew would
+ interpret any additional char (including space) as user input, make sure
+ you do not cut&paste garbage together with the commands shown below.)
+
+
+ How to test for bugs and changed brew behaviour:
+**************************************************
+
+1) Start brew with brew-crash-test defined as described above.
+   Quit brew-menu by pressing 'Q' uppercase.
+
+2) say:
+   include INPUTS/extensions/debugging/brew-crash-test.fs
+
+   Brew should start brewing.  Some scrolling of the screen is normal, as
+   informations about error levels get displayed.  If everything goes well
+   over all the 1503 steps brew will display 'The End:  Result is valid.'
+
+   It will stop and display some information if anything goes wrong.
+   (Please cut and paste *all* of it if you want me to look at the matter).
+   Continue as explained below to produce more information for debugging.
+
+
+If an error message get's displayed:
+
+ How to determine the exact step and spot where an error or deviation occurs:
+******************************************************************************
+
+1) Append the following line to file my-brew-options.fs (not the same as above)
+   include INPUTS/extensions/debugging/checksums.fs
+   (If you don't like that, you can include it always after restarting brew).
+
+2) Start brew with brew-crash-test defined as described above.
+   Quit brew-menu by pressing 'Q' uppercase.
+
+3) To determine the step in evolution where something strange happens say:
+
+   step-check-on
+   include INPUTS/extensions/debugging/brew-crash-test.fs
+
+   Brew will run up to a certain step, beep and say something like
+   CHECKSUM DIFFERENCE IN STEP 999
+   (Probably there will be a lot of error messages after that, they are
+   irrelevant here).
+   Quit brew and Forth.
+   There should be a file OUTPUT/tmp/STEP-FAIL.fs now.
+
+3) Now we determine the spot within the critical step:
+   Start brew as in step #1, say:
+
+   write-spot-check-on
+   include INPUTS/extensions/debugging/brew-crash-test.fs
+
+   Brew will beep at the same step as it stopped last time and probably
+   give uninteresting error messages short time later on. Quit brew and Forth.
+   There should be a file OUTPUT/tmp/SPOT-CHECKSUMS.dat now.
+   (This file gives check sums over all spots of this time step).
+
+4) If you have a Forth system where the error does not occur continue
+   with step 5, using this other Forth system now. If not send me both
+   files OUTPUT/tmp/SPOT-CHECKSUMS.dat and OUTPUT/tmp/STEP-FAIL.fs
+   I'll do step #5 then.
+   Robert Epprecht <epprecht@solnet.ch>
+
+5) Now we compare spot checksums to the data stored in the file.
+   Start brew (with the other Forth system) as in step #1, say:
+
+   find-critical-spot-in-step
+   include INPUTS/extensions/debugging/brew-crash-test.fs
+
+   Brew will run to a step after the critical one and say something like
+   CHECKSUM DIFFERENCE AT SPOT 123 STEP 999 (inhabited)
+   Quit brew and Forth.
+   There should be a file OUTPUT/tmp/SPOT-FAIL.fs now.
+
+6) To log in detail what happens at the critical spot do the following:
+
+   If you have changed log-mask as *compile* option please change it back
+   to -1 (or even +1) in compile-options.fs or my-compile-options.fs.
+
+   Start brew (with the Forth system that gives the error) as in step #1, say:
+
+   log-critical-spot-on
+   include INPUTS/extensions/debugging/brew-crash-test.fs
+
+   There should be a file OUTPUT/log/brew.log now.
+
+   Please mail this file and OUTPUT/tmp/SPOT-FAIL.fs to me,
+   they could help in finding the cause of the bug or deviation.
+   Robert Epprecht <epprecht@solnet.ch>
+
+7) You might want to restore file my-brew-options.fs (and eventually
+   my-compile-options.fs) and delete the OUTPUT/tmp/ files, or you
+   wait with that until we're done.

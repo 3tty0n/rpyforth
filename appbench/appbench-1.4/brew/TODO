@@ -1,0 +1,283 @@
+\	$Id: TODO,v 1.100 2005/05/11 06:26:46 f Exp $	
+
+See also DEVELOPMENT VERSION-README and BUGS.
+At the time being, many TODO items are in file NEXT.
+
+
+make reproduce spot configurable, i.e. free-neighbour-spot?
+
+check all c-l and l-s for being world dimensions instead:		done
+mark when scrolling is a deal				DADA MARK: scrolling
+	c-l 	0 (dim-spots) !
+	l-s 1- 	1 (dim-spots) !
+
+simple-expressions-all and the like should have sublists
+
+GUI type user								done
+
+update README
+
+rectangle selection in world view.					done
+
+range selection in scan displays	define-bar-range		done
+
+all-lists get re-built. Should be implemented with sub-lists.
+
+floating point in word-usage.fs  dfVARIABLE  fVARIABLE
+try to fix CREATE (without DOES>)
+use (don't-count-words)
+make better user interface
+try smarter CREATE counting mechanism storing current
+
+test on other screen sizes
+
+test and run benchmarks
+
+brew is absolutely stupidly relying on a  9 16 fixed font size. 	done
+does it need to know just now?
+Mouse position could be stored on clicking for cases you would need pixels.
+
+df-function-number and df-function-within for floats		done
+	
+use new scan.fs							not yet
+
+continuous display type hits					not yet
+based on count on everybody
+
+new nuc-function-scan step display type				done
+
+step display adaption: step-display-adapt-size			done
+
+mouse support							NEED HELP
+
+scrolling in menus on different screen sizes			done
+
+fix ?step-display-sanity	fit screen size			done
+
+BUG when mouse outside configured screen size, bottom line	fixed
+
+File selection should display files ordered, directories first.   done
+
+Fileselect: use  (start-char)				no, use scroll-to-line
+
+Use 'compile-switches.fs'					not yet
+
+Extend menu elite.
+
+Reporting in elitism mode.					done
+
+named indices for (scan-detail-index) and the like		no, use xt's
+  * nuc vars
+  * world vars
+so: (scan-detail-index) should become (scan-detail-xt)		planed
+  * gives an address	bitmap / int / dfloat
+  * gives a value	bitmap / int / dfloat
+
+scan scores and other functions on nucs or spots		done
+
+fitness-list							score-list done
+
+world:step:spot							done
+
+recording and logging of world name changes.			done
+
+saving of all worlds.						hmm...
+
+Record file start and worlds list.				done
+
+clone world							done
+
+check compile options, i.e. no dfloats
+
+file-structures on compiled genes				done
+
+check code-file-masks, if they are still in use			done
+same for run-mode
+
+check READMEs							done
+
+maybe-run-benchmark.fs						done
+
+remove genes/ directory		CVS
+
+factor out individuals						partly done
+
+left over tmp files				PENDING
+
+show-coloured-on-nuc-var-eq					obsolete?
+show-coloured-on-nuc-var-diff					obsolete?
+
+real count zero in average and display		PENDING
+
+
+re-think 't' and 'o' key bindings in brew main screen
+
+more generic foreground/background colouring functions		PENDING
+same for dfloats						PENDING
+float>colour functionality					PENDING
+
+dfloats for world-spots-localized.fs			delayed until used
+
+OFFSET: use au's
+
+\ unique: placeholder
+
+float>buffer-string and nan inf...
+
+maybe split checksums in an integer and a float part?
+
+world directions
+
+\ cells work on *present* food plane, 'world-do' does copy it to the future.
+\ WHY?
+
+nuc menu: diversification flags on one line
+
+pad cp for speed...
+
+consistent use of upper case stack type symbols as addresses of the
+lower case type.
+
+\dfVARIABLE
+
+use diff-blocks everywhere
+
+\ ***********************  nuc pointers:  ************************ 
+
+rename 'menu-same-key-entry' to 'menu-key-same-entry'.
+
+
+multiple sequential gene 'chromosomes'
+each one get's mutated separately having it's own mutation-rate, gene pool,
+mutation types...
+
+tune open-allocate default size
+
+make population control world local
+copy population control parameters (e.a.) between worlds
+
+clone world
+
+recursive page see
+
+fg-colour-field							fg: done
+bg-colour-field							bg: not yet
+
+scrolling and shifting visibility window
+
+test diff-genome-pool when more possibilities are used
+
+Rewrite probability lists to be more like normal lists?		hmm?
+Lists using negative offsets for internal data?
+
+Nucs from individuals menu should get a new genome id when sown or set !
+(Fixing that might break benchmark compatibility, test first...)
+Maybe individuals should always get a new genome id?			done
+|
+Related bug:
+Changing genome manually must change genome id!				done
+|
+Maybe store a genome-id for each genome? ('noop' would be zero).
+
+obsolete:				delayed (compatibility)
+do-on-world-field
+world-condition-color-map
+world-condition-color-diff
+
+
+HELP menu
+
+fix COUNTING-WORDS		partly done (CREATE DOES> not always working)
+
+extraction mutation type.
+
+string interpretation on function key
+
+'2-ascii-scale' rename and maybe reorganise
+
+move world variables when entering a world.
+
+selecting spots in higher dimensions.
+
+world list.
+
+save-world-variables
+
+all visible worlds (as a new visibility level).
+maybe starting only on second dimension?
+
+(big-bang) parameters the other way round.
+
+text-display on info line
+
+test and usage example in 'menu.fs' using up to date syntax...
+include 'menu-leave' in there.
+
+give compile time hints
+alignment
+unused cells
+...
+
+future-change-individal
+does not make much sense any more with new-worlds		see below ;-)
+food>future same.
+yes, it does, because I run 'localise-spot-data' FALSE now...	ok
+
+<?diversify-planes> is defined in brew.fs but depends on new-worlds.
+Must be tested anyway...
+
+rethink spot-vars@ spot-vars!
+
+Reactivate 'nucs-checksum' when bigFORTH 386-Linux rev. 2.0.2 is fixed.
+workaround installed, reactivated.
+
+save-nuc when nuc is on trial
+save-nucs-genes-trial
+
+.keybindings needs an update.					partly done
+
+move benchmarks/ to INPUT/
+
+'living' and 'die'...
+
+show coloured on nuc flags: 'show-coloured-on-nuc-flags-NAND' ...
+
+save and load nucs from individuals menu.
+
+men-step-presets
+
+eliminate diversify?-A ...
+
+is-gene?        \ dummy FALSE at the moment
+see-genome      ." NOT DONE YET"
+
+finish make-ekey-map.fs
+
+do i want <diversify> ?
+
+A-quality>color-scale
+
+
+\ there's a bunch of files and features which are not used yet:
+
+\ these for the planed gene conditionals generation  [ ... no I didn't use it ]
+
+\ longstanding:
+mouse.fs		\ dummy based on old Atari version
+
+
+Code mutation currently only work on *top* level of the genome.
+
+respect max-stack-effect
+
+more random functions to choose one
+
+\ not implemented yet...
+mouse interface
+
+\ not implemented yet...
+undo
+
+look-at1
+look-at2
+...

@@ -1,0 +1,108 @@
+\	$Id: TODO,v 1.32 2005/05/11 06:27:03 f Exp $	
+\ Pending documentation stuff.
+
+
+rectangle selection						done
+multi bar ranges						done
+
+GUI type user							done
+
+fixed witdh font						done
+
+COUNTING-WORDS							done
+
+new system menu							done
+
+scan.fs								done
+
+df-function-number df-function-within				nothing to do
+
+function-within function-number					done
+
+nuc-scan-func-dspl						done
+
+.hits								done
+
+top-level-snip-IF-ELSE-branch    snip-types			done
+
+mutation-must-differ	I decided not to put this in info, comment in brew.fs
+
+configure-console.fs						done
+
+cursor wrapping							done
+
+make-ekey-map.fs						done
+
+new files:
+  * user-IO.fs							done
+  * advanced.fs							done
+  * listed-masks.fs						done
+
+elitism?
+  * Population control						done
+  * Menu elite							done
+  * Supermenu							done
+  * new file compile-switches.fs			 partly done
+
+Menu global variables						done
+Global variables in diversification menu			done
+
+Record menu and record after playback				done
+
+Node 'World list menu'						done
+
+Menu changes in big bang, world, individuals.			done
+
+REMOVE world  from world menu.					done
+
+Menu select world						done
+
+Clone geometry	in big bang.					done
+
+NEXT								done
+
+Eliminate references to old world and old genes/mutation implementation.
+
+Code file menu:	STRUCTURE only					done
+
+replace scanning: by scan:  take better examples anyway
+
+deferred colour setting (in case of problems).
+
+f-param-div-mask  f-invisibl-div-mask  ?
+
+float types
+
+environmental dependencies:
+allocate dfaligned
+separate floating point stack
+
+generic-maybe>bg-color
+generic-maybe-range>bg-color
+
+Example step display  better example
+
+limitations:
+top level
+screen and font
+savesystem
+
+error messages
+
+trouble shooting
+
+Colour on difference  and trick...
+
+world size and visibility
+items
+examples
+
+compile time options
+
+minimal-dictionary-space
+
+benchmarks
+
+startup sequence	partly done in the files section.
+
+security

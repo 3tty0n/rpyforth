@@ -1,0 +1,36 @@
+*.pyc
+
+pypy/
+_pypy_binary/
+logs/
+
+# Plotting virtualenv (matplotlib for run_shootout.py charts)
+.venv/
+
+# Compiled RPyForth binaries
+rpyforth-c
+rpyforth-c-*
+
+# Bundled gforth snapshot (fetched/built by `make setup-gforth` / `build-gforth`)
+gforth.tar.xz
+gforth-[0-9]*/
+
+# Local Factor binary package (make setup-factor)
+factor/
+factor-linux-x86-64-*.tar.gz
+
+# Generated benchmark charts
+*.pdf
+
+# Local VFXForth installation
+vfxforth/_install/
+
+# Local SwiftForth installation
+swiftforth/SwiftForth/
+swiftforth/_install/
+tmp/
+
+# AI agents
+/AGENTS.md
+/CLAUDE.md
+/.claude/

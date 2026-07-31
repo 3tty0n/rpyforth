@@ -1,0 +1,146 @@
+This is a set of Forth application benchmarks, in contrast to the
+small benchmarks that are usually used for benchmarking Forth systems.
+
+This is version 1.4 of the benchmark suite.  The changes relative to
+1.1 are bugfixes, improvements in the calling sequences for the Forth
+systems (resulting in running more benchmarks), and the addition of
+results for more Forth systems.
+
+Most of these applications (except cross and vmgen, which are not run
+by default) should be portable between Forth systems, but a test with
+Gforth (several versions), bigForth 2.3.1, iforth 2.1.2541, SwiftForth
+i386-Linux 3.2.1 (sf), SP-Forth 4.20 Build 001 and vfxlin 4.40 [build
+0404], SwiftForth x64-Linux 4.0.0-RC87 (sf64) and VFX Forth 64 5.43
+(vfx64) showed the following systems to be working:
+
+Benchmark Systems
+benchgc   bigforth gforth iforth3      sf sf64 vfxlin
+brainless bigforth gforth              sf sf64 vfxlin vfx64          
+brew      bigforth gforth*                
+cd16sim   bigforth gforth iforth3 spf4 sf sf64 vfxlin vfx64
+fcp       bigforth gforth         spf4 sf sf64 vfxlin vfx64
+lexex     bigforth gforth              sf sf64 vfxlin vfx64
+
+* gforth-7.9 occasionally stops after a part of brew (even with the
+  same parameters); I'll have to investigate this.
+
+My installation of iforth 5.1-mini only supports including files with
+absolute names, and AFAIK this is intended by iforth's author.
+Therefore none of the benchmarks works with iforth-5.1-mini (and
+probably not later iForth variants, either).
+
+That's with various workarounds for various systems (see below).  It
+may be easy for knowledgeable users to enable options in the systems
+to make them work with more benchmarks, though.
+
+
+HOW TO RUN THE BENCHMARKS
+
+There is a bash script "run" that makes it easy.  cd into the
+appbench directory, then say, e.g.:
+
+BENCH="cd16sim lexex" FORTH=vfxlin ./run
+
+and after a while you will see output like:
+
+[0.500 0.500 0.512 ] cd16sim
+[4.040 4.048 4.052 ] lexex
+
+These are the user times from three runs of the benchmarks; the results
+for each benchmark are sorted to make it easier to see or compute the
+median, best, and worst results.  The standard output of the
+benchmarks is suppressed.  To make it easier to see what's going on,
+there is also another script "test" that performs only one run and
+shows the standard output.  Use it, e.g., like this:
+
+BENCH="cd16sim lexex" FORTH=vfxlin ./test
+
+In my testing I used the following variants for the FORTH variable:
+
+FORTH="bigforth -d 16M -m 128M -r 8k ../setup/bigforth.fs -e "
+FORTH="gforth-fast -m 16M ../setup/gforth.fs -e " #default
+FORTH="iforth"
+FORTH="sf include ../setup/sf.f"
+FORTH="sf64 include ../setup/sf.f"
+FORTH="spf4  ../setup/spf.f"
+FORTH="vfxlin include ../setup/vfx.fth"
+FORTH="vfx64 include ../setup/vfx.fth"
+
+The benchmark names possible in BENCH are:
+
+BENCH="benchgc brainless brew cd16sim fcp lexex cross vmgen"
+
+The default is all but cross and vmgen (the latter are
+Gforth-specific).
+
+You can change the number of runs by setting RUNS:
+
+RUNS=5 BENCH="cd16sim lexex" FORTH=vfxlin ./run
+
+The default number of RUNS is 3.
+
+You can also change the command used for timing by setting TIME, but
+that command should produce only a single number on stderr as output.
+The default is TIME, and the TIMEFORMAT="%U" per default to report
+only user time.
+
+
+DOWNLOADING AND INSTALLING
+
+You can download this package from
+http://www.complang.tuwien.ac.at/forth/appbench.zip
+
+Just unpack it anywhere, then cd into the appbench-1.2 directory and
+benchmark away.
+
+
+ABOUT THE BENCHMARKS
+
+Benchmark       Author          Purpose, Remarks
+bench-gc 1.0    Anton Ertl      Garbage Collector
+brainless 0.0.2 David Kuehling  Chess
+brew 0.2.0      Robert Epprecht Evolutionary playground
+cd16sim v11     Brad Eckert     CPU emulator
+cross 0.7.x     Bernd Paysan    Forth cross compiler, Gforth only, short run, unstable performance
+fcp 1.31-64     Ian Osgood      Chess
+lexex           Gerry Jackson   Scanner Generator
+vmgen 0.7.x     Anton Ertl      Interpreter generator, Gforth-only, short run
+
+Brew produces different results for 32-bit and 64-bit systems.
+
+For brainless I also see two different results, which earlier seemed
+to correlate with cell size, but more recent testing shows that 32-bit
+Gforth, sf64, and 32-bit sf-3.11.0 on one machine (smaug) visit 107361
+nodes and perform 159750 evals, while 64-bit Gforth and 32-bit
+sf-3.11.0 on a different machine (c8) visit 110023 nodes and perform
+163278 evals.  This needs further investigation.
+
+If you want to see how the benchmarks are invoked on the Forth level,
+look into the file benchstrings.
+
+
+RESULTS
+
+Some results from Gforth (gforth-fast) 0.7.0, bigForth 2.3.1, iforth
+2.1.2541, SP-Forth 4.20 Build 001 and vfxlin 4.05 Alpha 8 [build 0207]
+are shown in Results.eps.  This is an Encapsulated Postscript file, so
+you need a Postscript viewer like gv or GSview to view it.  The
+scaling of the results is Gforth-centric, that's because this chart
+was originally created to illustrate Gforth performance.
+
+
+ACKNOWLEDGMENTS
+
+Thanks to all the authors of the applications that serve here as
+benchmarks for making them available and portable.
+
+
+FEEDBACK
+
+If you have any feedback (problem reports, fixes, new benchmarks
+etc.), you can contact me by email at
+anton@mips.complang.tuwien.ac.at.
+
+Anton Ertl
+
+

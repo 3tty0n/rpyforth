@@ -1,0 +1,118 @@
+\ README-SECURITY
+\	$Id: README-SECURITY,v 1.9 2005/05/11 06:26:19 f Exp $	
+
+
+Please do read this file until the end.
+
+
+When I try to describe to others what I'm doing with 'brew' they all panic.
+None of them would ever put a floppy disc of mine in his own computer,
+being frightened of all the unpredictable, virulent code,
+that would probably be on it...
+
+
+Brew builds it's genes out of a limited number of gene primitives that
+do not include any actions that I consider a possible security risk.
+Please read the source if you don't trust me.
+Comments welcome.
+
+
+Writing brew myself and knowing about it's inner workings I'm sure enough
+that brew will not produce any malicious code (when used as delivered)
+to develop and let it run on my own computer.
+
+I consider an unchanged brew as save to let it run.
+I wouldn't give it off my hands otherwise.
+But of course *I can not and do not guarantee anything*.
+
+
+BTW: Even when running my buggy development versions 'brew' never did me
+     any harm other than crashing, or giving me headache how to find a fix
+     for the newest bugs...
+
+But please do read on.
+
+
+I'd suggest you to run brew from a special brew-user account.
+Copy all brew stuff to it's home directory.
+then  cd ~/brew
+
+Do not run brew as root.
+Such ordinary things as writing gigabytes of log files
+(which brew would only do, because you told it to)
+could easily bring you into trouble if you're root.
+
+
+
+But I *must* warn you from something:
+
+SECURITY WARNING:
+******************
+
+While I hardly can't imagine that brew could possibly build any harmful
+programs out of these primitives,  I do know that some humans deliberately
+*do* write such code.
+
+Brew could *very easily* be exploited to do anything a program started by
+brews user could possibly do. *Please be careful!*
+
+
+FORTH compiles programs from text files in a time you wouldn't even notice.
+Brew compiles many of them at startup and later on.
+* So do consider all text files in the context of FORTH as executable programs.
+
+Brew is a very open system.
+Most brew related files, including configuration files
+are just executable FORTH source files.
+
+Same is true for brews temporary files, and I could enumerate many others:
+Brew can record sessions to files, which are FORTH source text just included
+when they are played back.  Then it can do things like saving it's current
+configuration or the produced gene code to FORTH files.
+
+
+A programmer could change any one of these files by hand and let your computer
+do anything a program could possibly do.
+
+So please do CONSIDER ANY BREW RELATED FILE AS EXECUTABLE PROGRAMS.
+
+DON'T RUN ANY RECORDED BREW SESSIONS OR OTHER FILES FROM UNTRUSTED SOURCES,
+without studying them first.
+
+(-; It's your decision if you regard me as trusted source or not ;-)
+
+You should PROTECT ALL BREW RELATED FILES from manipulation, of course.
+Don't ever run brew on a system where other users could possibly change
+any of brews files, misuse them for symlink attacks or the like. Brew
+does not try in any way to protect you from such security risks, you
+must do that yourself.  Remember:  Most brew files are like executable
+programs.
+
+
+BTW: If a programmer would give the cells new gene primitives that could
+possibly do things like deleting random files or so, the 'cells' *would*
+try that out.  So don't do that!
+
+
+I summarize:
+****************************************************************************
+*  I consider brew in it's original state, including all gene code that	   *
+*  could eventually be produced by it as no security risk as long as you   *
+*  make sure nobody could possibly add or change brew files with malicious *
+*  content.  DON'T EVER USE ANY BREW FILES YOU GET FROM UNTRUSTED SOURCES. *
+*  Brew does not attempt in any way to check it's files against changes,   *
+*  symlink attacks or the like. So in the traditional sense brew *has* to  *
+*  be considered as a very insecure program.  Take care.		   *
+**************************************************************************** 
+
+
+To avoid crashing of brew itself I do take care not to give the genes
+access to random addresses.  Cells can only see selected variables and
+can't do any address arithmetics. That's why mutation must do some type
+checking.
+
+Brew should not crash, if it does, it's a bug.  Please let me know.
+
+
+Robert Epprecht
+epprecht@solnet.ch

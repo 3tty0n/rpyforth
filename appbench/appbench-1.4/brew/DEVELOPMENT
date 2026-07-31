@@ -1,0 +1,2191 @@
+/ brew/DEVELOPMENT
+#	$Id: DEVELOPMENT,v 1.170 2005/06/02 15:18:20 f Exp $	
+
+FILE NOT UPDATED ANY MORE, sorry.
+(See files NEXT and VERSION-README)
+
+****************************************************************
+							18.11.2002
+Another change in list implementation:
+ * save last node address in descriptor (makes >list fast)
+
+****************************************************************
+							17.11.2002
+Can't help changing fundamentals... ;-)
+
+Krishna Myneni showed some interest in using brew components
+outside of brew, so I'm going over then a bit:
+
+Changed list implementation
+ * compute double offsets at compile time
+
+****************************************************************
+							16.11.2002
+Edited case of defining words e.a.
+
+****************************************************************
+							15.11.2002
+
+Resolving file dependencies and better file factorisation
+so that 'libraries' can be used outside of brew.
+
+Edited source file comments.
+
+****************************************************************
+							14.11.2002
+Keep case sensitivity of pfe happy:
+Change case where appropriate.
+
+Fixed problems with REQUIRED and pfe.
+
+****************************************************************
+							12.11.2002
+Key reaction in  fileselect-menu .
+
+****************************************************************
+							11.11.2002
+Fileselect sorting files alphabetically, directories first.
+Added: sorted-string-lists.fs
+
+****************************************************************
+							10.11.2002
+The very old demos included needed some polish and adaptions.
+
+****************************************************************
+							10.11.2002
+brew-0.1.0 release pre test.
+
+Cleaning up, polishing and getting ready.
+READMEs and documentation edited, default demo.
+
+
+****************************************************************
+							24.10.2002
+Heading to release  brew-0.1.0
+
+ok
+
+I would like to re-write brew from scratch  :-)
+ But I do not have the time to do it now...
+Still I feel like making some major changes :-)
+
+
+The current brew version seems quite stable,
+has a fair amount of documentation and some nice features.
+It might be worth branching off a release branch,
+before I start to turn everything upside down.
+
+BRANCHING-brew-0.1 branching off status quo
+
+
+****************************************************************
+Capo di Vaticano, Calabria				7.10.2002
+
+Cleaning up.
+
+****************************************************************
+							6.10.2002
+OFFSET: taking offset in bytes (not cells).
+
+****************************************************************
+							2.10.2002
+As ekey mapping is always changing when changing from one system to
+the other  ekey-outside  tells the user to include make-ekey-map.fs
+whenever an unknown ekey code arrives.
+
+****************************************************************
+							20.9.2002
+Elitism does not fit too well into current brew.
+It will after the next compatibility break, but I want to have
+a 'good enough' solution without breaking compatibility first.
+We need a corresponding scoring function for each eating word.
+Brew tries to guess which one the user wants. This is just a
+temporary hack.
+
+****************************************************************
+							13.9.2002
+Words for conditional compiling: compile-switches.fs
+
+Words can be compiled, disregarded, or compiled in a run time
+condition. An alternative else-part can be compiled depending
+on a compile time *or* a run time condition.
+
+****************************************************************
+							5.9.2002
+Elitistic mode works, but is not too good integrated.
+
+****************************************************************
+					       end of august 2002
+Working on elitism.
+
+****************************************************************
+							10.7.2002
+As spot local variables seem overkill for many problems
+I introduce a set of global integer and dfloat variables.
+Diversification of these.
+
+****************************************************************
+							23.6.2002
+Enable output redirection of benchmarks (avoid 'at?').
+
+****************************************************************
+							28.5.2002
+Continue recording after playback.
+Extended and more informational record/playback menu.
+
+****************************************************************
+							27.5.2002
+User input of world names.
+
+Cloning worlds.
+
+****************************************************************
+							26.5.2002
+Recording and logging of world related functions like selecting
+or removing worlds and  free-field .
+
+****************************************************************
+							25.5.2002
+Worlds list. Selecting other worlds, remove worlds.
+
+****************************************************************
+							24.5.2002
+Dropped support for old world implementation.
+
+****************************************************************
+							23.5.2002
+Dropped support for old genes and mutation implementation.
+Dropped support for stringbuf-0.3.fs .
+
+Deleted a lot of old stuff from TODO files, BUGS and the like.
+
+****************************************************************
+							23.5.2002
+Factoring out individuals and old stuff to separate files.
+ 
+****************************************************************
+							21.5.2002
+New mechanism to set diversification bit masks.  Use bit masks
+in the genes internals data instead of the old brain dead name
+based algorithm.
+
+****************************************************************
+							18.5.2002
+Edit gene menu for inspection and hand editing of genes.
+Can work on compiled genomes and on trial genomes now.
+
+Removing tmp files on exit.
+
+Keeping trace of produced output files.
+List of output files in a file displayed on exit.
+
+Save all nuc data or all spot data from system menu.
+
+Documentation updated.
+
+****************************************************************
+							10.5.2002
+Editing genes by hand.
+Decompiling internals genes and displaying them (or writing them
+to a file) as somehow formatted lines.  Recompiling changed gene
+file and set up trial for the concerned nuc.
+
+****************************************************************
+							9.5.2002
+Unique file names for temporary files.
+You can run several brews at once now.
+
+****************************************************************
+							9.5.2002
+More plans:
+
+Introduce *global* variables visible to the nucs and genes.
+For many experiments they don't have to be nuc or spot local.
+They would often speed up and simplify things.
+It would further allow interesting interactions between cells.
+
+Mutation rate could be split into a global and nuc local factors.
+There could be one for each chromosome. They could get diversified.
+
+****************************************************************
+							8.5.2002
+Plans:
+
+* Integer and dfloat variables are organised in chunks of as many
+  items as a cell has bits (for the diversification bitmasks).
+  There is a chunk count.
+* Gene internals have a flag and the data of the masks to set.
+  They have a chunk count too. Nucs must be big enough for it.
+* User defined names for nuc and spot variables.
+
+* Read/write status is a matter of the gene pools, not the nucs.
+
+* Chromosomes. Each one has it's own gene pool. I'm not decided
+  if the pool pointer should be nuc local or global for each
+  chromosome, make it easy to compile it both ways. Chromosomes
+  would have their own code cost variable.
+
+* Game mode: Play against brew in finding a solution to a problem.
+  The play can give you any information it considers fair before
+  starting.  All nucs you have touched get marked, and all their
+  children will be yours too. The aim is to mark them all.
+  The rules may vary.  Brew might be given the same time for it's
+  evolution as you need for input of your data (or a fraction of
+  it) or brew just uses the time while you test your nucs.
+  It might be allowed to high-jack brew nucs, or only to touch your
+  owns.  Mutation of your nucs can be on too, so you can search the
+  solution together with brew. If you find good changes, evolution
+  might be taken over by your nucs and their offspring.
+  Games can get recorded.
+
+* We would need a gene edit menu for this. For top level work
+  the genome could just be written to a file and passed to an
+  external editor. Editing of nested genes would start from
+  a recursive decompile menu. Selecting a gene word would nest
+  while selecting a space would call the editor on the current
+  level.
+
+* Edited nucs would be set on a special trial phase during which
+  they get tested for stack errors and brew will try to catch crashes.
+  Errors would remove all nucs with the genome. If a genome survives
+  trial phase and crashes later on, you have lost ;-)
+
+****************************************************************
+							8.5.2002
+Float value types checks, subsets, colouring.
+More menu links from scan results to subsets.
+
+Edited documentation the first time user is likely to see first.
+Manual top node link from system menu and from menus menu.
+
+****************************************************************
+							4.5.2002
+Fix float range in continuous display.
+
+****************************************************************
+							3.5.2002
+Enter xt's by hand in  choose-xt-menu  by pressing key "'".
+
+****************************************************************
+							2.5.2002
+Continuous display for dfloats.
+Continuous display preserves data for redisplay now.
+
+****************************************************************
+							1.5.2002
+Detailed dfloat scans for nuc and spots.
+
+****************************************************************
+							21.4.2002
+Fixed sublists.
+
+****************************************************************
+							21.4.2002
+Floats for  maybe-do  feature.
+
+****************************************************************
+							17.4.2002
+Dfloat nuc and spot scans. (no detailed dfloat scans yet).
+
+Two new environmental dependencies:
+* allocated memory must be dfaligned
+* separated float and data stacks
+
+Highlighting (colours) important menu entries.  Key bindings.
+Use words  type-bright  type-alert  type-other-colour which are
+defined (indirectly) deferred in display.fs.
+
+****************************************************************
+							11.3.2002
+Started new INPUTS/extensions/ hierarchy.
+
+Brew behaves differently in a developer version of a certain
+optimising Forth system.  Help to find out what's going on.
+
+INPUTS/extensions/debugging/checksums.fs
+Step and spot checksum files.
+
+Extended log information.
+
+Crash test extended: Can test each step checksum, write a spot 
+checksum file, find offending spot, log it in detail.
+See INPUTS/extensions/debugging/crash-test-README.
+
+****************************************************************
+						  until 26.3.2002
+More float adaptions and some bug fixes.
+
+****************************************************************
+							20.2.2002
+Experiments with float versions of simple linear equation systems.
+
+****************************************************************
+							15.2.2002
+dfloat spot variables and gene primitives.
+Only implemented for new worlds world-spots-arrayed.fs
+
+****************************************************************
+							15.2.2002
+Working on benchmark upwards compatibility.
+
+****************************************************************
+							14.2.2002
+Working on float support.  Nuc, genes and mutation, diversification
+do support dfloats now.
+
+I consequently use dfloat memory words df@ and df! for better
+compatibility between different systems.
+
+On the way to dynamic nuc structure:
+Changed nuc var implementation on the new float variables.
+Each family of named variables depends on his own pointer.
+The pointers get set in cp! when a nuc gets the actual one.
+The offsets are stored in the nuc.
+
+Individual diversification masks for each variable family.
+(Implemented for floats, not done for integers).
+
+****************************************************************
+							13.2.2002
+I dropped the implementation of nuc float vars written some days
+ago in favour of a more versatile definition which would allow
+individual nuc structures: Each group of variables (like f-organs
+and such) has it's own base pointer. The pointers get set by cp!
+based on offsets stored in the nuc. This allows named nuc variables
+to work on differently structured nucs. Each variable family has
+it's own diversification mask (and a global one).
+
+****************************************************************
+							12.2.2002
+Included floating point gene primitives.
+
+I need better gene selecting algorithms for mutation to find to
+an end...
+
+****************************************************************
+							11.2.2002
+
+Floating point input tolerating everyday stile float input and
+Forth evaluation.
+
+Floating point output words written already.
+Words for dfloat variables menu entries.
+
+****************************************************************
+							11.2.2002
+Some ideas:
+Atomic gene sequences like literals as parameters to other genes.
+
+Multiple sequential gene 'chromosomes'. (The name is problematic).
+Each one get's mutated separately having it's own mutation-rate,
+gene pool, mutation types... and such.
+
+Break fixed nuc structure:
+cp! sets pointer values (like 'organ-pointer' or 'nuc-float-pointer')
+from nuc data like 'organ-offset' 'float-offset' to the base of the
+different variables arrays.  So I can keep named organs, parameters
+and the like, but easily change nuc structure.
+
+****************************************************************
+							25.1.2002
+Working towards floating point: 'frandom'.
+
+I'll drop support for old genes, old mutation and old worlds, I think.
+
+****************************************************************
+							22.1.2002
+Checked in experiments 'sum' and 'linear-1', the latter as a nice
+'bad' example how not to do it...
+
+****************************************************************
+							10.1.2002
+Keybindings: Show more xt's as text.
+
+****************************************************************
+							28.12.2001
+Fixed range scan display possible.
+
+****************************************************************
+							27.12.2001
+Hmm, I didn't rewrite the colour stuff, but continued to add
+functions to the jungle of colour functions ;-)
+Conditional fg/bg colouring.
+
+****************************************************************
+							23.12.2001
+The world maps from world menu are still not interactive.
+I lost a bit the overview over all the fg/bg coloured display
+functions... This needs a rewrite.
+
+****************************************************************
+							15.12.2001
+User interaction during playback.
+Better error handling during playback.
+
+Include files from system menu.
+
+Interactive (nuc) maps everywhere (some old ones where left).
+
+New behaviour of '.quit-brew?', the old one hit my nerves...
+
+****************************************************************
+							11.12.2001
+Not using xt's as flags any more
+(after a discussion in comp.lang.forth).
+
+****************************************************************
+							10.12.2001
+Trying out implementation of diff blocks of different size for
+writing record files. See 'diff-genome-pool' and related words.
+
+****************************************************************
+							8.12.2001
+The problems with recorded genome pools made me think about
+recording implementation:
+
+While diffing files (like I've done so far) is appropriate for
+ordinary variables or somesuch it is increasingly difficult to
+manage things like gene pools or other fields, especially if the
+number of nodes differs. I think it would be much better to make
+the procedure fork into a specialised function to deal with the
+more complicated things. A key word and a specifier in the diff
+files would trigger switching.
+
+I think string lists would become handy to do it and implemented
+them first: 'string-lists.fs' (I'll include that in cvs when used).
+
+****************************************************************
+							8.12.2001
+Fixing re-playing recorded sessions: 'erase-field' clears 'living'.
+There's still a problem re-playing recorded sessions: genome-id's
+start with a different offset, which could cause problems with
+maybe do actions.
+
+****************************************************************
+							7.12.2001
+Oups, I have introduced a can of worms with 'genomes-used' when
+recording. Bad bugs...  fixed.
+
+****************************************************************
+							6.12.2001
+Force base decimal in save and record files.
+
+'show-next-gene-info' in 'menu-current-genomes' witch key '.'
+Analogous key-bindings 't' and 'o' in 'display-menu' and main screen.
+
+****************************************************************
+							5.12.2001
+Changed snapshot display: step snapshots possible.
+
+Removed obsolete uppercase key bindings.
+Uppercase key bindings used for:
+ * menus
+ * if menu entry starts with a capital
+ * dangerous actions (like 'DO IT')
+ * a few cases where the lowercase is already taken.
+
+****************************************************************
+							3.12.2001
+'rebirth' mutation type for old gene implementation.
+
+****************************************************************
+							2.12.2001
+Implemented re-use of genomes as genes and 'rebirth' mutation type.
+
+'edit-probabilities-menu' can '<page-see>' the definition of items.
+
+****************************************************************
+							30.11.2001
+Plans to re-introduce genome pools:
+implementation as probability-list
+additional data:
+	usage count as genome
+	usage count as gene	\ will come later
+
+add genome to list when compiling ending trial phase
+increase genome usage count:
+	when ending trial phase (not compiling)
+	on reproduction (both cells)
+	sowing and manually setting to spot
+	==> on setting to spot?
+
+new mutation type family:
+sublist in the tape list
+revitalise		replace by old genome
+insert-old		use as gene
+insert-conditionally	would bet interesting
+
+What to put in lists, what in gene internals?
+Hmm, maybe only xt's and probabilities in the lists,
+usage counters in the internals.
+Belonging to a genomes list is the only difference between a genome and
+an ordinary gene (beside zero stack effect ).
+Genome usage counter is in the genomes list.
+
+Let's implement that first.	Added to 'gene-pool.fs'.
+
+****************************************************************
+							29.11.2001
+Examinating a bar ranged subset in an ASCII bar graph does restore
+the subsets maybe-do settings now.
+
+****************************************************************
+							27.11.2001
+Conditionally working on some spots 'menu-spot-subsets'.
+
+****************************************************************
+							26.11.2001
+Say: 'Clone nuc by selecting an empty spot' on info line,
+when you can do that.
+
+****************************************************************
+							25.11.2001
+Menu interaction in scan displays (like in step-display).
+Menu interaction in world maps.
+
+****************************************************************
+							24.11.2001
+Rework on conditionally coloured maps.
+Colours as new configuration options:
+'color-selected-fg-xt' 'color-miss-fg-xt'
+'color-below-fg-xt' 'color-above-fg-xt'
+'color-selected-bg-xt' 'color-miss-bg-xt'
+'color-below-bg-xt' 'color-above-bg-xt'.
+
+****************************************************************
+							22.11.2001
+Step display user interaction continued:
+Selecting a column in a (step display) *nuc* scan display ports
+you to a nuc subset menu for the nucs in that value range.
+
+'variable-within' as new maybe do expression.
+
+Selecting a column in a (step display) *spot* scan display ports you
+to a coloured world map on the range in question. New 'show-range-map'.
+
+****************************************************************
+							21.11.2001
+Work on user interaction in step display.
+Give more hints if 'context-help' fails.
+Work on documentation.
+
+****************************************************************
+							19.11.2001
+Information on how the documentation reader get's called,
+'.docu-reader'. Intended to debug context documentation.
+
+****************************************************************
+							18.11.2001
+Better integration of '<system>' (for 'context-help').
+'<system>' for pfe, bigForth and iForth.
+
+Link menu titles and menu hints with context help nodes.
+
+****************************************************************
+							16.11.2001
+Function keys from all menus.
+
+This makes brew more convenient. In some rare situations the result
+might be a bit unexpected. I tried to straighten the cases where it
+would crash, like editing a nuc, calling world menu with a function
+key from within nuc menu and delete all nucs and then returning to
+the nucs menu...
+
+****************************************************************
+							14.11.2001
+Split run time default initialisation:
+'brew-defaults.fs' sets startup defaults (except living cells).
+'brew-init.fs' defines individuals and sets them into the current world.
+
+Work on context sensitive documentation continued.
+Set on 'F1-xt'.
+
+****************************************************************
+							12.11.2001
+Context sensitive help on '?'.
+Can read info or html format. Uses 'info' or 'Lynx'.
+
+The info file does not get installed in the info system yet,
+but is in 'texi/', as it's not very mature yet.
+
+****************************************************************
+							10.11.2001
+GPL GNU General Public License.
+
+Cleaning up a bit.
+
+Added files section in the programmers manual.
+
+****************************************************************
+							5.11.2001
+The documentation is growing and should start to be of some use.
+
+Some menu changes and bug fixes.
+
+****************************************************************
+							4.10.2001
+Started to write documentation :-)
+
+Speed experiments: see
+../BREW-VERSIONS/brew-transit_24-speed-experiment/
+reverted...
+
+****************************************************************
+							14.9.2001
+Possibility to write word count profiling info to a file.
+See 'profiling.fs'.  This feature is enabled by defining
+'COUNTING-WORDS' (i.e. from the command line).
+There are system menu entries then and 'goodbye' will write
+the brew-profile file automatically. 
+
+****************************************************************
+							12.9.2001
+'word-usage.fs' to find out how many times a word was actually used.
+Very nifty...
+
+****************************************************************
+							11.9.2001
+There was an error in 'brew-transit_22' as some variables
+where defined twice and worked as world-variables instead.
+I had to redo all the benchmarks...
+'brew-transit_23' replaces 'brew-transit_22'.
+
+****************************************************************
+							10.9.2001
+Tried to define about all variables in 'brew.fs' as block variables
+or (switchable) as \VARIABLEs.  This will be redone.
+
+Experimental use of block variables for 'brew.fs'.
+  State as in 'brew-transit_22'.  This will be redone.
+  'brew-transit_22' is only to do get benchmark results.
+  
+  Redefining just about all variables from 'brew.fs' depending on
+  tristate compile option 'dummy-block-variables':
+  FALSE: use block-VARIABLEs.
+  1:     use Forth VARIABLEs defined when registered for a block.
+  2:     use Forth VARIABLEs defined when commented out in source.
+  	 as '\VARIABLE' or '\2VARIABLE'
+
+****************************************************************
+							9.9.2001
+Splitted aligning/padding stuff in
+allocated memory related 'memory-speed-align.fs'
+and FORTH data space related 'dp-speed-align.fs'.
+
+Block variables use 'allocate-for-speed'.
+They can be switched off (in two different ways) by
+'dummy-block-variables'.
+
+****************************************************************
+							9.9.2001
+Fixed downwards compatibility to old benchs 'bcompat-11-12.fs'.
+'transit-11-bench-A' and 'transit-12-bench' run ok.
+
+Preparing to use block variables.
+Factored out 'block-variables.fs'.
+Let's make a snapshot before I mess up everything ;-)
+
+****************************************************************
+							8.9.2001
+'block-VARIABLE:' passes the offset on stack now.
+See 'block-variables.fs'.
+
+\ GForth 0.5.0	gforth
+Comparing speed of block-VARIABLEs with ordinary VARIABLEs
+using  allocate-memory  to get memory blocks
+
+test-blocked-vars       1000000 iterations
+real    0m26.070s
+user    0m26.070s
+sys     0m0.000s
+
+test-variables          1000000 iterations
+real    1m9.485s
+user    1m9.480s
+sys     0m0.010s
+
+test-values             1000000 iterations
+real    0m48.853s
+user    0m48.790s
+sys     0m0.010s
+
+This is probably *without* the better cache consistency for block-vars!
+
+****************************************************************
+							8.9.2001
+Brewing and displaying in multi dimensional worlds starts to work.
+Big Bang menu to create such worlds.
+
+Compatibility to old benchmarks is broken with 'new-worlds'.
+
+****************************************************************
+						    ... 6.9.2001
+Working on new worlds display.
+
+Direction vectors to search neighbours.
+shuffled@ to do that in a random way,
+not preferring a dimension or a direction.	
+
+all not finished yet.
+
+I realize that there will be another compatibility break very soon.
+
+****************************************************************
+							3.9.2001
+Work on new world loop and display 'world-loop.fs'.
+
+****************************************************************
+							2.9.2001
+Started work on new world loop: 'world-loop.fs'.
+Prepared speed alignment.
+
+****************************************************************
+							1.9.2001
+Changed '.menu-short-help' to act more intelligent.
+(Some of the menu hints are menu entries themselves).
+Controlled scrolling ranges in all scrolling menus.
+
+Temporary introduced compile time switch 'alternative-nuc-vars'.
+(use 'BASE+OFFSET:' not 'CREATE DOES>').
+
+****************************************************************
+							1.9.2001
+Highlighting active menu entries.
+Possibility to reset brew from system menu.
+Nuc vars using 'BASE+OFFSET:' a bit faster.
+
+****************************************************************
+							31.8.2001
+'goto-next-menu-item' on <tab>.
+
+****************************************************************
+							30.8.2001
+'show-key-bindings' related new menu words:
+A lot of adaptions in menu and brew source.
+
+****************************************************************
+							28.8.2001
+Continued work on 'show-key-bindings' in menus.fs
+
+****************************************************************
+							27.8.2001
+I had cvs ID's in other files like benchmarks and cvs expanded
+them to the file ID of the file it was included in, destroying
+them all...  Defined cvs" to cut away delimiters.
+
+****************************************************************
+							26.8.2001
+'stringbuf-0.4.fs' and 'allocation-pointers.fs' seem to work now.
+Compile option 'new-stringbufs'.
+
+'allocation-pointers.fs':
+Allocation pointers supply a mechanism to deal with allocated memory
+blocks that will possibly get resized.
+
+'stringbuf-0.4.fs':
+Stringbufs are implemented using allocation pointers as handles.
+
+****************************************************************
+							25.8.2001
+'stringbuf-0.4.fs' and 'allocation-pointers.fs'.
+Work in progress...
+
+****************************************************************
+							23.8.2001
+As speed was disappointing with new worlds I tried a version with
+non localised spot data arrays.  Compile option 'localise-spot-data'.
+Speed is good now.
+
+Factored out spot related stuff from 'worlds.fs' to either
+'world-spots-arrayed.fs' or 'world-spots-localized.fs'.
+
+****************************************************************
+							22.8.2001
+Tinkering with spot alignment to make new worlds quicker.
+Disappointing results...
+
+****************************************************************
+							22.8.2001
+First working new world version.
+Multi dimensional, multiple worlds should be possible now.
+Only direction words for two dimensions yet and no display engine yet,
+so can only be used for screen sized (two dimensional) worlds.
+
+Runs 'transit' benchmarks OK, but considerably slower than the old version...
+I'm not so good at speed optimations ;-)
+
+****************************************************************
+							22.8.2001
+New worlds continued.
+Factoring out world related stuff from 'brew.fs' to 'old-world.fs'.
+
+****************************************************************
+							21.8.2001
+Rewriting new worlds:
+Multiple, multidimensional worlds with local world variables.
+
+****************************************************************
+						     (in between)
+AT? and bigFORTH problems.
+Bernd sent me a patch for counting tabs appropriately.
+
+****************************************************************
+							6.8.2001
+'eat-scored-logged' should help analysing bad experiment setups.
+
+****************************************************************
+							5.8.2001
+As the linear equation system experiment gives results I do not
+understand I tried to simplify and made simple linear to help
+me understand what's happening.
+
+****************************************************************
+							4.8.2001
+To provide some initialisation I made up the sum experiment.
+The cells must sum up two numbers 'A = B + C'
+\ A is organ-A
+\ B is parameter-B
+\ C is spot-property-C
+\ (I kept the letters A B and C for mnemonic reasons).
+
+I made up a quick&dirty initialisation file which gives the
+following evolution (inspite of the fact that the gene pool
+is severely out of balance):
+
+First invention:
+MUTATION: step 17: nuc at spot 1492       mutated to child at 1413
+child as ID:2504 GI:27  to spot 1413
+
+: g-27
+  C-property@ organ-A ! ;
+
+As spot diversification is much stronger than nuc diversification
+this step is quite effective already.
+
+Second and final step:
+MUTATION: step 934: nuc at spot 1208      mutated to child at 1288
+child as ID:108488 GI:1041  to spot 1288
+
+: g-1041 
+    C-property@ parameter-B@ + organ-A ! ;
+
+Note that brew found the exact same code I wrote down as cheat.
+
+****************************************************************
+							4.8.2001
+Finally found the bug, it's in bigFORTH 386-Linux rev. 2.0.2
+I'll deactivate 'nucs-checksum' in the benchmarks until it's
+fixed.  Result *is* valid all the same.
+
+****************************************************************
+							2.8.2001
+Debugging: Why does 'transit-11-bench-A' with bigForth
+give a wrong nucs-checksum?
+
+****************************************************************
+							14.7.2001
+Preparing things for speed optimations.
+
+****************************************************************
+							12.7.2001
+Linear equation system code had a bug when 'new-genes' was FALSE.
+
+****************************************************************
+							11.7.2001
+Working on fileselect.  It seems to work OK now.
+You cannot leave brew hierarchy with this version.
+
+****************************************************************
+							10.7.2001
+Making benchmarks more independent of nuc structure.
+Excluded 'length' 'id' and 'genome-id' from '+nuc-checksum' make
+benchmarks run from different starting situation and with different
+nuc structure.
+
+'fileselect' is still buggy.
+
+****************************************************************
+							9.7.2001
+Work on scrolling fileselect menu.
+
+****************************************************************
+							7.7.2001
+Genome length limit for old genes version too.
+
+Compiles fine with less than tree organs too now.
+
+In case of errors playing can be repeated to show the error.
+
+Bugfix: Changing probability pools didn't work right.
+
+Redone spot variable to bg colour stuff.
+
+****************************************************************
+							7.7.2001
+There's a limit for genome length now, to avoid endless mutations
+if the user sets an unbalanced gene pool.  It makes brew run a
+bit slower, but I think it's worth it.
+(It is only implemented with new-genes version).
+
+****************************************************************
+							5.7.2001
+Normal store genes get loaded anyway now,
+not only the 'some' versions.
+Regulate that with probabilities.
+
+****************************************************************
+							4.7.2001
+Introduced 'score-rate'.
+
+Line wrap protection in menu entry words.
+
+Stepping through 'menu-current-genomes' by 'n' or space,
+shown genomes (or goes to menu this genome) one after the other
+following current display order.
+
+Use listed masks on diversification masks.
+
+****************************************************************
+							4.7.2001
+Finished work on spot diversification.
+
+****************************************************************
+							2.7.2001
+Started work on spot diversification.
+
+****************************************************************
+							1.7.2001
+You can select what to do an spots, what to do before and after
+waking up a nuc from lists through the world menu.
+
+Started experimenting with linear equation systems.
+
+****************************************************************
+							1.7.2001
+Changed 'rec/play-menu'.
+Save all variables, comments in record files, assert labels.
+Message input.
+
+****************************************************************
+							30.6.2001
+Changed 'save-listed-mask':
+  Gforth had a problem with too long input lines in included files.
+  Splitting them was not trivial because lines have to be balanced
+  when writing diffs and all the parts had to be included then.
+
+'compile-listed-?-and-!' on 'log-masks' and 'display-switch-masks'
+and use the produced words.
+
+Release cpu if there's no input in 'what'.
+
+'finish-benchmark' does much more now:
+  Create entry to start from command line and copy to 'benchmarks/'.
+
+Logging maybe do actions.
+
+****************************************************************
+							29.6.2001
+Made a small benchmark 'transit-11-bench-A'.
+Changed old 'g-noop' to 'noop' for better upwards compatibility.
+
+'maybe-run-benchmark.fs' as starting point of the benchmarks.
+
+****************************************************************
+							29.6.2001
+Found the cause of the problems with recorded sessions:
+parameter genes where defined wrong...
+
+Changed genes names to 'parameter-X@' and 'X-property@'.
+
+Logging population control.
+
+****************************************************************
+							28.6.2001
+Changing log files and code files on the fly
+and accept absolute file paths.
+
+Several minor improvements and bug fixes.
+
+****************************************************************
+							27.6.2001
+
+Problems with recorded sessions...   Wrong results, why?
+
+New 'run-mode' masks: 'making-bench' 'playing-bench'.
+
+Nifty word 'compile-listed-?-and-!':
+Compiling two words 'xxx!' and 'xxx?' for each listed mask
+'xxx!' setting the flag, 'xxx?' testing it.
+
+****************************************************************
+							26.6.2001
+New approach with the save before / save after mechanism.
+
+Going through all the menus to control if really *every* function
+and variable is properly recorded...
+
+Bugfixes related to maybe do menu entries (and others).
+
+****************************************************************
+							25.6.2001
+Bugfix: 'nuc-menu' left garbage on stack...
+'diversification-menu' ditto.
+
+The generic maybe do record functions did not work, fixed.
+
+****************************************************************
+							25.6.2001
+Implemented new nuc variable types:
+invisible: invisible, diversified.
+secret:    invisible, not diversified.
+
+Implemented new world variable type:
+spot-secret: invisible spot variable.
+
+Changed compile time values:
+7 TO nuc-organs#
+3 TO nuc-parameters#
+3 TO nuc-invisibles#
+1 TO nuc-secrets#
+
+3 TO spot-qualities#
+3 TO spot-properties#
+1 TO spot-secrets#
+
+
+****************************************************************
+							25.6.2001
+Version infos and some compile option infos in record files
+and menus.
+
+****************************************************************
+							25.6.2001
+Easy benchmark creation and better validation of results.
+
+A checksum over all nucs gets now included in the validation of
+results of a benchmark.  This is only used for benchmark assertion
+because it relies on reset of '(id)' and '(genome-id)' to get
+identic nuc  and genome id's.  This would have undesirable side-
+effects when used in the usual content.
+
+****************************************************************
+							24.6.2001
+'world-checksum' fixed.
+Assert state code (see 'assert-state-entry') can now be added
+during recording from the system menu.
+
+****************************************************************
+							24.6.2001
+Conditional background colouring.
+
+Spot secrets implemented.
+
+*All* aborts give error location now.
+
+Benchmark result validation gives more details if it fails.
+New: 'world-checksum', disabled because it is buggy...
+
+****************************************************************
+							23.6.2001
+World menu:  Work on spot subsets and get informations.
+Strong safety belt not to use nuc words on empty spots gave
+a lot to do...
+
+'spot-qualities#' works now as compile time value.
+
+Catching depth errors in 'evaluate-do' and 'evaluate-expr'.
+
+Conditional spot scan (from world menu).
+
+****************************************************************
+							22.6.2001
+Started work on linear mode.
+Seems to work basically, but the current defaults are not very
+well suited for it.  Population control works not too good.
+
+'free-neighbor-spot?' checks present *and* future now.
+This changed also behaviour of world mode quite a bit...
+
+****************************************************************
+							22.6.2001
+Finished work in 'menu-this-genome'.
+Extended capabilities to guess scale inputs ('?scale-adaptions'):
+Recognise inputs like '3/4' and '3 / 4'.  It also does '/ 2' '* 5'
+and even '/7' '*8'.  The characters ' " % ! as first input character
+escape the whole thing now.
+
+****************************************************************
+							21.6.2001
+Work in 'menu-this-genome', incomplete and switched off.
+Made 'brew-transit_8' for benchmarking before changing processor
+and BIOS.
+
+****************************************************************
+							20.6.2001
+Cleanup in maybe-do stuff.  Removed lot's of unused words.
+Better implementation of the evaluated strings: they are kept in
+stringbuffers now and are saved like all the other stuff.
+
+Special care to catch errors in the user input strings.
+Of course it's still easily possible to mess the system by
+unproper use of these functions....
+
+Implemented words to save floats.  Floats are saved in a double
+form: human readable and exact hex byte dump representation.
+In systems with another internal float representation the
+human readable string could be used when moving between systems.
+I will implement this later on when somebody wants it...
+
+****************************************************************
+							17.6.2001
+'menu-nuc-subsets' is now functional.
+
+Evaluating strings now also in conditional maybe-do expressions.
+
+Menu 'menu-select-nucs' uses the new maybe-do words which expands
+it's possibilities enormously.
+
+Generic versions of many maybe-do words, using '(maybe-do-type-xt)'.
+
+You can scan or show coloured world views based on generic-maybe
+conditions.  Together with the possible string evaluation in
+conditional expressions this gives exiting new possibilities!
+
+****************************************************************
+							16.6.2001
+Continued work on 'maybe-do' stuff.
+Related xt's and parameters in fields created by 'MAYBE-DO-FIELD:'.
+
+Better code for conditional colouring, can now be used in normal
+display.
+
+****************************************************************
+							15.6.2001
+Working on functions to put into 'do-with-everybody' and the like,
+conditionally executing code on nucs or spots: 'maybe-do'.
+
+Evaluating strings to expand possibilities of 'maybe-do' and such.
+
+Scanning nuc subsets.
+
+Continued with editing chapter sequence in 'brew.fs'.
+
+****************************************************************
+							13.6.2001
+Structuring 'brew.fs'.  Code is in thematic chapters now.
+
+****************************************************************
+							12.6.2001
+Nucs can now get selected.  You can display selected nucs
+differently, do things on them, etc.  Selection is hereditary
+giving an easy way to see the offspring of a given set of nucs.
+'menu-select-nucs' allows selection and de-selection of nucs
+based on different criteria and allows you to run functions
+on the selected nucs only.
+
+Many new analytic display tools. Displaying nucs that share
+the same genome or many other possible conditions.
+
+New 'menu-this-genome' as a sub-menu of 'menu-current-genomes'.
+'menu-current-genomes' improved.
+
+****************************************************************
+							9.6.2001
+New list features which I'll need for saving worlds or determine
+the predominant genomes: 'insert-node' association-lists.fs and
+sorted-lists.fs
+
+'menu-current-genomes' lists current genomes, sorted based on
+different criteria to choose upon.
+
+****************************************************************
+							6.6.2001
+Implemented 'nuc-text-display' 'world-text-display'.
+
+****************************************************************
+					    3.6.2001 to 4.6.2001
+Snip types had a bug which lead sometimes to wrong code costs.
+
+Working on new benchmark (not included) to test speed penalty
+of new-genes.
+
+Fixed bugs and cosmetics regarding code cost and code file indent.
+
+New code-file-mask 'file-mutation-type', new run-mode-mask 'no-code-cost',
+'code-file-gene-name' replaces 'step&spot-name'.
+
+Cosmetics in menus, fileselect, code files, ...
+
+Bugfixes: 'page-see' 'edit-probabilities-menu' code files,
+          'init-scan-array' and others.
+Added: gene'  'include-genes'
+
+****************************************************************
+					    30.5.2001 / 1.6.2001
+Bugfix scanning nuc details.
+Quick and dirty adaption of simple-bench to current brew.
+Changed 'edit-probabilities-menu': coming back from sublists
+ascends just one level now.
+
+****************************************************************
+							29.5.2001
+To my big surprise new-genes get mutated considerably slower
+than the old version.  To run tests to examine it I had to
+make sure the two versions produce the exact same results,
+which they originally weren't intended to.  This has been
+quite difficult to reach, but seems acquainted now.
+
+As the longstanding bug in the bigFORTH version is gone I fixed
+the setting of 'my-diversification-bitmask' for systems that
+transform names to uppercase by introducing 'forth-with-lowercase'.
+
+Bugfix: snipping code *does* reduce code cost now ;-)
+
+****************************************************************
+							22.3.2001
+New mutation works now, but seems slower than old one :-(
+So I moved the old stuff back in and remade it switchable by the
+new-genes compile time option.
+
+****************************************************************
+							17.3.2001
+Changing to use new genes.
+
+****************************************************************
+						  up to 17.3.2001
+I felt like changing mutation and genes implementation and started
+to try out a bit.  I was caught by it and decided to do this now.
+
+It's work in progress, not done yet.  Compile option 'new-genes'.
+
+The new mutation works on chained xt's.
+It produces gene internals data, which are hold in a buffer during trial.
+
+Added INPUT/ 'inputs-dir' 'inputs-sub-dir' INPUT/genes/ 'genes-dir'.
+
+Snapshot 'brew-transit_1' with old code still in.
+
+****************************************************************
+							28.8.2001
+Thousandfold probabilities for 'last-gene-into-pool'.
+brew-transit_0
+
+****************************************************************
+						    25.-28.2.2001
+'mutation-types' using probability list.
+'save-xt-probability-pool'.
+Use it to save mutation-types.
+
+New 'save-continuous-display' that works better with diffs.
+****************************************************************
+						     24/25.2.2001
+no more 'use-pool-select'
+
+gene-pool.fs using probability-lists.fs
+
+Removed old benchmarks and demos that do mutation.
+
+****************************************************************
+							19.2.2001
+no more 'support-single-individuals?'
+
+****************************************************************
+							18.2.2001
+z9
+
+last version with old benchmarks and demos.
+Compatibility with these will break now.
+
+
+Probability lists seem to work.
+They can be nested and increase size automatic.
+This will be a powerful tool I think.  Not used yet.
+
+****************************************************************
+							16.2.2001
+Plans:
+
+* z9 last z snapshot. Old demos and benchmarks should still work.
+
+* throw out all demos, benchmarks, individuals, defaults, relicts,...
+
+* Changes:
+I will not do all the changes I want to do just now.
+
+I want to do now:
+
+Probability list for the mutation types.  See 'probability-lists.fs'
+
+Maybe use another similar list for genes.  Yes.
+
+Sporadic.
+
+Comments *inside* words where appropriate
+Better structuring and commenting all files
+File list.
+
+I will not change yet:
+
+****************************************************************
+							15.2.2001
+sporadic (not finished)
+
+****************************************************************
+							15.2.2001
+I should build probability pools for each top of stack type,
+and use them during mutation.  They must only be regenerated,
+when the main pool changes (or when another pool gets actual).
+
+****************************************************************
+							15.2.2001
+Fine grain mutation logging.  Integrated 'debug-mutation' into
+'log-mask'.  So 'log-mask' also plays the roll of a compile time
+switch, like 'debug-mutation' did before.
+
+Log files are prettier now.
+
+****************************************************************
+							14.2.2001
+Nucs should be individually structured and sized.
+This makes many things much more complicated:
+mutation, diversification, scanning, storing, logging, menus, ...
+I will try it in the coming transit development phase.
+I'll need it anyway, when I introduce fp nuc variables.
+
+The nuc could have descriptor datas for each type of nuc vars:
+*  offset to the variables.
+*  item length in address units (bytes).
+*  number of variables of this type.
+*  diversification flags
+*  there could be other flags like other diversification types.
+
+The use of flags would limit the number of items for a given type
+to the number of bits in a cell.  It's not a problem for now.
+
+Nuc vars would be a bit slower, but a lot more flexible than now.
+
+hmm, regarding the speed issue:
+We could store some redundant data like pointers to the real data.
+Yes, but this would complicate things like cloning worlds.
+Some redundant data would be still possible, i.e. storing scan limits.
+
+Organs, parameters, secrets, ... would get defined by a word to
+make index mapping and return the address.
+
+Nuc structure could not change during lifetime,
+but reproduction can build a new one through mutation,
+combination or so.  The datas would then be moved,
+offsets and item counters would be set.
+Nucs remain relocatable.
+
+Nuc length could be scored, of course.
+
+Mutation can select an existing variable of this type or define a new one.
+Then it would insert the matching gene.  Mutation would take track of used
+variables allowing to build the nuc structure, set diversification mask
+and the like.  Gene internals store the relevant data.
+
+Combination could just combine as if, or define two different sets
+of organs, parameters, ... and change the address genes of one genome.
+
+Another area for coming changes:
+
+The genome should be built of atomic sequences, which could consist
+of more than one item.  So the index and the array could go as one
+item, which would not be destroyed by mutation. Regarding recursive
+mutation they would be regarded as unmutationable primitives, but
+the code cost can be anything, of course.
+Cost gets charged once a item.
+
+****************************************************************
+							13.2.2001
+
+STRINGBUF-HANDLE: creates words, that return the *handle* now.
+(returned pointer to handle up to now).
+
+****************************************************************
+							13.2.2001
+
+Possibility to log user interaction using 'record-changes'.
+
+New way for unique comments using a stringbuffer.
+Cut unique comments away before recording or logging.
+
+Extended 'menu-step-display'
+with switchable amount of informations and scrolling.
+
+Better handling of the situation when both display types are on
+and the user switches them: 'spot-display-prefered' compile option
+for such situations in 'toggle-display-type' or 'display-on-off'
+
+Replaced term 'report' by 'log' in all the logging words.
+
+****************************************************************
+							12.2.2001
+menu-edit-spot
+?record-edit-spot
+
+'choose-xt-menu' learned scrolling.
+
+****************************************************************
+							12.2.2001
+More work on keybinding and menus.
+
+****************************************************************
+							12.2.2001
+Marcel Hendrix reported a system where writing to the very last
+screen position does automatic scrolling, which confuses brew a
+lot.  Compile time switch 'lower-right-scrolls' tries to deal with
+that.
+
+****************************************************************
+							11.2.2001
+Saving bitmasks as readable text: 'save-listed-mask'
+LISTED-MASK: saves xt's of the created masks in a list.
+So you can get the names back.
+
+Working a bit on key bindings.
+
+****************************************************************
+							11.2.2001
+spot-scan-menu
+Bugfix in spot-scan-display
+'bell' and 'ping' have swapped meaning.
+Bugfix in '.info-line'.
+
+****************************************************************
+							10.2.2001
+Recording of step display and continuous display. Bug fixes.
+New run-mode mask 'write-diff' to write diff files.
+New display-switch mask 'continuous-display-used'.
+It's *not* switching 'continuous-display', but only used to prevent
+'common-menu-entries' from changing '(continuous-column)' in vain,
+as this would be recorded.
+
+An old bug was fixed by changing the <space> and function key
+behaviour to use 'do-after-2' with 'brew-show-or-go'.
+
+****************************************************************
+							9.2.2001
+Found longstanding bug (triggered by calling 'intro' twice)
+in 'STRINGBUF-HANDLE:'.
+Corrected step display in 'intro' and displayed bench.
+
+Status line in 'continuous-display'.
+
+****************************************************************
+					    5.2.2001 to 8.2.2001
+continuous-display
+titles in 'choose-xt-menu' make it more user friendly.
+
+****************************************************************
+							3.2.2001
+Compiling internals before genes for the produced genomes.
+
+Changed approach regarding stack type variants of primitives,
+using 'do-replacements' before compiling genes.
+I can unwrap all those primitives now (also in pfe).
+No use for compile option 'genes-not-wrapped' any more.
+
+****************************************************************
+							2.2.2001
+Major design flaw in generating internals data:
+It should be saved at mutation time, not regenerated later from
+the trial string.  All these start" end" instack" and outstack"
+entries could be dropped, it's not the appropriate place for
+this type of information.  All needed string representation of
+the gene like trial string, code strings and such can be derived
+from the internals data.  Internals data could be made executable
+in a special interpreter or we can produce a trial evaluate string.
+We could preserve some informations about the gene generation in
+the internals too (switchable).  I'm not changing it today...
+
+****************************************************************
+							1.2.2001
+'gene-pool-menu' and 'actual-pool-menu'.
+'see-genome' by pressing 'l' over a cell.
+Enhanced scrolling.  Support <end> key.
+
+****************************************************************
+							30.1.2001
+Work continued. Bug fixes. This and that.
+
+****************************************************************
+							29.1.2001
+Coloured menu titles.  Coloured messages.
+
+****************************************************************
+							28.1.2001
+'nuc-organs#' 'nuc-parameters#' as compile time values,
+'nuc-invisible#' 'nuc-secrets#' planed.
+'spot-qualities#' 'spot-properties#' as values, 'spot-secrets#' planed.
+
+****************************************************************
+							27.1.2001
+Compile switch policy.  Many switches defined different.
+
+****************************************************************
+							27.1.2001
+Changing colour syntax.
+I say now:
+blue color-background
+
+The default-color question is treated by setting 'default-color'
+to an impossible value and let 'color-foreground' and 'color-background'
+react appropriate.  This is only done when 'use-default-color' is false.
+On the Linux console you don't need this.
+
+****************************************************************
+					   22.1.2001 to 27.1.2001
+Detailed spot scans.  Multiple scans.
+Changed display menu and new step display menu.
+New organisation of 'display-switch' (see 'step-display-on')
+
+New code file mask: 'write-code-file' 
+Input/Output stack type frequency check of gene pools.
+
+****************************************************************
+							21.1.2001
+Finished output of successful genome code only, or of all code.
+
+Done my best to delay compatibility break a little bit, demos
+and benchmarks should still work with conservative settings.
+brew-0_03zz
+
+****************************************************************
+							20.1.2001
+Read only spot properties.
+Compile option 'use-properties' experimental.
+
+Naming of nuc and spot variables (r/o is read only for the 'cells'):
+nuc:	r/w 'organ'	r/o 'parameter'
+spot:	r/w 'quality'	r/o 'property'
+
+You can scan pointers and watch memory allocation at work ;-)
+by compile option 'p0'.
+
+Inserted probability pool data in benchmarks and intro.
+Compatibility is slightly broken, but it's still working.
+
+While it is nice for debugging it does not make much sense
+otherwise to output all produced code to the code files.
+Let's have a switch if to include all produced genomes or
+only the ones, that survive trial phase.  Work in progress...
+
+****************************************************************
+							19.1.2001
+Compatibility to old demos, benchmarks and recorded sessions
+becomes a burden.  I'll drop that soon.
+
+Recording probability pools.  Not changing pools yet.
+'save-probability-pool'
+
+****************************************************************
+							18.1.2001
+Relative selection probability must be run time configurable.
+Every time I build in a couple of new genes I must rebalance
+relative gene selection probability to make mutation more stable.
+So relative probabilities must be changeable.
+
+Another thought is to try out an automatic adaption of the
+mutation process to the given genes (and context).
+I must think about.
+
+So for now I try a configurable genes probability list.
+See 'gene-pool.fs'.
+
+****************************************************************
+							17.1.2001
+Deep changes: get rid of wrapped genes at many places.
+Produces much nicer looking code now.  It's faster, too.
+Better gene names.
+
+Search order much more restrictive.
+This is essential as we have now names of a few Forth primitives
+in gene-internals, like 'dup' '=' ...
+
+****************************************************************
+							17.1.2001
+I feel like dropping the string based mutation (and trial) design
+soon and change to xt chains.  Let's do some basic clean up, try
+some small tasks, and decide then if it's worth continuing...
+
+Change gene names to Forth names unwrapping them.
+Compile option 'genes-not-wrapped'.
+
+****************************************************************
+							16.1.2001
+Thinking about changing from the horrible gene names to normal Forth.
+There's more than one way...
+
+****************************************************************
+							14.1.2001
+Continue with menu changes: scroll support for selection type menus.
+Starts to work in menu-nuc-scan.
+
+Added experimental read only nuc-var's nuc-parameter.
+Human readable genes.
+
+Mutation gets easy out of balance (probably stack type imbalance)
+when trying the new experimental things.  Endless loops.
+
+Personal option files added for convenience:
+'my-compile-options.fs' and 'my-brew-options.fs'
+
+****************************************************************
+							13.1.2001
+There are some areas of brew I dislike:
+
+First of all the current mechanism of putting several copies of
+genes into a list that mutation selects from ('last-gene-into-pool')
+at compile time is *very* inflexible.  It's a *severe* restriction
+not to be able to change that at run time and not to have it in the
+recorded sessions at all.  I'd say it's quite brain dead...
+
+I give that a high priority, but as changing it will break all
+my recorded sessions and demos I'm a bit resistive to change it.
+I'm not decided if I'll change it now or give out some snapshots
+with the old mechanism for beta test to get more feedback and
+bug reports before making deeper changes and break it all again...
+
+If I let the user change the genes relative probabilities to be
+selected by the mutation process I *must* enable him to leave
+(seemingly) endless mutation loops caused by stupid probabilities.
+This shouldn't be too hard though.
+
+ 
+Then I miss read only spot qualities and (the equivalent of)
+read only organs.  These would be diversificable but read only
+from the cells point of view.  Experiments (like 'guess-A')
+usually leave too many possibilities to the cells to trick you
+out without them.  It's fascinating and funny to see it happen
+but usually it's not what we want as result...
+I don't like the idea of read only organs too much, as they would
+be unused many times. I'd rather like them to be stored in nuc
+extensions (after nuc-length#). But storing them there gives a
+lot of complications for the mutation process:
+
+* How do I get rid of variables not longer used?
+  I would have to do some kind of garbage collection on them,
+  filling in unused gaps what would probably mean that the genomes
+  code would have to be changed, and the diversification bitmask, ...
+
+* How shall the syntax refer to them?
+
+* How do I decide if a genome that is a combination of other genomes
+  should use the same set of variables for the genome parts or change
+  all but the first part to use a fresh set of them? 
+
+* I'm quite sure there would be other complications with it...
+
+Some of the functionality could be acquainted by using gene literals.
+They are already in there, but never used or tested.  While this would
+solve most of the mentioned problems, it would make it harder for a
+genome to use them more than once, and much harder to set and read
+out from outside the mutation process.  They would have to be
+diversificable too (at least some of them), which would be much
+more difficult than with nuc variables.  We would need as many
+copies of the genome as there would be (diversified) variants,
+instead of just one.  This would imply much more complexity in
+other places (i.e. gene-pools), which I dislike very much...
+
+Yes, I see that clearer now: Let's keep any diversificable variables
+out of the genome, let's have them in the nuc only.
+
+To be able to experiment with I could implement some functionality
+to switch by a compile time switch.  This delays compatibility issues
+and let's me try try out design a bit without messing up brew too much.
+
+
+But ouch!  This reminds me of another horrible part of brew:
+
+The menus can't page or scroll.  So, if I add more things to the nuc,
+or I have too many xt's to select upon,  or (worst of all) if there are
+too many files in the file interface that they would fit on the screen,
+things won't work.  That's too much a restriction now, and in the case
+of the file interface (which is not done anyway) makes it just unusable.
+
+It's not a trivial issue, as menu construction allows a free mixture
+of menu display functions and any other code, including screen output.
+
+OK, let's have it like this:  Normal, free mixture menus can only be
+one screen.  Let's just nest them more if screen get's too small.
+
+But for selection type menus I must implement paging or scrolling.
+I'd rather try out the read only thing, but this looks more basic.
+OK, let's try it on the nuc.
+
+I like to have it cyclic.  Let's scroll only vertically.
+I don't need horizontal scrolling, I think.  I don't like it anyway.
+
+Scroll offset must nest through the menus.  The point to hook it in
+would be the cursor moving mechanism.  This has been done by 'what'
+if 'use-ekey' was on, and by echoing escapes otherwise.  So the menu
+wouldn't even see it, and not be able to redisplay in order to scroll.
+Let's call the cursor moving words by the key menu mechanism now.
+Hmm, that's quite a change...
+
+****************************************************************
+							11.1.2001
+Forgot to mention last time that I messed up the whole startup
+sequence... It works now, but there might still be bugs in the
+new version on some system and compile switch combinations.
+
+I realize that my 'default-color' alternative from yesterday
+would cause problems with recorded sessions from other systems.
+I could switch to the new version without 'default-color' maybe.
+Don't know yet.  Maybe we don't need to change it anyway.
+
+'ekey-mapping.fs' should be renamed to 'key-mapping.fs'.
+
+****************************************************************
+							10.1.2001
+More changes at the startup phase.
+Factoring out Gforth and bigFORTH specific things too.
+Factoring out 'ekey-mapping.fs' 'screen-size.fs'
+Work around ekey.
+
+Check more words for being predefined already makes it possible
+to define them system dependent.
+
+Continued with ekey support (experimental).
+
+Be more restrictive with keys that throw you out of the play saying goodbye.
+
+Added startup as a benchmark 'startup-bench'.
+
+Not sure if I really should include 'TAGS' file.
+
+A lot of work for iForth (above changes are related).
+
+Error messages from CATCHed '/'
+  Give the possibility to try to do it by hand.
+  Note that *not* only dividing by zero can give this errors.
+  On my system there's at least one other malformed combination that does.
+  There might be others, I don't know.  This could produce very rare crashes.
+  These are hard to find bugs.
+
+Marcel Hendrix had problems with 'default-color'.
+I have added 'default-foreground' and 'default-background' alternatively.
+I do not test it, because I don't know if anybody will ever use it.
+
+****************************************************************
+							8.1.2001
+Better organisation of the files 'system-dependent.fs' 'basics.fs'
+'console-codes.fs' 'display.fs' and new file 'screen-size.fs'.
+
+Some critical words can get defined now in 'system-dependent.fs'
+as they are checked before defining the ordinary version.
+
+Added 'ChangeLog' and 'TAGS' into CVS to have them in snapshots.
+
+Work in progress: possible adaption to iForth (Marcel Hendrix).
+
+****************************************************************
+							7.1.2001
+Benchmarks don't swallow cursor any more ;-)
+and don't use 'cursor-off'
+It's not nice, but more portable.
+Hope I didn't forget something this time.
+
+Color menu got a bit more intelligent.
+
+****************************************************************
+							6.1.2001
+Following suggestions from Anton Ertl in the Gforth mailing list
+you can start the benchmarks from the command line now.
+
+A remark from Marcel Hendrix made me throw out the word 
+'?make-directory'. It controlled if some directories exist
+using a 'system' bash call. It shouldn't be needed any more.
+
+'brew' checks if 'see' is defined now.
+
+'at?' made problems. So I don't use it in (undisplayed) benchmarks
+no more. You don't see progress any more, but it's more portable.
+
+****************************************************************
+							1.1.2001
+
+Do some more cleanup, especially regarding default initialisation.
+
+Portability:
+I think I'd better leave '[IFDEF] ' '[IFUNDEF]' though I like them.
+I replaced them by '[DEFINED]' '[UNDEFINED]'.
+
+Demo/bench 'displayed-bench.fs', but *only* for Gforth.
+
+****************************************************************
+							31.12.2000
+'menu.fs' seems to work now.
+'ekey' on pfe works, but buggy.
+This is all 'pfe' regarded, somehow.
+
+****************************************************************
+							29.12.2000
+Working on 'menu.fs' as successor of 'menu-0.3.fs'
+
+****************************************************************
+							26.12.2000
+Working on 'pfe' compatibility:
+
+Defining some missing words, eliminating number (base) prefixes.
+Cursor keys must be redone with 'ekey' there.
+Gforth's 'ekey' understands them too (but gives other codes),
+but bigFORTH doesn't...
+****************************************************************
+							19.12.2000
+Working on benchmarks.
+****************************************************************
+							17.12.2000
+README, README-SECURITY
+
+The way 'future-quality-change' works is now controllable by a
+compile time option 'future-change-individal'.
+It can be done individually in nuc-do-all by <copy-qualities2future>
+or in one move with 'qualities>future' after each step of 'world-do'.
+
+I could take some of the time consuming experiments as benchmark.
+****************************************************************
+							15.12.2000
+Bug in energy flow.
+And some eating procedures did not work with 'future-quality-change'.
+both should be fixed now.
+
+<copy-qualities2future> could be done with one move.
+
+Taking up guess-A takes very long now to give good results,
+but produces stable result at least. Could be used as benchmark.
+****************************************************************
+							13.12.2000
+Use rates in many more places.
+Changed (mutate) to use 'rated-flag'.
+Work on SOS population emergency.
+****************************************************************
+							12.12.2000
+New mutation type 'restart-from-scratch'
+Give new designs a chance to pop up.
+****************************************************************
+							11.12.2000
+Added 'top-level-token-replace',
+the general case of 'top-level-address-replacement'.
+As addresses are essential I leave separate address replacement in.
+****************************************************************
+							10.12.2000
+Added 'top-level-address-replacement'.
+guess-ABC.
+
+some ideas:
+
+   I had a very long mutation process, maybe endless loop.
+   Maybe I should set an upper limit for code length...
+   So all top level mutation words should return a success flag.
+   Or make it simple and catch and throw them?
+
+   I want to use rates in many more places.
+
+   'top-level-address-replacement' should have some brothers and sisters.
+
+   Add comments at defined screen spots while recording a session.
+
+   search-food experiment.
+****************************************************************
+							9.12.2000
+'flood-food-rate' helps controlling population by food supply.
+
+Demo guess-A as 'brew-0_03p' saved. See cvs-tags for descriptment.
+****************************************************************
+							8.12.2000
+'code-price-scale'
+Work on Population flood control.
+
+Trying guess-A again. Good results, but you have to catch them.
+They die out quickly. That's off, hmm...
+I catched the zero code cost bug as one of the causes. Seems fixed.
+I have lost the good parameter set for the experiment.
+Parameters are too critical anyway...
+****************************************************************
+							6.12.2000
+Dropping petri dish?
+I'm thinking about dropping support for single individuals not on
+a spot in the field. variable world?
+Seams to be too much overhead for a never used possibility.
+Anyway, the (not activated yet) new world version seams to be a
+better place to implement that.
+Let's make it a compile time option for the time being.
+support-single-individuals?
+I'll probably drop it when i activate the new world version.
+
+Work in progress: debugging under bigforth.
+
+Next I need a better weighting of code cost and nuc-do cost.
+****************************************************************
+							5.12.2000
+Recording and playback starts to work.
+Support for 'OUTPUT' directory (and sub directories).
+****************************************************************
+							30.11.2000
+Work on record/playback.
+Record files are FORTH source.
+
+(Function keys work a bit, rework delayed)
+****************************************************************
+							26.11.2000
+Integrating function keys.
+****************************************************************
+							24.11.2000
+I wanted to try a little experiment, where cells have to 'guess'
+qualities, but run into problems with population control parameters.
+
+So I need a more detailed overview over nuc changes and world qualities.
+Detailed scans can also be displayed while brewing instead of world view.
+
+****************************************************************
+							18.11.2000
+The cells can adapt their behaviour now to their age, energy,
+and the like. See genes/insight.fs
+
+Snipping code looks like a good idea, so I want to have longer
+snips too. Let's have shortest, longest and random length snips.
+
+****************************************************************
+							18.11.2000
+To got rid of useless genome parts i thought it was a good idea
+to cut random code snippets out of a genome and omit them.
+Of course the snipped code must have a zero overall stack (type)
+effect and logic structures must remain intact.
+
+I have implemented 'top-level-short-snip' to try it out.
+
+****************************************************************
+							11.11.2000
+finish 'top-level-replacement' (which is partly written already).
+reorganise code-cost: put it in a new nuc-var.
+
+****************************************************************
+							4.11.2000
+'selected-gene-picking' and the like needs to be redone.
+
+The current mechanism with resolving addresses and flags,
+guiding stack depth through (depth-should-change), and the like,
+combined with the statistical probability of the genes primitives
+can't cope with the new much increased possibilities.
+
+Often the mutation process doesn't find to an end within reasonable
+time, building stacks with an awful lot of addresses ( dup 2dup over ...)
+or nesting IF-ELSE-THEN's without bounds.
+
+Then: There is the problem of the statistical probability of a gene
+to be selected depending on the number of genes that match input.
+We need a way to influence that.
+
+Giving each gene a individual probability factor would be too time consuming,
+but we could implement lists of same probability.
+
+It is desirable to be able to influence which gene are seen based on context.
+
+The current list implementation is too complicated, lets just array xt's.
+So there are lists (arrays) of genes, and a master list to work with.
+Of course there can be several masters too, depending on the situation.
+
+The primitives list needs an item counter.
+
+The master list knows upon how many (faked) items to choose.
+
+The master list has an entry for each gene list:
+	- a count, how many items there are
+	- a pointer to the xt list
+	- a relative probability to be selected
+	- a fake count, real count multiplied by relative probability ;-)
+	  must be recalculated each time count or probability changes.
+	  hmm, but what about wildcards probability?
+
+wildcards must be resolved first, before any stack matching is done,
+so they see just the genes, that match in the given situation.
+No, this does not solve the probability problem. That comes later on.
+
+.... wait a minute, why not have the random process select genes from
+	genes with (tos?) stack match?  Hmm, is it worth the trouble?
+	We could add that later on.  Maybe seeing different masters?
+
+No, let's just choose random genes out of lists having a relative
+probability to be chosen, checking stack match after.
+This gives a speed penalty in situations where a match is rare,
+but I think i can live with that, for the time being.
+
+so the algorithm goes like this:
+- choose a random item of the faked gene count in the master --> index
+- step through the master list subtracting the faked counts from the
+  index as long as it is smaller than the index.
+- now we are in the right list to select upon index MOD (real-)items.
+- check stack match.
+
+no, not now...
+thinking about a bit [two different list implementations, savesystem, ...]
+i realize that it's more work, than I'd like to do for it at the moment,
+but i can have relative probability easy just giving it as argument to 
+'last-gene-into-pool'. Let's just put it more than once in the list,
+for a start.
+
+****************************************************************
+							2.11.2000
+OK, time for a little experiment:
+The cells must find their food in a neighbour spot.
+
+I'll give them the ability to
+	- know how much food is on the current spot
+	- look at another spot and see how much food there is
+	- move to another spot
+
+I don't help them finding out how to look at a certain spot,
+decide if to move, and select a good spot to move to...
+
+There are 'IF ... ELSE ... THEN' structures, but no loops yet.
+So the problem is not so trivial and a result will very likely be
+horribly constructed code.
+
+What I want to add:
+	g-dup-n ( n -- nn )   and others: genes-basic-stack.fs
+
+	oops...
+	hmm,  for things like 2dup we need a whole group of type variants.
+
+Let's add symbol wildcards first:
+
+symbol wildcards (for *one* stack cell)
+	- flag in internals
+	- 'symbols-match' checking in the internal if there are wildcards
+	- replace-in-wildcards
+
+Remark [4.11.2000] I have written wildcards but not tried yet. delayed.
+
+Trying it out including genes-basic-stack.fs (not using wildcards yet)
+showed another problem: stack grows full of addresses.
+
+'selected-gene-picking' needs to be redone to cope with the new situation.
+hmm, that's a major project...
+'selected-gene-picking' is the main word to influence mutation.
+
+OK: Let's delay the experiment and work a bit on the basics. see above.
+
+****************************************************************
+							1.11.2000
+Conditions seem to work now, and the gene-code grows and grows...
+Think it's time to charge code usage.
+
+****************************************************************
+							27.10.2000
+working on gene-follow i see that it can be used not only in
+'IF ... ELSE ... THEN' but for every kind of sequences contained
+in each other, ie. 'SEQUENCE', replacements, etc.
+
+****************************************************************
+							17.10.2000
+Conditionals in genes do work now, as long as they are not broken
+into peaces by 'top-level-insertion' -->  'xt>cutten-strings'.
+Thinking about the way to go i realize that the bookkeeping
+is done best in 'gene-do-stack-symbols', which would also make
+the already written part more straightforward to implement.
+
+action:		level ("sp"?)	initial		aim		depth-watch
+[IF]		increase	push		-		push
+[ELSE]		-		dup		push		-
+[THEN]		decrease	pop		pop		pop
+
+Let's rename 'gene-do-stack-symbols' to 'gene-follow'.
+Let's add peak-watch, too.
+
+****************************************************************
+							15.10.2000
+I must decide whether to open buffers in the calling word or in the
+called word during mutation:
+
+calling:	: top-level-insertion
+			stringbuf-open
+			dup build-new-segment ( ... handle -- ... )
+			stringbuf-close
+			... ;
+called:		: top-level-insertion
+			build-new-segment ( ... -- ... handle )
+			stringbuf-close
+			... ;
+
+pro & cons: calling:	+ buffer's can be recycled, filled sequentially
+			+ much less opening, closing and moving of buffers
+			+ buffer closed where it was opened
+			- fine grain reporting much more difficult
+	    called:	+ fine grain reporting easy
+			+ less stack noise on the input side
+			- efficiency, too much moving, opening, closing
+
+--> Let's do it in the calling word.
+Fine grain reporting is more a debugging help than a regular feature.
+I can live without and hack something together during development.
+Unfortunately it means some work on mutation reporting before i can start...
+
+No, it's easy: I just save the initial buffer count as an offset :-)
+report-offset
+ 
+****************************************************************
+							13.10.2000
+I've done the separate symbols stack
+taking up the stringbuf-0.2.fs path which lead to stringbuf-0.3.fs
+Speed was disappointing.
+There's too much overhead in the handled string buffers.
+
+I have made changes in symbols-stack.fs to implement a much simpler
+buffering without control of allocation and size. It's my job...
+Speed gained.
+
+So i added 's-buf's to stringbuf-0.3.fs
+'s-buf' like 'simple' buffers, or 'symbol' buffers, too ;-)
+I want to use these words in symbols-stack.fs too, now.
+
+I made some speed related changes in the heart of brew.fs too.
+
+****************************************************************
+there are some bigger changes ahead:			3.10.2000
+
+add conditionals
+and i want to be able to work on deeper levels (not only top level).
+
+so many words have to be rewritten to be reentrant.
+one solution would be to use the new stacked-variables.fs
+but i don't know if i really want this...
+
+so i draw the conclusion to move the symbols to a separate stack first,
+to make things simpler (and more Forth like)
+
+thinking about i realized, that many things would probably be much more
+efficient with string manipulations than with a stack; i.e. stack matching
+but i like the idea of a symbol stack very much ;-(
+
+so i concluded to arrange things in a way i can use it both ways:
+there is still a symbols stack, but it's inner working makes it possible
+to perform string manipulations on it.
+it can be seen both ways:
+
+string:	pointer 2@ ( -- addr count )
+stack:  at the double cell pointer refers to there is a structure
+        stack-pointer-as-offset stack-bottom
+
+stack items are always bytes (chars).
+
+so words working on the symbol stack can use string words to implement
+their function. symbol stack matching comes to mind.
+symbol stack matching is important to select suitable genes during mutation.
+being called a lot it is worth implementing it efficient.
+
+but from outside it should still look like a symbol stack,
+which shall be mirrored in the naming of the symbol stack words.
+
+it is easy to have multiple symbol stacks
+or implement a stack of symbol stacks...
+
+thinking about it, a realize that a symbol stack can be implemented
+exactly like a string in stringbuf-0.2.fs:
+
+	stack-pointer-as-offset  stack-bottom  size
+let's add the size field to it's descriptor:   ^^^^
+
+symbols-stack.fs

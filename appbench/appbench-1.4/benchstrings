@@ -1,0 +1,11 @@
+#benchmark forth call strings
+runbenchgc="64000 include bench-gc5.fs bye"
+runbenchgc4="100000 include bench-gc4.fs bye" #used forth EuroForth 2009 paper, but measures different stuff for 32-bit and 64-bit cells
+runbrainless="include benchmark.fs benchmark bye"
+runbrew=": page ; : key? false ; CREATE noterm CREATE transit-12-bench include brew.fs"
+runbrewbeta=": page ; CREATE transit-12-bench include brew.fs"
+runcd16sim=": 3drop 2drop drop ; include bench.f 1000000 benchmark bye"
+runcross="fpath= .|~/gforth s\" mach16b.fs\" include kernel/main.fs bye"
+runfcp="include fcp-1.31-64.f bench bye"
+runlexex="include run.fth bye"
+runvmgen="include prims2x.fs c-flag on s\" prim-fast.b\" ' output-c ' output-c-combined process-file bye"

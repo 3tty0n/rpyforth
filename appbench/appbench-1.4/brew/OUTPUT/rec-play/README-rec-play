@@ -1,0 +1,8 @@
+\ README-rec-play
+\	$Id: README-rec-play,v 1.1 2001/01/06 09:46:39 f Exp $	
+
+This directory is for recorded brew sessions.
+
+Currently it's misused also for demos, but I'll change that probably.
+
+Note that these files can be brew input even if it's in the OUTPUT/ hierarchy.

@@ -1,0 +1,616 @@
+%!PS-Adobe-2.0 EPSF-1.2
+%%BoundingBox: 33 410 260 683
+%!PS-Adobe-2.0 EPSF-1.2
+%%Pages: 1 1
+%%DocumentFonts: Helvetica
+%%EndComments
+% -*- ps -*-
+/drop {pop} def
+/swap {exch} def
+/over {1 index} def
+/nip {swap drop} def
+/rot {3 2 roll} def
+/3roll {4 3 roll} def
+/error /error def
+/xtf {barwidth mul 8.4 mul 50 add} def
+/ytf {-150 mul 550 add} def
+/tf {exch xtf exch ytf} def
+/mt {tf moveto} def
+/lt {tf lineto} def
+/sl {/linepoint {mt} store} def           %start line ( -- )
+/lp {linepoint /linepoint {lt} store} def %line point ( x y -- )
+/xbase 0 def
+/ybase 0.8 def
+/ytop -0.8 def
+/barwidth 5 def %points
+/ylt {currentpoint drop swap ytf lineto} def
+/colors <</gforth {0   0   0}
+          /bigforth {1   0  0 }
+	  /iforth {0.7 0  0.7}
+	  /spf4 {0  1 0}
+	  /vfxlin {0  0  1}
+>> def
+/setncolor {colors swap get exec setrgbcolor} def
+%height -- 
+/bar {gsave ylt stroke grestore} def
+/gap {barwidth 2 mul 0 rmoveto} def
+newpath /Helvetica findfont 9 scalefont setfont
+/xjright {dup stringwidth pop neg 0 rmoveto} def
+/xjcenter {dup stringwidth pop 2 div neg 0 rmoveto} def
+/yjtop {0 -7 rmoveto} def
+/yjcenter {0 -3.5 rmoveto} def
+%str xtick[12]
+/xtick1 { 0 setgray 0.5 setlinewidth
+          5 0 rmoveto 0 -2 rlineto 0 -2 rmoveto xjcenter yjtop show stroke
+          /xtick /xtick1 load def } def
+/xtick2 { 0 setgray 0.5 setlinewidth 
+          5 0 rmoveto 0 -11 rlineto 0 -2 rmoveto xjcenter yjtop show stroke
+          /xtick /xtick1 load def } def
+/xtick //xtick1 def
+
+%r1 r2 -- bool
+/xgt {over error eq
+    {drop drop true}
+    {dup error eq { drop drop false } { gt } ifelse }
+    ifelse
+} def
+
+%n1 n2 -- n
+/min {over over xgt {swap} if drop} def
+
+%array -- n
+/minarray {dup 1 get swap {min} forall} def
+
+%dict -- r
+/mindict {1e38 swap {nip min} forall} def
+
+%dictdict -- r
+/mindictdict {1e38 swap {nip mindict min} forall} def
+
+%dict key -- obj
+/xget {over over known {get} {drop drop error} ifelse} def
+
+/err11 { over error ne swap if } def
+
+/err20 { rot rot over error eq over error eq or not 3roll {drop drop} ifelse }
+def
+
+%the middle element
+%that's the median if the array is sorted and the length is odd
+%array -- obj
+/middle { {dup length 1 sub 2 div cvi get} err11 } def
+/middlelog {middle log} def
+
+%obj1 obj2 proc -- obj3
+%propagate error
+/err21 { << /proc rot >> begin 
+    over error eq over error eq or {drop drop error}  /proc load end
+    ifelse
+} def
+
+%r1 r2 -- r3
+/xdiv { {div} err21 } def
+
+%/xdiv { over error eq over error eq or {drop drop error} { div } ifelse } def
+
+%array -- r
+/logsum { 0 swap { { log add } err21 } forall } def
+
+%array -- r
+/logmean { dup logsum swap length xdiv } def
+
+/benchgc4   {drop} def
+/brainless {drop} def
+/brew      {drop} def
+/cd16sim   {drop} def
+/fcp       {drop} def
+/lexex     {drop} def
+
+/onegcc {swap logmean} def
+
+/onegforth {<< rot {} forall >> mindict} def
+
+/results {
+<<
+[
+[
+[3.316 3.324 3.328 ] benchgc4
+[10.921 10.973 11.033 ] brainless
+[54.003 54.143 54.479 ] brew
+[38.558 38.602 38.918 ] cd16sim
+[21.581 21.765 21.929 ] fcp
+[98.778 102.338 106.467 ] lexex
+] (2.95) onegcc
+] 1 onegforth
+[
+[
+[2.604 2.608 2.616 ] benchgc4
+[5.200 5.212 5.216 ] brainless
+error brew
+[13.513 13.517 13.525 ] cd16sim
+[10.785 10.789 10.789 ] fcp
+[81.661 81.665 81.673 ] lexex
+] (2.95) onegcc
+[
+[3.592 3.600 3.604 ] benchgc4
+[7.368 7.380 7.384 ] brainless
+error brew
+[19.525 19.529 19.537 ] cd16sim
+[15.573 15.581 15.581 ] fcp
+[132.700 132.708 132.720 ] lexex
+] (3.4) onegcc
+[
+[2.668 2.668 2.672 ] benchgc4
+[5.304 5.312 5.320 ] brainless
+error brew
+[13.893 13.893 13.901 ] cd16sim
+[10.957 10.957 10.957 ] fcp
+[84.561 84.561 84.581 ] lexex
+] (4.0) onegcc
+[
+[2.616 2.620 2.624 ] benchgc4
+[5.236 5.252 5.264 ] brainless
+error brew
+[13.721 13.721 13.729 ] cd16sim
+[10.949 10.953 10.953 ] fcp
+[83.281 83.285 83.285 ] lexex
+] (4.1) onegcc
+[
+[2.640 2.644 2.648 ] benchgc4
+[5.288 5.292 5.296 ] brainless
+[33.414 33.418 33.454 ] brew
+[13.645 13.645 13.649 ] cd16sim
+[11.041 11.041 11.041 ] fcp
+[83.125 83.133 83.133 ] lexex
+] (4.2) onegcc
+[
+[3.512 3.512 3.512 ] benchgc4
+[7.160 7.160 7.168 ] brainless
+[40.695 40.699 40.711 ] brew
+[19.061 19.065 19.069 ] cd16sim
+[15.185 15.185 15.189 ] fcp
+[130.020 130.068 130.072 ] lexex
+] (4.4.0) onegcc
+] 2 onegforth
+[
+[
+[0.960 0.964 0.968 ] benchgc4
+[2.516 2.520 2.520 ] brainless
+[14.845 14.869 14.869 ] brew
+[7.908 7.912 7.912 ] cd16sim
+[4.432 4.432 4.436 ] fcp
+[39.258 39.258 39.262 ] lexex
+] (2.95) onegcc
+[
+[3.604 3.604 3.604 ] benchgc4
+[7.372 7.388 7.392 ] brainless
+error brew
+[19.517 19.525 19.529 ] cd16sim
+[15.573 15.581 15.585 ] fcp
+[132.692 132.704 132.708 ] lexex
+] (3.4) onegcc
+[
+[2.668 2.668 2.672 ] benchgc4
+[5.312 5.312 5.312 ] brainless
+error brew
+[13.885 13.893 13.897 ] cd16sim
+[10.953 10.957 10.961 ] fcp
+[84.105 84.109 84.109 ] lexex
+] (4.0) onegcc
+[
+[2.612 2.620 2.624 ] benchgc4
+[5.260 5.260 5.264 ] brainless
+error brew
+[13.729 13.729 13.737 ] cd16sim
+[10.941 10.945 10.949 ] fcp
+[83.117 83.129 83.133 ] lexex
+] (4.1) onegcc
+[
+[2.632 2.636 2.636 ] benchgc4
+[5.284 5.292 5.296 ] brainless
+[33.402 33.430 33.442 ] brew
+[13.633 13.633 13.637 ] cd16sim
+[11.037 11.037 11.041 ] fcp
+[83.137 83.137 83.145 ] lexex
+] (4.2) onegcc
+[
+[3.508 3.508 3.508 ] benchgc4
+[7.156 7.164 7.168 ] brainless
+[40.695 40.699 40.731 ] brew
+[19.061 19.065 19.065 ] cd16sim
+[15.185 15.189 15.189 ] fcp
+[130.084 130.096 130.100 ] lexex
+] (4.4.0) onegcc
+] 3 onegforth
+[
+[
+[0.964 0.964 0.972 ] benchgc4
+[2.492 2.504 2.504 ] brainless
+[14.829 14.877 14.897 ] brew
+[8.169 8.173 8.177 ] cd16sim
+[4.488 4.492 4.496 ] fcp
+[39.294 39.298 39.302 ] lexex
+] (2.95) onegcc
+[
+[1.156 1.160 1.164 ] benchgc4
+[2.804 2.804 2.808 ] brainless
+[17.145 17.217 17.225 ] brew
+[8.929 8.933 8.933 ] cd16sim
+[5.532 5.532 5.532 ] fcp
+[42.339 42.343 42.347 ] lexex
+] (3.3) onegcc
+[
+[3.540 3.544 3.544 ] benchgc4
+[7.216 7.224 7.224 ] brainless
+error brew
+[19.169 19.173 19.177 ] cd16sim
+[15.137 15.141 15.141 ] fcp
+[130.732 130.736 130.744 ] lexex
+] (3.4) onegcc
+[
+[2.676 2.680 2.680 ] benchgc4
+[5.344 5.344 5.348 ] brainless
+error brew
+[13.889 13.897 13.901 ] cd16sim
+[11.061 11.061 11.065 ] fcp
+[83.777 83.785 83.793 ] lexex
+] (4.0) onegcc
+[
+[2.656 2.656 2.660 ] benchgc4
+[5.332 5.336 5.336 ] brainless
+error brew
+[13.925 13.929 13.937 ] cd16sim
+[11.101 11.105 11.105 ] fcp
+[83.637 83.641 83.645 ] lexex
+] (4.1) onegcc
+[
+[2.636 2.640 2.644 ] benchgc4
+[5.316 5.320 5.320 ] brainless
+error brew
+[13.793 13.797 13.797 ] cd16sim
+[11.049 11.053 11.057 ] fcp
+[83.281 83.281 83.289 ] lexex
+] (4.2) onegcc
+[
+[3.460 3.464 3.468 ] benchgc4
+[7.068 7.076 7.080 ] brainless
+error brew
+[18.733 18.737 18.741 ] cd16sim
+[15.009 15.013 15.025 ] fcp
+[125.996 126.012 126.016 ] lexex
+] (4.4.0) onegcc
+] 4 onegforth
+[
+[
+[0.900 0.904 0.908 ] benchgc4
+[2.324 2.344 2.348 ] brainless
+[14.261 14.297 14.313 ] brew
+[7.836 7.836 7.852 ] cd16sim
+[4.080 4.084 4.092 ] fcp
+[39.198 39.202 39.206 ] lexex
+] (2.95) onegcc
+[
+[1.020 1.024 1.024 ] benchgc4
+[2.612 2.620 2.624 ] brainless
+[15.741 15.745 15.765 ] brew
+[8.281 8.285 8.289 ] cd16sim
+[4.920 4.924 4.928 ] fcp
+[42.471 42.479 42.483 ] lexex
+] (3.3) onegcc
+[
+[3.152 3.152 3.156 ] benchgc4
+[6.304 6.312 6.312 ] brainless
+[36.490 36.506 36.518 ] brew
+[16.729 16.729 16.733 ] cd16sim
+[12.717 12.725 12.725 ] fcp
+[130.428 130.436 130.444 ] lexex
+] (3.4) onegcc
+[
+[2.136 2.136 2.136 ] benchgc4
+[4.536 4.540 4.548 ] brainless
+[27.242 27.290 27.322 ] brew
+[11.829 11.833 11.837 ] cd16sim
+[8.801 8.805 8.805 ] fcp
+[83.185 83.189 83.221 ] lexex
+] (4.0) onegcc
+[
+[2.112 2.112 2.116 ] benchgc4
+[4.504 4.508 4.516 ] brainless
+[27.182 27.190 27.190 ] brew
+[11.809 11.817 11.817 ] cd16sim
+[8.777 8.777 8.777 ] fcp
+[83.353 83.353 83.369 ] lexex
+] (4.1) onegcc
+[
+[2.112 2.116 2.116 ] benchgc4
+[4.492 4.492 4.496 ] brainless
+[27.058 27.142 27.146 ] brew
+[11.753 11.753 11.757 ] cd16sim
+[8.745 8.745 8.745 ] fcp
+[82.697 82.697 82.709 ] lexex
+] (4.2) onegcc
+[
+[3.056 3.056 3.060 ] benchgc4
+[6.108 6.128 6.132 ] brainless
+[35.802 35.810 35.838 ] brew
+[16.361 16.365 16.369 ] cd16sim
+[12.425 12.429 12.433 ] fcp
+[125.752 125.760 125.768 ] lexex
+] (4.4.0) onegcc
+] 5 onegforth
+[
+[
+[0.592 0.596 0.600 ] benchgc4
+[1.636 1.636 1.644 ] brainless
+[10.193 10.229 10.249 ] brew
+[5.992 5.996 5.996 ] cd16sim
+[2.460 2.460 2.464 ] fcp
+[25.098 25.118 25.118 ] lexex
+] (2.95) onegcc
+[
+[0.632 0.652 0.656 ] benchgc4
+[1.768 1.772 1.772 ] brainless
+[11.137 11.157 11.185 ] brew
+[5.924 5.932 5.932 ] cd16sim
+[2.708 2.712 2.712 ] fcp
+[25.214 25.226 25.226 ] lexex
+] (3.3) onegcc
+[
+[0.652 0.652 0.664 ] benchgc4
+[1.772 1.780 1.788 ] brainless
+[11.029 11.061 11.097 ] brew
+[6.060 6.064 6.072 ] cd16sim
+[2.724 2.724 2.728 ] fcp
+[25.806 25.810 25.814 ] lexex
+] (3.4) onegcc
+[
+[1.608 1.612 1.616 ] benchgc4
+[3.872 3.872 3.880 ] brainless
+[21.421 21.437 21.449 ] brew
+[10.849 10.865 10.869 ] cd16sim
+[7.052 7.052 7.056 ] fcp
+[57.524 57.544 57.548 ] lexex
+] (4.0) onegcc
+[
+[1.816 1.816 1.816 ] benchgc4
+[4.184 4.192 4.196 ] brainless
+[23.057 23.101 23.125 ] brew
+[11.449 11.453 11.457 ] cd16sim
+[8.193 8.201 8.205 ] fcp
+[64.728 64.732 64.740 ] lexex
+] (4.1) onegcc
+[
+[0.604 0.608 0.608 ] benchgc4
+[1.704 1.708 1.708 ] brainless
+[10.641 10.713 10.737 ] brew
+[6.096 6.120 6.124 ] cd16sim
+[2.504 2.508 2.508 ] fcp
+[27.962 27.978 27.982 ] lexex
+] (4.2) onegcc
+[
+[0.900 0.900 0.900 ] benchgc4
+[2.144 2.144 2.164 ] brainless
+[13.981 13.993 14.009 ] brew
+[7.768 7.768 7.776 ] cd16sim
+[3.184 3.184 3.184 ] fcp
+[40.771 40.775 40.783 ] lexex
+] (4.4.0) onegcc
+] 6 onegforth
+[
+[
+[0.608 0.608 0.612 ] benchgc4
+[1.652 1.660 1.664 ] brainless
+[10.365 10.405 10.457 ] brew
+[6.000 6.000 6.004 ] cd16sim
+[2.456 2.460 2.464 ] fcp
+[25.054 25.058 25.066 ] lexex
+] (2.95) onegcc
+[
+[0.660 0.664 0.664 ] benchgc4
+[1.760 1.768 1.772 ] brainless
+[10.925 10.965 10.977 ] brew
+[5.840 5.844 5.844 ] cd16sim
+[2.676 2.680 2.680 ] fcp
+[25.122 25.126 25.126 ] lexex
+] (3.3) onegcc
+[
+[0.660 0.664 0.668 ] benchgc4
+[1.780 1.780 1.784 ] brainless
+[10.953 10.965 10.985 ] brew
+[6.020 6.020 6.024 ] cd16sim
+[2.712 2.712 2.712 ] fcp
+[25.970 25.974 25.978 ] lexex
+] (3.4) onegcc
+[
+[1.524 1.524 1.528 ] benchgc4
+[3.712 3.720 3.724 ] brainless
+error brew
+[10.521 10.533 10.537 ] cd16sim
+[6.528 6.528 6.532 ] fcp
+[55.551 55.559 55.567 ] lexex
+] (4.0) onegcc
+[
+[1.720 1.724 1.728 ] benchgc4
+[4.004 4.008 4.016 ] brainless
+[23.117 23.121 23.125 ] brew
+[11.385 11.389 11.393 ] cd16sim
+[7.728 7.728 7.736 ] fcp
+[62.964 62.984 62.984 ] lexex
+] (4.1) onegcc
+[
+[0.600 0.600 0.608 ] benchgc4
+[1.688 1.692 1.696 ] brainless
+[10.649 10.665 10.673 ] brew
+[6.080 6.084 6.088 ] cd16sim
+[2.480 2.484 2.484 ] fcp
+[27.802 27.806 27.810 ] lexex
+] (4.2) onegcc
+[
+[0.900 0.904 0.908 ] benchgc4
+error brainless
+[13.937 13.945 14.061 ] brew
+[7.688 7.696 7.696 ] cd16sim
+[3.160 3.164 3.168 ] fcp
+[39.898 39.902 39.906 ] lexex
+] (4.4.0) onegcc
+] 7 onegforth
+>>
+} def
+
+/gforth <<
+[/benchgc4 /brainless /brew /cd16sim /fcp /lexex]
+{<< /bench rot >> begin
+  << bench {middle} >> begin bench results 7 get end
+end } forall
+>> def
+
+/benchgc4   {/benchgc4   swap middlelog} def
+/brainless {/brainless swap middlelog} def
+/brew      {/brew      swap middlelog} def
+/cd16sim   {/cd16sim   swap middlelog} def
+/fcp       {/fcp       swap middlelog} def
+/lexex     {/lexex     swap middlelog} def
+
+%[c7:~/forth/appbench-1.0:24560] FORTH="bigforth -d 16M -r 8k -e " BENCH="brainless cd16sim fcp lexex" ./run
+/bigforth <<
+[1.228 1.288 1.300 ] brainless
+[30.106 30.142 30.142 ] brew
+[28.738 28.742 28.870 ] cd16sim
+[1.592 1.624 1.624 ] fcp
+[29.146 30.602 30.766 ] lexex
+>> def
+%[c7:~/forth/appbench-1.0:24566] FORTH="iforth" BENCH="benchgc4 cd16sim" ./run
+/iforth <<
+[0.364 0.372 0.380 ] benchgc4
+[0.836 0.844 0.844 ] cd16sim
+>> def
+%[c7:~/forth/appbench-1.0:24567] FORTH="spf4  ../setup/spf.f " BENCH="cd16sim fcp" ./run
+/spf4 <<
+[1.156 1.184 1.220 ] cd16sim
+[2.784 2.784 2.788 ] fcp
+>> def
+%[c7:~/forth/appbench-1.0:24569] FORTH="vfxlin : ms@ ticks ; : 0. 0 0 ;" BENCH="cd16sim fcp lexex" ./run
+/vfxlin <<
+[0.480 0.488 0.492 ] brainless
+[0.880 0.900 0.908 ] cd16sim
+[1.000 1.004 1.008 ] fcp
+[14.613 14.621 14.645 ] lexex
+>> def
+
+/rdict <<
+    /bigforth bigforth
+    /gforth gforth
+    /iforth iforth
+    /spf4 spf4
+    /vfxlin vfxlin
+>> def
+
+/machine /c7-32 def
+
+/cpu
+<<
+/b2 (21264B)
+/b3 (Pentium 4 Northwood)
+/b6 (7447A)
+/c1 (Athlon MP)
+/c7 (Opteron 270)
+/c7-32 (Opteron 270)
+/c8 (Xeon 5450)
+/c8-32 (Xeon 5450)
+/ia64 (Itanium II)
+/iyonix (Xscale IOP80321)
+/ppc64 (PPC970)
+/ppc64-32 (970)
+>> machine get def
+
+/arch
+<<
+/b2 (Alpha)
+/b3 (IA32)
+/b6 (PPC)
+/c1 (IA32)
+/c7 (AMD64)
+/c7-32 (IA32)
+/c8 (AMD64)
+/c8-32 (IA32)
+/ia64 (IA64)
+/iyonix (ARM)
+/ppc64 (PPC64)
+/ppc64-32 (PPC)
+>> machine get def
+
+1 setlinejoin
+0 setlinecap
+0 0 translate
+0.3 setlinewidth
+
+/benchs [/benchgc4 /brainless /brew /cd16sim /fcp /lexex] def
+/forths [/iforth /bigforth /gforth /vfxlin /spf4] def
+
+[] 0 setdash
+0 setgray
+
+/xright benchs length 1 sub def
+
+0.5 setlinewidth
+xbase ytop mt
+xbase ybase lt
+xright ybase lt
+stroke
+
+%xright ybase mt 3 2 rmoveto (gforth version) yjcenter show
+xbase ytop mt 0 6 rmoveto (speed) xjcenter show
+
+xbase ytop mt 30 6 rmoveto arch show 3 0 rmoveto cpu show
+
+/str 20 string def
+
+/xticklen1 -2 def
+/xticklen {xticklen1 /xticklen1 -13 xticklen1 sub store} def
+%name --
+/xtick {0 setgray 0.5 setlinewidth str cvs 0 xticklen rlineto 0 -2 rmoveto xjcenter yjtop show stroke } def
+%0 benchs {str cvs over xtick 1 add} forall drop
+
+%r --
+/ytick { dup log neg dup ybase le
+    {xbase exch mt  -2 0 rlineto -2 0 rmoveto str cvs xjright yjcenter show}
+    {drop drop}
+    ifelse
+} def
+5.6 ytick
+4 ytick
+2.8 ytick
+2 ytick
+1.4 ytick
+1 ytick
+0.7 ytick
+0.5 ytick
+0.3 ytick
+0.2 ytick
+stroke
+
+%name --
+/label {gsave 6 setlinewidth dup setncolor 6 0 rlineto
+        currentpoint stroke grestore moveto
+        1 -3 rmoveto 0 setgray str cvs show 8 3 rmoveto
+} def
+
+4 ytop mt
+forths {
+    gsave label grestore 0 -10 rmoveto
+} forall
+
+barwidth setlinewidth
+0 ybase mt
+benchs {<< /bench rot >> begin
+    gsave barwidth 3 mul 0 rmoveto bench xtick grestore
+    forths {<< /forth rot >> begin
+	barwidth 0 rmoveto
+	rdict forth get bench xget
+	dup error eq
+	    {drop}
+	    {forth setncolor rdict /gforth get bench get sub bar}
+	ifelse
+    } forall
+    gap
+} forall

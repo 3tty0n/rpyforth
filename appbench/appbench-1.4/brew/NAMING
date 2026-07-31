@@ -1,0 +1,63 @@
+#	$Id: NAMING,v 1.9 2002/10/31 17:02:51 f Exp $	
+
+I adore this very short and pregnant wording style of some masters of FORTH.
+
+Please excuse that I do not consider it my goal two write this style myself.
+At least not in this thing here.
+
+My wording is about exactly what is considered bad style in the Forth community
+
+I do use these horribly-long-hyphenated-lisp-style-words, to describe the
+quite-complicated-working-of-some-of-my-forth-unlike-words ;-)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Error: Word name too long
+uups! sorry.
+
+(-; just don't read the code if you don't like it ;-)
+
+==========================================================================
+
+\ some wording peculiarities:
+
+name-xt
+These are action pointers.
+'name-xt' is a variable containing an execution token.
+If you type:
+name-xt @ EXECUTE
+then the action name-xt points to is done.
+The reasons why I do not use deferred words for that functionality
+are that DEFER is not ANS and that there's no (ANS compatible) way
+to get the actual xt deferred.
+
+(name)
+A word intern to other words, not intended to be used directly.
+Often '(name)' will be intern to 'name'.
+
+<name>
+I use this naming to remind me that <name> is a deferred word.
+Normally I prefer the 'name-xt' style, where it's easier two
+find out what word is actually linked in there.
+I use this naming when it's is essential to see that <name> is deferred.
+I don't use it if name is just defined later on and not changed later.
+
+<key>
+<up> <down> <left> <right> <F1> <F2> ... <shift-F1> ...
+'ekey' codes for some keys.
+These are the system dependent codes that you get when key is pressed.
+
+key%
+The code that <key> is mapped into and passed to the menus.
+
+>name
+'>name' names an offset.
+>name ( addr -- addr+offset )
+
+|name|
+|name| is a wrapper for 'name'. Does basically 'name' but adds functionality
+(i.e. record entries) or bookkeeping (i.e. when used from a menu) or so.
+
+|name
+bit mask. Only used when name is taken.
+
+NAME:
+defining word.

@@ -1,0 +1,54 @@
+This program is in the public domain. No warranty!
+
+This is Brainless v0.0.2, released Dec. 16, 2000, pre-alpha, pre-beta and work 
+in progress. By the time you read this, the version you have is already 
+out-dated. Contact me for newer versions:
+
+	dvdkhlng@gmx.de
+
+or if that fails, try:
+
+	dvdkhlng@cs.tu-berlin.de
+
+you may also write snail mail:
+
+	David Kuehling
+	Bansiner-Str. 27A
+	12619 Berlin
+	GERMANY
+
+As this is work in progress, there are still several missing features, the
+most important being:
+	
+  * no documentation
+  * 50-move rule isn't checked yet
+  * human players must use >remove< and >add< after a pawn promotion to
+    select the piece of their choice
+
+I tested this program with GForth, PFE and BIGForth. In GForth and BIGForth, 
+the default dictionary size won't suffice, you'll have to set it to about 
+256K cells.
+
+If you want to play a game against Brainless, you'll have to use the Forth
+terminal interface (have a look at tui.fs). Load "brainless.fs", and type:
+
+	e2 e4 m		\ to do a move from e2 to e4
+	cm		\ to let the computer move
+	look		\ to have a look on the chessboard
+	init-board	\ to initialize the chessboard to defaults
+	e4 remove	\ to remove the piece on e4
+	w pawn e4 add	\ to add a white pawn on e4
+	clear		\ to clear the whole chessboard
+	other-party	\ to switch the party that is at move
+	6 TO max-think-limit	\ to let the computer think up to 6 plies
+	3 TO abort-time		\ to make the computer abort thinking after
+				\ 3 seconds
+        TRUE TO use-arith-notation?	\ switch to arithmetic move notation
+
+Benchmarking:
+
+Load the file "benchmark.fs", and type 
+
+	benchmark
+
+

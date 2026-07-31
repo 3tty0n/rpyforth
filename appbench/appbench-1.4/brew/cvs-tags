@@ -1,0 +1,405 @@
+# cvs-tags
+#	$Id: cvs-tags,v 1.77 2005/06/05 14:20:39 f Exp $	
+
+overview over cvs-tags:
+
+		there have been many versions before I started to use cvs.
+		(i should have started this earlier...)
+
+brew-0_03h	11.11.2000	seems quite stable.
+		bugfixes and code file support.
+
+brew-0_03i	15.11.2000	seems quite stable.
+		test version for 'top-level-replacement'
+		no automatic increase of code cost yet.
+		there are still unused files in this version.
+
+brew-0_03k	15.11.2000	added automatic increase of code-price.
+		changed defaults
+
+brew-0_03l	18.11.2000	top-level-short-snip added.
+
+brew-0_03m	19.11.2000	3 snip types: short(est) long(est) and random.
+
+brew-0_03n	25.11.2000	detailed nuc scans. old files removed.
+
+brew-0_03o	26.11.2000	function keys (work in progress)
+				problems with quitting menus on function keys.
+
+brew-0_03p	 9.12.2000	demo guess-A
+		This is a kind of demo for the current state of the 'guess-A'
+		experiment. It works quite well, but the result is not very
+		stable.
+
+	After about 380 steps it comes up with:
+	: g-400
+	  g-organ-A g$take g-A-quality g$! ;
+
+	As they are highly optimised population control comes into problems and
+	population pumps a lot.
+
+	At step 1397 there's a monstrous mutation... Dies out.
+
+	Somewhere about 1500 g-400 is reinvented as 1704,
+	and there's a new one, too:
+	: g-2032
+	  g-organ-A g@ g-A-quality g$! ;
+	I think that's the best solution.
+	But it happens to die out by accident.
+
+	1852 population dies out, killed by a stupid population control.
+
+brew-0_03q	25.12.2000	benchmarks
+				'simple-bench.fs' and 'mutations-1.fs'
+				(only 'simple-bench.fs' runs on bigFORTH)
+
+brew-0_03r	31.12.2000	backup of the first version running pfe
+				uses new menu, 'ekey' for cursor.
+				function keys buggy.
+
+brew-0_03s	3.1.2001	bugfixes, cleanup, benchmarks, intro.
+				(bug: 'intro' crashes when called twice)
+
+brew-0_03t	3.1.2001	same, missing file added.
+
+brew-0_03u	4.1.2001	same. Better READMEs.
+
+brew-0_03v	6.1.2001	(undisplayed) benchmarks without 'at?'
+				benchmarks from command line.
+
+brew-0_03w	7.1.2001	small changes and bugfixes.
+
+brew-0_03x	11.1.2001	startup phase. ekey. portability.
+
+brew-0_03y	17.1.2001	unwrapped genes, better gene code wording.
+
+brew-0_03z	17.1.2001	same, small bugfix.
+
+brew-0_03zz	21.1.2001	filing only successful genes
+				many new features disabled by compile option,
+				so benchmarks and demos should still work.
+
+brew-zz-guess-A  3.2.2001	current guess-A experiment.  hit step 72.
+				many changes since zz, but not finished yet.
+				*not* for demos and benchmarks.
+				*not* for pfe.
+
+brew-0_03zzz	 8.2.2001	continuous display
+				titles in 'choose-xt-menu'.
+
+brew-0_03z4	10.2.2001	fixed step display in 'intro' and in
+				displayed bench
+				fixed 'STRINGBUF-HANDLE:' 'intro' can be
+				re-executed now.
+				Record and playback of step display and
+				continuous display.
+				Status line in continuous display.
+				Bug fixes.
+
+brew-0_03z5	11.2.2001	menu-spot-scan	Bug fixes.
+
+brew-0_03z6	12.2.2001	keybindings, menus, 'lower-left-scrolls'
+				(I meant 'lower-right-scrolls'... ;-)
+
+brew-0_03z7	13.2.2001	Can log user actions.
+				Cutting away unique comments.
+				Stringbuf handles *not* changed yet.
+
+brew-0_03z8	13.2.2001	same with new named stringbuf handles
+
+brew-0_03z8b	15.2.2001	Fine grain mutation logging.
+
+brew-0_03z9	18.2.2001	Last version with old benchmarks and demos.
+
+brew-transit_0	28.2.2001	Started to throw old things out.
+				Reactivated new features.
+				Nested probability list for mutation types.
+				Probability list for gene-pool.
+
+brew-transit_1  17.3.2001	Old type mutation and genes left in,
+				work on new type.
+
+brew-transit_2	23.3.2001	New type genes and mutation now working
+				but a bit slow. Old type still in.
+				The two types do *not* work exactly the same.
+
+brew-transit_3	29.5.2001	New and old type genes and mutation now
+				give the same results.
+				Bugfix: snipping code *does* reduce code cost.
+				Longstanding bug in bigFORTH version fixed.
+
+brew-transit_4	1.6.2001	Replaces brew-transit_3 which had a bug
+				in scanning nuc details.
+				simple-bench adapted.
+
+brew-transit_5	4.6.2001	Bugfixes: code cost in snip types,
+				crashes in scans, code file indent fixed.
+				Cosmetics in code files and menus.
+				New and old type genes and mutation should
+				really give the same results now  ;-)
+
+brew-transit_6	15.6.2001	added 'menu-current-genomes' and
+				'menu-this-genome'.
+				You can select nucs now based on some criteria
+				display or do things on selected nucs.
+				Many new analytic display tools.
+				'brew.fs' structured in thematic chapters.
+				Scanning subsets of nucs.
+				Work on words to conditionally execute code
+				on subsets of nucs (or spots).
+
+brew-transit_7	17.6.2001	The new 'maybe-do' words give an enormous
+				increase in functionality.  I use them for
+				subset manipulation, scanning, coloured
+				world views, all based on conditions.
+				As conditions and actions can be selected
+				upon many possibilities, and even been
+				evaluated from a run time string, this
+				expands the possibilities for user
+				interaction very much.  All these user
+				interactions can get recorded of course...
+
+brew-transit_8	21.6.2001	(Incomplete, but saved for benchmarking).
+				Continued work on maybe-do related stuff.
+				Evaluated strings in buffers, saving them.
+				Float save words (unused yet).
+
+brew-transit_9	22.6.2001	Finished work on 'menu-this-genome'.
+				Extended capabilities in scale input.
+
+brew-transit_10	25.6.2001	'world-menu'  Info and work on spot subsets.
+				Linear mode: no virtual world mode.
+				'spot-qualities#' as compile time value.
+				Spot secrets implemented.
+				New types of nuc variables: invisible, secret.
+				Conditional background colouring.
+				Benchmark creation utilities.
+				Compile option infos in record files and menus.
+				Many bugfixes.
+				A lot of other new features.
+				Not very mature yet...
+
+brew-transit_11	29.6.2001	Many bugfixes and improvements.
+				Improved logging.
+				Benchmark creation utility.
+				Better state assertion.
+				Benchmark 'transit-11-bench-A'.
+
+brew-transit_12	1.7.2001	Improved record menu.
+				Cosmetics and bugfixes.
+				Upward compatibility of old gene version.
+				Benchmark: 'transit-12-bench'.
+
+brew-transit_13	5.7.2001	Spot diversification.
+				User interface to spot and nuc actions from
+				world menu.
+				Many other details of user interface.
+				Introduced 'score-rate'.
+				Bugfixes.
+				Benchmark info is in 'maybe-run-benchmark.fs'.
+
+brew-transit_14	7.7.2001	Size limit for genomes:
+				If the user defines an unbalanced gene pool
+				there was always the danger of more or less
+				endless mutations.  Now there is a size limit.
+				Of course this is configurable in the menus
+				like everything in brew.
+				In case of play errors you can select to
+				do it again with better error diagnostics.
+				Bugfix: changing probability list menus.
+				Fileselect menu can scroll now.
+				Changed default compile options for nuc struc-
+				ture and field variables.
+				Benchmarks run OK with different nuc structures
+
+brew-transit_15 14.7.2001	Bugfix when 'new-genes' is false.
+
+brew-transit_16	6.8.2001	First initialised brew 'transit' snapshot.
+				I made up a simple sum up experiment to give
+				a somehow initialised system.
+				Workaround for bigForth 2.0.2 'search' bug.
+				(This bug is already fixed in 2.0.3  Thanks a
+				lot to Bernd for the quick fix).
+
+brew-transit_17	22.8.2001	On the way to a new world version:
+				Multiple, multi dimensional worlds possible.
+				This version has no new display engine yet
+				but uses the old one.  Same for directions.
+				So you can not see the new features yet.
+
+brew-transit_18 26.8.2001	Faster version of new worlds.
+				Allocation pointers and new string buffers.
+
+brew-transit_19 30.8.2001	'k' shows active key bindings.
+
+brew-transit_20	 1.9.2001	Making menus more user friendly:
+				'k' shows active key bindings.
+				<TAB> jumps to next menu item.
+				'?' highlights active menu fields.
+				Better menu usage hints.
+
+brew-transit_21	 9.9.2001	Brewing and displaying in multi dimensional
+				worlds start to work.
+				Big Bang menu to create other worlds.
+				You can build huge ones...
+				Preparing to use block variables to gain speed.
+
+brew-transit_22	10.9.2001	Experimental.  Will be redone.
+				Transforming about all variables in 'brew.fs'
+				Using either block variables,
+				'ordinary vars defined one after the other' or
+				'ordinary scattered in source \VARIABLEs'.
+				A lot of benchmark results...
+
+brew-transit_23	11.9.2001	There was an error in 'worlds.fs'.
+				'brew-transit_23' replaces 'brew-transit_22'.
+				Benchmark results remade...
+
+brew-transit_24	14.9.2001	Experimenting on speed.
+				Possibility to switch on word usage counting.
+				Write word usage profiles to file.
+				Does *not* use block variables.
+				Reference snapshot to experiment on speed.
+
+brew-transit_25 4.10.2001	Started to write documentation.
+
+brew-transit_26 5.11.2001       Documentation is growing and might be useful
+                                already.
+
+brew-transit_27	14.11.2001	Context sensitive online documentation.
+				Can use 'info' or a html browser as reader.
+				(You must produce or download 'brew.html').
+
+brew-transit_28 17.11.2001	Better integration of function keys.
+
+brew-transit_29 21.11.2001	Context sensitive documentation continued.
+				(Gforth, bigForth, pfe, iForth(?))
+
+brew-transit_30 27.11.2001	Interaction in statistic (step) display
+				and other bar graphics.
+				Interaction in world maps.
+				Changed initialisation file factoring.
+
+brew-transit_31	3.12.2001	Genome pools: Successfully tested genomes can
+				be used as new gene building blocks.
+				New mutation type 'rebirth' reincarnating
+				old genomes from a genome pool.
+				Menu spot subsets, to work on some spots.
+				Bugfixes and more work on documentation.
+				(Note: this version had a bad recording bug...)
+
+brew-transit_32	8.12.2001	Fixed recording bug from 'brew-transit_31'
+				and fixed re-playing recorded sessions.
+				Changed display snapshot menu interface.
+				Configurable display snapshot frequency. 
+				Step display snapshots.
+				Changed initialisation.  Key binding revisited.
+
+brew-transit_33	22.1.2002	Many details and bugfixes 'under the hood'.
+				User interaction during playback.
+				Conditional colouring changed and extended.
+				Include files from system menu, record it.
+				Fixed vs. zoomed scan display ranges.
+
+brew-transit_34    15.2.2002	Intermediate snapshot on the way to floats.
+				Nucs, genes, mutation, diversification do
+				support floats, nothing else does.
+				Docu not updated yet.
+
+brew-transit_35	   18.5.2002	More floating point and bugfixes. Docu updated.
+				Spot float variables.
+				Nuc and spot scan summaries with dfloats and
+				type counts, detailed nuc and spot float scans.
+				Fine grain crash test, extended logging.
+				Menu colour highlighting and key bindings.
+				Maybe-do and continuous display learned dfloats
+				Detect inf's and nan's in nucs and on spots.
+				Float value type checks, subsets and colouring.
+				More menu links from scan result to subsets.
+				Unique temporary file names make it possible
+				to run several brews at a time.
+				Editing genomes by hand.
+				Saving all spot or nuc data to Forth files.
+				List of output files on exit.
+				Bugfixes.  Needs a lot of testing...
+
+brew-transit_36    23.5.2002	Info about which diversification bit masks
+				to set in gene internals data.
+				Some additions, user interface changes,
+				and bugfixes.  Intermediate snapshot before
+				cleaning out old stuff.
+
+brew-transit_37	   18.6.2002	Removed support for old implementation of
+				genes/mutation, worlds and stringbufs.
+				Removed some hardly used files, truncated some
+				others. Updated some READMEs.
+				Using multiple worlds, world lists.
+				Cloning worlds, removing worlds.
+				Continue recording after playback.
+				Documentation.
+
+brew-transit_38	   23.6.2002    Make benchmark output redirection possible.
+				Documentation cosmetics.
+
+brew-transit_39	   2.10.2002	Global integer and dfloat variables.
+				Working on elitism as a more traditional
+				population control and evolutionary strategy.
+				This version includes working elitism without
+				breaking compatibility to older versions.
+				The implementation is a little hacky in some
+				places and will change, when compatibility will
+				be allowed to break (which is planed very soon)
+				Better handling of unknown ekey codes.
+
+brew_0_1-pre-0	  10.11.2002	brew_0_1_0 release pre test.
+				Cleaning up, polishing and getting ready.
+				READMEs and documentation edited, default demo.
+
+brew_0_1-pre-1	  11.11.2002	Better integration of old demos.
+				Fileselect re-written.
+
+brew_0_1-pre-2	  16.11.2002	Factorized files and resolved dependencies
+				to make some tools usable independent of brew.
+				Starting comments in source files edited.
+				Key reaction in fileselect-menu.
+
+brew_0_1-pre-3	  17.2.2003	Source edits continued.
+				Changed list implementation.
+				Some new key bindings.
+				Shortened some very long names to be compatible
+				with current Gforth snapshot. 
+				Docu has my new email address and webside.
+
+brew_0_2-pre-1    18.4.2005     Snapshot after many changes...
+				Adaption to local screen size.
+				Helper application configure-console.fs
+				Cursor wrapping (switchable).
+				New mutation type to snip IF-THEN conditions
+				or one of the IF-ELSE-THEN branches.
+				Detection of scoring hits.
+				Function results can be scanned in real time
+				now and can be used in maybe-do conditions.
+				Removed stupid 64bit blockage.
+				(Was only relevant to old benchmarks, demos,
+				 experiments and such, and still is.)
+				Mutation will not produce identical genomes
+				any more (switchable).
+				Stricter configuration file error handling.
+				Many, many internal changes.
+				Better file dependency handling.
+
+brew_0_2_rk1	22.5.2005	Intended to become brew 0.2.0
+				(Not a real CVS tag. Kept to show bigFORTH
+				 benchmark behaviour just before it changed)
+				Removed font size dependency.
+				Defining rectangle ranges in spot display.
+				Defining value ranges in statistics display.
+				More screen size adaption (fixes and cosmetics)
+				Documentation extensions and updates.
+				Source cleanup. Removed some unused files.
+				Prepare cvs repository for migration to
+				subversion.
+				Some bugfixes.
+
+brew_0_2_0	5.6.2005	Cleanups, Documentation edits, some bugfixes.
+				Uses parse-word now.

@@ -1,0 +1,75 @@
+Third-party notice for shootout/
+================================
+
+This directory holds the Forth "shootout" micro-benchmarks used by
+benchmark/run_shootout.py (and related wrappers).
+
+No LICENSE, COPYING, Copyright line, or redistribution grant was found
+anywhere under this directory (recursive search for
+copyright|license|GPL|MIT|BSD|Apache|public domain|SPDX|redistribut:
+no matches). The notes below record provenance comments that *are*
+present; they are not license grants.
+
+
+---------------------------------------------------------------------------
+Provenance mentioned in-tree
+---------------------------------------------------------------------------
+
+url.txt (sole contents):
+  https://dada.perl.it/shootout/gforth.html
+
+Programs whose headers cite Doug Bagley's shootout site
+(http://www.bagley.org/~doug/shootout/):
+  ack.fs, ary.fs, except.fs, matrix.fs, methcall.fs, random.fs, sieve.fs
+
+RCS $Id / author attribution (still not a license grant):
+  ack.fs   — "$Id: ackermann.gforth,v 1.2 2001/05/25 16:43:25 doug Exp $"
+  ary.fs   — "$Id: ary3.gforth,v 1.1 2001/05/31 02:27:48 doug Exp $"
+  sieve.fs — "$Id: sieve.bigforth,v 1.1 2001/06/19 16:20:46 doug Exp $"
+             also: "adapted from a program in the gforth distribution"
+             also: "modified and annotated by doug bagley"
+
+Other program comments (no Bagley URL, no license grant):
+  recurse.fs   — "Gabriel suite" Takeuchi (tak) description
+  heap.fs      — "rewritten in (mostly) ANSI Forth style" / Gforth 2012 target
+  fibo.fs, nestedloop.fs, callheavy.fs, composite.fs — descriptive comments only
+
+curve/*.fs
+  Variants annotated for JIT analysis ("… benchmark for JIT analysis").
+  No separate license or Bagley URL in those headers.
+
+
+---------------------------------------------------------------------------
+Engine adaptations (not vendored here)
+---------------------------------------------------------------------------
+
+There is no shootout/vfxforth/ or shootout/swiftforth/ subtree in this
+tree. VFXForth / SwiftForth runs adapt the gforth-oriented .fs at runtime
+via benchmark/adapt_shootout_for_engine.py (and vfxforth.sh /
+swiftforth.sh). That adapter carries no separate copyright/license
+block beyond being part of this repository.
+
+
+---------------------------------------------------------------------------
+Related homolog trees (separate NOTICEs)
+---------------------------------------------------------------------------
+
+  benchmark/joy/NOTICE     — Joy homologs of these .fs programs
+  benchmark/factor/NOTICE  — Factor homologs of these .fs programs
+
+
+---------------------------------------------------------------------------
+Additional programs / fixtures in this tree
+---------------------------------------------------------------------------
+
+Programs added as portable ports of Bagley gforth shootout sources
+(hello, strcat, sumcol, wc, reversefile, hash, hash2, lists, moments,
+spellcheck, wordfreq, objinst). Several are rewritten to avoid
+gforth-only words (objects.fs, wordlist-id, LASTXT, F$) while keeping
+the same algorithmic intent. prodcons and regexmatch remain absent
+(out of scope: threads / Gray).
+
+shootout/data/ holds stdin fixtures (sumcol.txt from the archived
+Bagley sumcol input; other small fixtures generated for harness use).
+Those fixture files contain no separate license grant beyond being
+benchmark input data for this suite.
